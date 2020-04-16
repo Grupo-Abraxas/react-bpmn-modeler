@@ -1,0 +1,75 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* FIX CONTEXT PAD ENTRIES */
+.djs-context-pad .entry:before {
+  margin: 0;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas {
+  display: block;
+  float: left;
+  width: 70%;
+  height: 1000px;
+  margin: 20px;
+  padding: 50px;
+  background-color: bisque;
+}
+
+
+.panel-c {
+  display: block;
+  float: left;
+  width: 20%;
+  height: 1000px;
+  margin: 20px;
+  padding: 50px;
+  background-color: blue;
+}
+
+/* EXPORT TO CONSOLE */
+.export {
+  display: block;
+  top: 20px;
+  right: 50%;
+}
+
+.clear-fix {
+  clear: both;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+
+.properties-panel-parent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 260px;
+  z-index: 10;
+  border-left: 1px solid #ccc;
+  overflow: auto;
+}
+
+.djs-properties-panel {
+  padding-bottom: 70px;
+  min-height:100%;
+}
+

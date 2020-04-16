@@ -1,0 +1,10 @@
+$bpp-color-primary: #52B415;
+$bpp-color-gray: #666;
+$bpp-color-gray-dark: #333;
+$bpp-color-gray-light: #ccc;
+$bpp-color-gray-lighter: #f8f8f8;
+
+$bpp-color-toggle: mix($bpp-color-primary, $bpp-color-gray-light);
+
+$bpp-color-error: #cc3333;
+$bpp-color-error-bg: lighten($bpp-color-error, 35%);
