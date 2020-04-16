@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect, createRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
 import axios from 'axios'
 import propertiesPanelModule from 'bpmn-js-properties-panel'
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import './index.scss'
-import '../styles/properties.less'
+// import '../styles/properties.less'
 
 
 const Bpmn = () => {
@@ -13,11 +13,11 @@ const Bpmn = () => {
   const propertiesPanel = useRef(null)
 
   // Create new Modeler
-  let modeler = null
+  let modeler = useRef(null)
 
   useEffect(() => {
     const setModeler = async () => {
-      modeler = new BpmnModeler({
+      modeler.current = new BpmnModeler({
         container: canvas.current,
         // keyboard: { bindTo: document },
         propertiesPanel: {
@@ -33,7 +33,7 @@ const Bpmn = () => {
         },
       })
       const newDiagramXML = await getXMLFile()
-      modeler.importXML(newDiagramXML, function (err) {
+      modeler.current.importXML(newDiagramXML, function (err) {
         if (err) {
           console.log('error rendering', err)
         } else {
@@ -50,7 +50,7 @@ const Bpmn = () => {
   }
 
   const saveModel = () => {
-    modeler.saveXML(
+    modeler.current.saveXML(
       {
         format: true
       }, (err, xml) => {
@@ -74,12 +74,6 @@ const Bpmn = () => {
       </div>
       <div className="properties-panel" ref={propertiesPanel}></div>
     </div>
-
-    {/* <div className='modeler'>
-    <button className='export' id='export-to-console' onClick={saveModel} >export to console</button>
-    <div className='canvas' ref={canvas}> </div>
-    <div className='prop-panel' ref={propertiesPanel}> </div>
-  </div> */}
   </>
 }
 
