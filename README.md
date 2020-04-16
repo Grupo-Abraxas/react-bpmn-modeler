@@ -8,14 +8,14 @@ This is the first approach to the bpmn-js implementation of react for arkon.
 * [Docker](https://docs.docker.com/)
 * [bpmn-js](https://github.com/bpmn-io/bpmn-js)
 
-* Deploy with Docker
+Deploy with Docker
 
 ```bash
 yarn run docker:build
 yarn run docker:run
 ```
 
-* Stop app
+Stop app
 
 ```bash
 yarn run docker:stop
