@@ -1,0 +1,45 @@
+{
+  "name": "arkon-bpmn-js",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
+    "bpmn-js": "^6.4.2",
+    "bpmn-js-in-color": "bpmn-io/bpmn-js-in-color",
+    "bpmn-js-properties-panel": "^0.33.2",
+    "camunda-bpmn-moddle": "^4.4.0",
+    "css-loader": "^3.5.2",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "node-sass": "^4.13.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "react-xml-parser": "^1.1.6",
+    "style-loader": "^1.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
