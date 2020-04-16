@@ -5,7 +5,7 @@ import propertiesPanelModule from 'bpmn-js-properties-panel'
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import './index.scss'
-import './styles/main.scss'
+import '../styles/properties.less'
 
 
 const Bpmn = () => {
@@ -62,11 +62,25 @@ const Bpmn = () => {
       })
   }
 
-  return <div className='modeler'>
+  return <>
+    <div className="content" id="js-drop-zone">
+      <div className="message intro">
+        <div className="note">
+          <h1>Create a diagram</h1>
+        </div>
+      </div>
+      <div className="canvas" ref={canvas}>
+        <button className='export-button' id='export-to-console' onClick={saveModel} >Print XML in console</button>
+      </div>
+      <div className="properties-panel" ref={propertiesPanel}></div>
+    </div>
+
+    {/* <div className='modeler'>
     <button className='export' id='export-to-console' onClick={saveModel} >export to console</button>
     <div className='canvas' ref={canvas}> </div>
-    <div className='panel' ref={propertiesPanel}> </div>
-  </div>
+    <div className='prop-panel' ref={propertiesPanel}> </div>
+  </div> */}
+  </>
 }
 
 
