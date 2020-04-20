@@ -5,7 +5,9 @@ import propertiesPanelModule from 'bpmn-js-properties-panel'
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import FileHandler, { LOADED_STATUS, IDLE_STATUS } from '../FileHandler'
+import minimapModule from 'diagram-js-minimap'
 import './index.scss'
+import './minimap.scss'
 
 const Input = props => <input
   type='file'
@@ -41,14 +43,15 @@ const Bpmn = () => {
         container: canvas.current,
         keyboard: { bindTo: document },
         propertiesPanel: {
-          parent: propertiesPanel.current
+          parent: propertiesPanel.current,
         },
         additionalModules: [
           propertiesPanelModule,
-          propertiesProviderModule
+          propertiesProviderModule,
+          minimapModule,
         ],
         moddleExtensions: {
-          camunda: camundaModdleDescriptor
+          camunda: camundaModdleDescriptor,
         },
         height: 927,
       })
