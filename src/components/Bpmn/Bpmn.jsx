@@ -1,57 +1,43 @@
-import React, { useRef, useEffect } from 'react'
-import BpmnModeler from 'bpmn-js/lib/Modeler'
+import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
-import propertiesPanelModule from 'bpmn-js-properties-panel'
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
-import FileHandler, { LOADED_STATUS, IDLE_STATUS } from '../FileHandler'
+import BpmnModeler from 'bpmn-js/lib/Modeler'
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import minimapModule from 'diagram-js-minimap'
+import Fullscreen from "react-full-screen"
 import customTranslate from './translations'
+import BpmnActionButton, {
+  FOCUS_ICON,
+  ZOOM_IN_ICON,
+  ZOOM_OUT_ICON,
+  FULLSCREEN_ICON,
+  FULLSCREEN_EXIT_ICON,
+} from './BpmnActionButton'
 import './index.scss'
 import './minimap.scss'
 
-const Input = props => <input
-  type='file'
-  accept='.bpmn'
-  name='img-loader-input'
-  multiple
-  {...props}
-/>
+
 
 const customTranslateModule = {
   translate: ['value', customTranslate]
 }
 
-
 const Bpmn = () => {
+  const [zLevel, setZLevel] = useState(1)
+  const [isFullScreen, setIsFullScreen] = useState(false)
+  const Z_STEP = 0.4
   const canvas = useRef(null)
-  const propertiesPanel = useRef(null)
-  const {
-    files,
-    fileHandlerStatus,
-    onChange,
-  } = FileHandler()
 
   let modeler = useRef(null)
 
   useEffect(() => {
     const setModeler = async () => {
-      let xmlDiagram = null
-      if (fileHandlerStatus === LOADED_STATUS) {
-        xmlDiagram = await getXMLFile(files[0].src)
-        modeler.current.destroy()
-      }
-      else
-        xmlDiagram = await getXMLFile()
+      let xmlDiagram = await getXMLFile()
 
       modeler.current = new BpmnModeler({
         container: canvas.current,
         keyboard: { bindTo: document },
-        propertiesPanel: {
-          parent: propertiesPanel.current,
-        },
         additionalModules: [
-          propertiesPanelModule,
           propertiesProviderModule,
           minimapModule,
           customTranslateModule,
@@ -67,12 +53,12 @@ const Bpmn = () => {
           console.error('error rendering', error)
           alert(error.toString())
         } else {
-          modeler.current.get('canvas').zoom('fit-viewport')
+          modeler.current.get('canvas').zoom('fit-viewport', true)
         }
       })
     }
     setModeler()
-  }, [fileHandlerStatus, files])
+  }, [])
 
   const getXMLFile = async source => {
     let response = null
@@ -83,43 +69,49 @@ const Bpmn = () => {
     return response.data
   }
 
-  const saveModel = () => {
-    modeler.current.saveXML(
-      {
-        format: true
-      }, (error, xml) => {
-        if (error) {
-          console.error(error)
-        } else {
-          console.log(xml)
-        }
-      })
+  const fitToCenter = () => {
+    modeler.current.get('canvas').zoom('fit-viewport', true)
   }
 
+  const zoomIn = () => {
+    const zoomScale = Math.min(zLevel + Z_STEP, 7)
+    modeler.current.get('canvas').zoom(zoomScale, 'auto')
+    setZLevel(zoomScale)
+  }
+
+  const zoomOut = () => {
+    const zoomScale = Math.max(zLevel - Z_STEP, Z_STEP)
+    modeler.current.get('canvas').zoom(zoomScale, 'auto')
+    setZLevel(zoomScale)
+  }
+
+
   return <>
-    <div className='header'>
-
-      <div className='file-handler-container'>
-        <form className='file-handler-form'>
-          <div>
-            <Input onChange={onChange} />
-          </div>
-        </form>
-      </div>
-
-    </div>
-    <div className='content' id='js-drop-zone'>
-      <div className='message intro'>
-        <div className='note'>
-          {fileHandlerStatus === IDLE_STATUS && <h1>Crear diagrama</h1>}
-          {fileHandlerStatus === LOADED_STATUS && <h1>Editar diagrama</h1>}
+    <Fullscreen
+      enabled={isFullScreen}
+      onChange={isFull => setIsFullScreen(isFull)}
+    >
+      <div className='content' id='js-drop-zone'>
+        <div className='canvas' ref={canvas}>
+          <BpmnActionButton iconType={FOCUS_ICON} tooltipTitle='Centrar' onClick={fitToCenter} />
+          <BpmnActionButton iconType={ZOOM_IN_ICON} tooltipTitle='Acercar' onClick={zoomIn} />
+          <BpmnActionButton iconType={ZOOM_OUT_ICON} tooltipTitle='Alejar' onClick={zoomOut} />
+          {isFullScreen ? <BpmnActionButton
+            iconType={FULLSCREEN_EXIT_ICON}
+            tooltipTitle='Salir de pantalla completa'
+            onClick={
+              () => setIsFullScreen(false)
+            }
+          /> :
+            <BpmnActionButton
+              iconType={FULLSCREEN_ICON}
+              tooltipTitle='Pantalla completa'
+              onClick={() => setIsFullScreen(true)}
+            />
+          }
         </div>
       </div>
-      <div className='canvas' ref={canvas}>
-        <button className='export-button' id='export-to-console' onClick={saveModel} >Print XML in console</button>
-      </div>
-      <div className='properties-panel' ref={propertiesPanel}></div>
-    </div>
+    </Fullscreen>
   </>
 }
 
