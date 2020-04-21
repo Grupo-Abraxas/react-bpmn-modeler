@@ -8,6 +8,7 @@ import FileHandler, { LOADED_STATUS, IDLE_STATUS } from '../FileHandler'
 import minimapModule from 'diagram-js-minimap'
 import customTranslate from './translations'
 import './index.scss'
+import './minimap.scss'
 
 const Input = props => <input
   type='file'
@@ -47,7 +48,7 @@ const Bpmn = () => {
         container: canvas.current,
         keyboard: { bindTo: document },
         propertiesPanel: {
-          parent: propertiesPanel.current
+          parent: propertiesPanel.current,
         },
         additionalModules: [
           propertiesPanelModule,
@@ -56,7 +57,7 @@ const Bpmn = () => {
           customTranslateModule,
         ],
         moddleExtensions: {
-          camunda: camundaModdleDescriptor
+          camunda: camundaModdleDescriptor,
         },
         height: 927,
       })
