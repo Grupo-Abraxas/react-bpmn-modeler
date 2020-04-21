@@ -25,7 +25,7 @@ const api = {
   },
 }
 
-const logUploadedFile = (num, color = 'green') => {
+const logUploadedFile = (num: any, color = 'green') => {
   const msg = `%cUploaded ${num} files.`
   const style = `color:${color};font-weight:bold;`
   console.log(msg, style)
@@ -41,7 +41,7 @@ const initialState = {
   fileHandlerStatus: IDLE_STATUS,
 }
 
-const reducer = (state, action) => {
+const reducer = (state: any, action: any) => {
   switch (action.type) {
     case LOAD_ACTION:
       return { ...state, files: action.files, fileHandlerStatus: LOADED_STATUS }
@@ -87,7 +87,7 @@ const FileHandler = () => {
     [state.files.length],
   )
 
-  const onChange = e => {
+  const onChange = (e: any) => {
     if (e.target.files.length) {
       const arrFiles = Array.from(e.target.files)
       const files = arrFiles.map((file, index) => {
