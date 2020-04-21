@@ -1,0 +1,1 @@
+export { default as i18nSpanish } from './Spanish'

@@ -5,7 +5,10 @@ import propertiesPanelModule from 'bpmn-js-properties-panel'
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import FileHandler, { LOADED_STATUS, IDLE_STATUS } from '../FileHandler'
+import minimapModule from 'diagram-js-minimap'
+import customTranslate from './translations'
 import './index.scss'
+import './minimap.scss'
 
 const Input = props => <input
   type='file'
@@ -14,6 +17,10 @@ const Input = props => <input
   multiple
   {...props}
 />
+
+const customTranslateModule = {
+  translate: ['value', customTranslate]
+}
 
 
 const Bpmn = () => {
@@ -41,14 +48,16 @@ const Bpmn = () => {
         container: canvas.current,
         keyboard: { bindTo: document },
         propertiesPanel: {
-          parent: propertiesPanel.current
+          parent: propertiesPanel.current,
         },
         additionalModules: [
           propertiesPanelModule,
-          propertiesProviderModule
+          propertiesProviderModule,
+          minimapModule,
+          customTranslateModule,
         ],
         moddleExtensions: {
-          camunda: camundaModdleDescriptor
+          camunda: camundaModdleDescriptor,
         },
         height: 927,
       })
@@ -102,8 +111,8 @@ const Bpmn = () => {
     <div className='content' id='js-drop-zone'>
       <div className='message intro'>
         <div className='note'>
-          {fileHandlerStatus === IDLE_STATUS && <h1>Create a diagram</h1>}
-          {fileHandlerStatus === LOADED_STATUS && <h1>Edit diagram</h1>}
+          {fileHandlerStatus === IDLE_STATUS && <h1>Crear diagrama</h1>}
+          {fileHandlerStatus === LOADED_STATUS && <h1>Editar diagrama</h1>}
         </div>
       </div>
       <div className='canvas' ref={canvas}>
