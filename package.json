@@ -21,6 +21,7 @@
     "react-scripts": "3.4.1",
     "react-xml-parser": "^1.1.6",
     "style-loader": "^1.1.4",
+    "typescript": "^3.8.3",
     "typescript-eslint": "^0.0.1-alpha.0"
   },
   "scripts": {

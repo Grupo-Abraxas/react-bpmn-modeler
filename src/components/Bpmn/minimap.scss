@@ -11,6 +11,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  background: #FAFAFA;
 }
 
 .djs-minimap:not(.open) {
@@ -31,14 +32,16 @@
 }
 
 .djs-minimap:not(.open) .toggle {
-  width: 46px;
+  width: auto;
   height: 46px;
   line-height: 46px;
   text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .djs-minimap:not(.open) .toggle:before {
-  content: 'Open';
+  content: 'Minimapa';
 }
 
 .djs-minimap.open .toggle {
@@ -49,7 +52,7 @@
 }
 
 .djs-minimap.open .toggle:before {
-  content: 'Close';
+  content: 'Cerrar';
 }
 
 .djs-minimap .map {
