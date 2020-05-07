@@ -13,6 +13,7 @@ import {
   FILES_UPLOADED_ACTION,
   SET_UPLOAD_ERROR,
 } from './constants'
+import './fileHandlerStyles.scss'
 
 
 const api = {
