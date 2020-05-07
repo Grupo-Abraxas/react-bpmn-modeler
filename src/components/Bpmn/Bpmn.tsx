@@ -1,10 +1,12 @@
-import React, { useRef, useEffect, useState } from 'react'
-import axios from 'axios'
-import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
-import BpmnModeler from 'bpmn-js/lib/Modeler'
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
-import minimapModule from 'diagram-js-minimap'
+import React, { useRef, useEffect, useState, FC } from 'react'
 import Fullscreen from 'react-full-screen'
+import axios from 'axios'
+
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
+import BpmnModeler from 'bpmn-js/lib/Modeler'
+import minimapModule from 'diagram-js-minimap'
+import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
+
 import customTranslate from './translations'
 import BpmnActionButton, {
   FOCUS_ICON,
@@ -13,6 +15,9 @@ import BpmnActionButton, {
   FULLSCREEN_ICON,
   FULLSCREEN_EXIT_ICON,
 } from './BpmnActionButton'
+
+import { BpmnModelerType } from './types'
+
 import 'styles/index.scss'
 import 'bpmn-font/css/bpmn-embedded.css'
 
@@ -21,13 +26,13 @@ const customTranslateModule = {
   translate: ['value', customTranslate]
 }
 
-const Bpmn = () => {
+const Bpmn: FC<{}> = () => {
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const Z_STEP = 0.4
   const canvas = useRef(null)
 
-  let modeler = useRef(null)
+  let modeler = useRef<BpmnModelerType>()
 
   useEffect(() => {
     const setModeler = async () => {
@@ -47,19 +52,21 @@ const Bpmn = () => {
         height: 927,
       })
 
-      modeler.current.importXML(xmlDiagram, error => {
-        if (error) {
-          console.error('error rendering', error)
-          alert(error.toString())
-        } else {
-          modeler.current.get('canvas').zoom('fit-viewport', true)
-        }
-      })
+      if (modeler && modeler.current)
+        modeler.current.importXML(xmlDiagram, (error: any) => {
+          if (error) {
+            console.error('error rendering', error)
+            alert(error.toString())
+          } else {
+            if (modeler && modeler.current)
+              modeler.current.get('canvas').zoom('fit-viewport', true)
+          }
+        })
     }
     setModeler()
   }, [])
 
-  const getXMLFile = async source => {
+  const getXMLFile = async (source?: string) => {
     let response = null
     if (source)
       response = await axios.get(source)
@@ -69,18 +76,21 @@ const Bpmn = () => {
   }
 
   const fitToCenter = () => {
-    modeler.current.get('canvas').zoom('fit-viewport', true)
+    if (modeler && modeler.current)
+      modeler.current.get('canvas').zoom('fit-viewport', true)
   }
 
   const zoomIn = () => {
     const zoomScale = Math.min(zLevel + Z_STEP, 7)
-    modeler.current.get('canvas').zoom(zoomScale, 'auto')
+    if (modeler && modeler.current)
+      modeler.current.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
 
   const zoomOut = () => {
     const zoomScale = Math.max(zLevel - Z_STEP, Z_STEP)
-    modeler.current.get('canvas').zoom(zoomScale, 'auto')
+    if (modeler && modeler.current)
+      modeler.current.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
 
