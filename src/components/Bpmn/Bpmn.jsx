@@ -4,7 +4,7 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import minimapModule from 'diagram-js-minimap'
-import Fullscreen from "react-full-screen"
+import Fullscreen from 'react-full-screen'
 import customTranslate from './translations'
 import BpmnActionButton, {
   FOCUS_ICON,
@@ -13,9 +13,8 @@ import BpmnActionButton, {
   FULLSCREEN_ICON,
   FULLSCREEN_EXIT_ICON,
 } from './BpmnActionButton'
-import './index.scss'
-import './minimap.scss'
-
+import 'styles/index.scss'
+import 'bpmn-font/css/bpmn-embedded.css'
 
 
 const customTranslateModule = {
