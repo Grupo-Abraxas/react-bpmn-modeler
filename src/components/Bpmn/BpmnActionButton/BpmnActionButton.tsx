@@ -3,9 +3,9 @@ import React, { FC } from 'react'
 import { Fab } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import {
-  CenterFocusStrong as CenterFocusStrongIcon,
-  ZoomIn as ZoomInIcon,
-  ZoomOut as ZoomOutIcon,
+  GpsNotFixed as CenterFocusStrongIcon,
+  Add as ZoomInIcon,
+  Remove as ZoomOutIcon,
   FullscreenSharp as FullscreenSharpIcon,
   FullscreenExitSharp as FullscreenExitSharpIcon,
 } from '@material-ui/icons'
@@ -19,21 +19,24 @@ import {
 } from './consts'
 
 import { BpmnActionButtonType } from './types'
-import { HtmlTooltip } from './BpmnAtionButton.styles'
+import { HtmlTooltip, useBpmnActionButton } from './BpmnAtionButton.styles'
 
 
-const BpmnActionButton: FC<BpmnActionButtonType> = ({ iconType, tooltipTitle, onClick }) => <>
-  <HtmlTooltip
-    title={<Typography color='inherit'>{tooltipTitle}</Typography>}
-  >
-    <Fab size='small' onClick={onClick}>
-      {iconType === FOCUS_ICON && <CenterFocusStrongIcon />}
-      {iconType === ZOOM_IN_ICON && <ZoomInIcon />}
-      {iconType === ZOOM_OUT_ICON && <ZoomOutIcon />}
-      {iconType === FULLSCREEN_ICON && <FullscreenSharpIcon />}
-      {iconType === FULLSCREEN_EXIT_ICON && <FullscreenExitSharpIcon />}
-    </Fab>
-  </HtmlTooltip>
-</>
+const BpmnActionButton: FC<BpmnActionButtonType> = ({ iconType, tooltipTitle, onClick, styles = {} }) => {
+  const classes = useBpmnActionButton()
+  return <>
+    <HtmlTooltip
+      title={<Typography color='inherit'>{tooltipTitle}</Typography>}
+    >
+      <Fab classes={{ root: `${classes.bpmnActionMuiButtonBase__Root} ${styles}` }} size='small' onClick={onClick}>
+        {iconType === FOCUS_ICON && <CenterFocusStrongIcon fontSize='large' />}
+        {iconType === ZOOM_IN_ICON && <ZoomInIcon fontSize='large' />}
+        {iconType === ZOOM_OUT_ICON && <ZoomOutIcon fontSize='large' />}
+        {iconType === FULLSCREEN_ICON && <FullscreenSharpIcon fontSize='large' />}
+        {iconType === FULLSCREEN_EXIT_ICON && <FullscreenExitSharpIcon fontSize='large' />}
+      </Fab>
+    </HtmlTooltip>
+  </>
+}
 
 export default BpmnActionButton

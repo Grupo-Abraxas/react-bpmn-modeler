@@ -294,7 +294,7 @@ svg.new-parent {
 }
 
 .djs-palette .entry:hover {
-  color: rgb(255, 116, 0);
+  color: #3b7cff;
 }
 
 .djs-palette .highlighted-entry {
@@ -356,9 +356,10 @@ svg.new-parent {
 
   cursor: default;
 
-  background-color: #FEFEFE;
+  background-color: transparent;
   box-shadow: 0 0 2px 1px #FEFEFE;
   pointer-events: all;
+  color: #4C6AA7;
 }
 
 .djs-context-pad .entry:before {

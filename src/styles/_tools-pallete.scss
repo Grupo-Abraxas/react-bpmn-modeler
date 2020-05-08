@@ -1,0 +1,15 @@
+@import './colors';
+
+.djs-palette {
+  width: 96px;
+}
+
+.djs-popup, .djs-palette {
+  background: $background-gray;
+  border: solid 2px $border-gray;
+  border-radius: 8px;
+}
+
+.djs-palette .entry, .djs-palette .djs-palette-toggle {
+  color: $blue;
+}

@@ -18,6 +18,7 @@ import BpmnActionButton, {
 
 import { BpmnModelerType } from './types'
 
+import { useBpmnActionButtons } from './Bpmn.styles'
 import 'styles/index.scss'
 import 'bpmn-font/css/bpmn-embedded.css'
 
@@ -27,10 +28,11 @@ const customTranslateModule = {
 }
 
 const Bpmn: FC<{}> = () => {
+  const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
   const Z_STEP = 0.4
-  const canvas = useRef(null)
+  const canvas = useRef<HTMLDivElement>(null)
 
   let modeler = useRef<BpmnModelerType>()
 
@@ -102,10 +104,26 @@ const Bpmn: FC<{}> = () => {
     >
       <div className='content' id='js-drop-zone'>
         <div className='canvas' ref={canvas}>
-          <BpmnActionButton iconType={FOCUS_ICON} tooltipTitle='Centrar' onClick={fitToCenter} />
-          <BpmnActionButton iconType={ZOOM_IN_ICON} tooltipTitle='Acercar' onClick={zoomIn} />
-          <BpmnActionButton iconType={ZOOM_OUT_ICON} tooltipTitle='Alejar' onClick={zoomOut} />
+          <BpmnActionButton
+            styles={classes.bpmnCenterButton}
+            iconType={FOCUS_ICON}
+            tooltipTitle='Centrar'
+            onClick={fitToCenter}
+          />
+          <BpmnActionButton
+            styles={classes.bpmnZoomInButton}
+            iconType={ZOOM_IN_ICON}
+            tooltipTitle='Acercar'
+            onClick={zoomIn}
+          />
+          <BpmnActionButton
+            styles={classes.bpmnZoomOutButton}
+            iconType={ZOOM_OUT_ICON}
+            tooltipTitle='Alejar'
+            onClick={zoomOut}
+          />
           {isFullScreen ? <BpmnActionButton
+            styles={classes.bpmnFullscreenButton}
             iconType={FULLSCREEN_EXIT_ICON}
             tooltipTitle='Salir de pantalla completa'
             onClick={
@@ -113,6 +131,7 @@ const Bpmn: FC<{}> = () => {
             }
           /> :
             <BpmnActionButton
+              styles={classes.bpmnFullscreenButton}
               iconType={FULLSCREEN_ICON}
               tooltipTitle='Pantalla completa'
               onClick={() => setIsFullScreen(true)}
