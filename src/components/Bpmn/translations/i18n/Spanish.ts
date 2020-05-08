@@ -1,4 +1,13 @@
 export default {
+  // Palette buttons
+  'Activate the hand tool': 'Activar la herramienta de mano',
+  'Activate the lasso tool': 'Activar la herramienta de lazo',
+  'Activate the create/remove space tool': 'Activar la herramienta de crear/eliminar espacio',
+  'Activate the global connect tool': 'Activar la herramienta de conexión global',
+  'Create expanded SubProcess': 'Crear subproceso expandido',
+  'Create DataObjectReference': 'Crear referencia de objeto de datos',
+  'Create DataStoreReference': 'Crear referencia de almacén de datos',
+  'Create Group': 'Crear grupo',
   // Start tool
   'Create StartEvent': 'Crear evento Inicio',
   'Intermediate Throw Event': 'Evento de lanzamiento intermedio',
@@ -35,7 +44,7 @@ export default {
   'Complex Gateway': 'Complejo Gateway',
   'Event based Gateway': 'Gateway basado en eventos',
   //
-  'Create Task': 'Crear tare',
+  'Create Task': 'Crear tarea',
   'Parallel Multi Instance': 'Instancia múltiple paralela',
   'Sequential Multi Instance': 'Instancia múltiple secuencial',
   'Loop': 'Bucle',
@@ -49,26 +58,26 @@ export default {
   'Call Activity': 'Actividad de llamada',
   'Sub Process (collapsed)': 'Subproceso (colapsado)',
   'Sub Process (expanded)': 'Subproceso (expandido)',
-  // Create Pool/Participant tool
-  'Create Pool/Participant': 'Crear grupo / participante',
+  'Create Pool/Participant': 'Crear Grupo/Participante',
   'Add Lane above': 'Agrega carril arriba',
   'Divide into two Lanes': 'Divide en dos carriles',
   'Divide into three Lanes': 'Divide en tres carriles',
   'Add Lane below': 'Agregue carril a continuación',
 
   // Tool options
+  'Connect using Sequence/MessageFlow or Association': 'Conectar usando Secuencia/Flujo de mensajes o Asociación',
   'Append EndEvent': 'Añadir Evento Fin',
   'Append Gateway': 'Agregar puerta de enlace',
   'Append Task': 'Añadir tarea',
-  'Append Intermediate/Boundary Event': 'Añadir evento intermedio/límite',
-  'Append TextAnnotation': 'Agregar anotación de texto  ',
+  'Append Intermediate/Boundary Event': 'Añadir evento Intermedio/Límite',
+  'Append TextAnnotation': 'Agregar anotación',
   'Change type': 'Cambiar tipo',
   'Remove': 'Eliminar',
 
   // Errors
   'no parent for {element} in {parent}': 'Sin padre para {element} en {parent}',
   'no shape type specified': 'No se especificó ningún tipo de forma',
-  'flow elements must be children of pools/participants': 'Los elementos de flujo deben ser hijos de la piscina',
+  'flow elements must be children of pools/participants': 'Los elementos de flujo deben ser hijos grupos/participantes',
   'out of bounds release': 'lanzamiento fuera de límites',
   'more than {count} child lanes': 'más que {count} lineas hijas',
   'element required': 'elemento requerido',
