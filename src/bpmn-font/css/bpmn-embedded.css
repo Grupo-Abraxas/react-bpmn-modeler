@@ -53,6 +53,7 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 .bpmn-icon-screw-wrench:before { content: '\e800'; } /* '' */
+.bpmn-icon-task-settings:before { content: '\e800'; } /* '' */
 .bpmn-icon-trash:before { content: '\e801'; } /* '' */
 .bpmn-icon-conditional-flow:before { content: '\e802'; } /* '' */
 .bpmn-icon-default-flow:before { content: '\e803'; } /* '' */

@@ -15,6 +15,7 @@ import BpmnActionButton, {
   FULLSCREEN_ICON,
   FULLSCREEN_EXIT_ICON,
 } from './BpmnActionButton'
+import CustomControlsModule from './CustomControlsModule'
 
 import { BpmnModelerType } from './types'
 
@@ -27,7 +28,11 @@ const customTranslateModule = {
   translate: ['value', customTranslate]
 }
 
-const Bpmn: FC<{}> = () => {
+type BpmnType = {
+  onTaskTarget?: Function
+}
+
+const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
   const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -35,6 +40,13 @@ const Bpmn: FC<{}> = () => {
   const canvas = useRef<HTMLDivElement>(null)
 
   let modeler = useRef<BpmnModelerType>()
+
+  useEffect(() => {
+    document.addEventListener('custom', (e: Event) => {
+      if (onTaskTarget)
+        onTaskTarget(e)
+    }, false)
+  }, [onTaskTarget])
 
   useEffect(() => {
     const setModeler = async () => {
@@ -47,6 +59,7 @@ const Bpmn: FC<{}> = () => {
           propertiesProviderModule,
           minimapModule,
           customTranslateModule,
+          CustomControlsModule,
         ],
         moddleExtensions: {
           camunda: camundaModdleDescriptor,

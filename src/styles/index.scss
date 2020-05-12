@@ -60,3 +60,11 @@ a:link {
 .fullscreen {
   background: white;
 }
+
+// hide pad control icon
+.group {
+  .bpmn-icon-screw-wrench{
+    visibility: hidden;
+    display: none;
+  }
+}
