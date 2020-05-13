@@ -105,25 +105,25 @@ const Bpmn: FC<{}> = () => {
       <div className='content' id='js-drop-zone'>
         <div className='canvas' ref={canvas}>
           <BpmnActionButton
-            styles={classes.bpmnCenterButton}
+            stringStyles={classes.bpmnCenterButton}
             iconType={FOCUS_ICON}
             tooltipTitle='Centrar'
             onClick={fitToCenter}
           />
           <BpmnActionButton
-            styles={classes.bpmnZoomInButton}
+            stringStyles={classes.bpmnZoomInButton}
             iconType={ZOOM_IN_ICON}
             tooltipTitle='Acercar'
             onClick={zoomIn}
           />
           <BpmnActionButton
-            styles={classes.bpmnZoomOutButton}
+            stringStyles={classes.bpmnZoomOutButton}
             iconType={ZOOM_OUT_ICON}
             tooltipTitle='Alejar'
             onClick={zoomOut}
           />
           {isFullScreen ? <BpmnActionButton
-            styles={classes.bpmnFullscreenButton}
+            stringStyles={classes.bpmnFullscreenButton}
             iconType={FULLSCREEN_EXIT_ICON}
             tooltipTitle='Salir de pantalla completa'
             onClick={
@@ -131,7 +131,7 @@ const Bpmn: FC<{}> = () => {
             }
           /> :
             <BpmnActionButton
-              styles={classes.bpmnFullscreenButton}
+              stringStyles={classes.bpmnFullscreenButton}
               iconType={FULLSCREEN_ICON}
               tooltipTitle='Pantalla completa'
               onClick={() => setIsFullScreen(true)}
