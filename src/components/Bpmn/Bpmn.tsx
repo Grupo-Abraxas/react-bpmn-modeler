@@ -18,10 +18,12 @@ import BpmnActionButton, {
 import CustomControlsModule from './CustomControlsModule'
 
 import { BpmnModelerType } from './types'
+import { TASK_SETTINGS_EVENT } from './CustomControlsModule'
 
 import { useBpmnActionButtons } from './Bpmn.styles'
 import 'styles/index.scss'
 import 'bpmn-font/css/bpmn-embedded.css'
+import 'bpmn-font/css/bpmn.css'
 
 
 const customTranslateModule = {
@@ -42,7 +44,7 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
   let modeler = useRef<BpmnModelerType>()
 
   useEffect(() => {
-    document.addEventListener('custom', (e: Event) => {
+    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event) => {
       if (onTaskTarget)
         onTaskTarget(e)
     }, false)
@@ -67,7 +69,7 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
         height: 927,
       })
 
-      if (modeler && modeler.current)
+      if (modeler && modeler.current) {
         modeler.current.importXML(xmlDiagram, (error: any) => {
           if (error) {
             console.error('error rendering', error)
@@ -77,6 +79,18 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
               modeler.current.get('canvas').zoom('fit-viewport', true)
           }
         })
+        const eventBus = modeler.current.get('eventBus')
+        eventBus.on('contextPad.open', (e: any) => {
+          if (e.current.element)
+            if (e.current.element.type !== 'bpmn:Task') {
+              const groups = document.querySelectorAll('.group')
+              const group = groups[1]
+              if (group.lastChild)
+                group.lastChild.remove()
+            }
+
+        })
+      }
     }
     setModeler()
   }, [])
