@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, FC } from 'react'
+import React, { useRef, useEffect, useState, FC, MutableRefObject } from 'react'
 import Fullscreen from 'react-full-screen'
 import axios from 'axios'
 
@@ -43,12 +43,55 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
 
   let modeler = useRef<BpmnModelerType>()
 
+  // Task settings event listeners
   useEffect(() => {
     document.addEventListener(TASK_SETTINGS_EVENT, (e: Event) => {
       if (onTaskTarget)
         onTaskTarget(e)
     }, false)
   }, [onTaskTarget])
+
+
+  // Helpers, definition and inicialization of BpmnModeler
+  const getXMLFile = async (source?: string) => {
+    let response = null
+    if (source)
+      response = await axios.get(source)
+    else
+      response = await axios.get('/newDiagram.bpmn')
+    return response.data
+  }
+
+  const importBpmnFile = (
+    modeler: MutableRefObject<BpmnModelerType | undefined>,
+    xmlDiagram: any
+  ): void => {
+    if (modeler && modeler.current)
+      modeler.current.importXML(xmlDiagram, (error: any) => {
+        if (error) {
+          console.error('error rendering', error)
+          alert(error.toString())
+        } else {
+          if (modeler && modeler.current)
+            modeler.current.get('canvas').zoom('fit-viewport', true)
+        }
+      })
+  }
+
+  const bpmnPadCustomButtonEventBus = (modeler: MutableRefObject<BpmnModelerType | undefined>): void => {
+    if (modeler && modeler.current) {
+      const eventBus = modeler.current.get('eventBus')
+      eventBus.on('contextPad.open', (e: any) => {
+        if (e.current.element)
+          if (e.current.element.type !== 'bpmn:Task') {
+            const groups = document.querySelectorAll('.group')
+            const group = groups[1]
+            if (group.lastChild)
+              group.lastChild.remove()
+          }
+      })
+    }
+  }
 
   useEffect(() => {
     const setModeler = async () => {
@@ -69,40 +112,12 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
         height: 927,
       })
 
-      if (modeler && modeler.current) {
-        modeler.current.importXML(xmlDiagram, (error: any) => {
-          if (error) {
-            console.error('error rendering', error)
-            alert(error.toString())
-          } else {
-            if (modeler && modeler.current)
-              modeler.current.get('canvas').zoom('fit-viewport', true)
-          }
-        })
-        const eventBus = modeler.current.get('eventBus')
-        eventBus.on('contextPad.open', (e: any) => {
-          if (e.current.element)
-            if (e.current.element.type !== 'bpmn:Task') {
-              const groups = document.querySelectorAll('.group')
-              const group = groups[1]
-              if (group.lastChild)
-                group.lastChild.remove()
-            }
-
-        })
-      }
+      importBpmnFile(modeler, xmlDiagram)
+      bpmnPadCustomButtonEventBus(modeler)
     }
     setModeler()
   }, [])
 
-  const getXMLFile = async (source?: string) => {
-    let response = null
-    if (source)
-      response = await axios.get(source)
-    else
-      response = await axios.get('/newDiagram.bpmn')
-    return response.data
-  }
 
   const fitToCenter = () => {
     if (modeler && modeler.current)

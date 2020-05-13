@@ -22,7 +22,7 @@ import { BpmnActionButtonType } from './types'
 import { HtmlTooltip, useBpmnActionButton } from './BpmnAtionButton.styles'
 
 
-const BpmnActionButton: FC<BpmnActionButtonType> = ({ iconType, tooltipTitle, onClick, stringStyles = {} }) => {
+const BpmnActionButton: FC<BpmnActionButtonType> = ({ iconType, tooltipTitle, onClick, stringStyles }) => {
   const classes = useBpmnActionButton()
   return <>
     <HtmlTooltip
