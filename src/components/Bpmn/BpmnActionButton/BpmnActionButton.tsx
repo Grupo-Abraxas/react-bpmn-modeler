@@ -22,13 +22,13 @@ import { BpmnActionButtonType } from './types'
 import { HtmlTooltip, useBpmnActionButton } from './BpmnAtionButton.styles'
 
 
-const BpmnActionButton: FC<BpmnActionButtonType> = ({ iconType, tooltipTitle, onClick, styles = {} }) => {
+const BpmnActionButton: FC<BpmnActionButtonType> = ({ iconType, tooltipTitle, onClick, stringStyles = {} }) => {
   const classes = useBpmnActionButton()
   return <>
     <HtmlTooltip
       title={<Typography color='inherit'>{tooltipTitle}</Typography>}
     >
-      <Fab classes={{ root: `${classes.bpmnActionMuiButtonBase__Root} ${styles}` }} size='small' onClick={onClick}>
+      <Fab classes={{ root: `${classes.bpmnActionMuiButtonBase__Root} ${stringStyles}` }} size='small' onClick={onClick}>
         {iconType === FOCUS_ICON && <CenterFocusStrongIcon fontSize='large' />}
         {iconType === ZOOM_IN_ICON && <ZoomInIcon fontSize='large' />}
         {iconType === ZOOM_OUT_ICON && <ZoomOutIcon fontSize='large' />}
