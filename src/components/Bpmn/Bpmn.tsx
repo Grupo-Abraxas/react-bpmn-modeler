@@ -85,7 +85,7 @@ const Bpmn: FC<{}> = () => {
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
       },
-      height: 927,
+      height: window.innerHeight,
     })
 
     memorizeImportXML(xmlDiagram)
