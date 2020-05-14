@@ -2,19 +2,21 @@ import React, { useRef, useEffect, useState, FC } from 'react'
 import Fullscreen from 'react-full-screen'
 import axios from 'axios'
 
+import {
+  GpsNotFixed as CenterFocusStrongIcon,
+  Add as ZoomInIcon,
+  Remove as ZoomOutIcon,
+  FullscreenSharp as FullscreenSharpIcon,
+  FullscreenExitSharp as FullscreenExitSharpIcon,
+} from '@material-ui/icons'
+
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
 import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
-import customTranslate from './translations'
-import BpmnActionButton, {
-  FOCUS_ICON,
-  ZOOM_IN_ICON,
-  ZOOM_OUT_ICON,
-  FULLSCREEN_ICON,
-  FULLSCREEN_EXIT_ICON,
-} from './BpmnActionButton'
+import { i18nSpanish } from './translations'
+import BpmnActionButton from './BpmnActionButton'
 
 import { BpmnModelerType } from './types'
 
@@ -24,7 +26,10 @@ import 'bpmn-font/css/bpmn-embedded.css'
 
 
 const customTranslateModule = {
-  translate: ['value', customTranslate]
+  translate: ['value', (template: string, replacements: object): string => {
+    template = Object(i18nSpanish)[template] || template
+    return template.replace(/{([^}]+)}/g, (_: string, key: number): string => Object(replacements)[key] || `${key}`)
+  }]
 }
 
 const Bpmn: FC<{}> = () => {
@@ -35,6 +40,8 @@ const Bpmn: FC<{}> = () => {
   const canvas = useRef<HTMLDivElement>(null)
 
   let modeler = useRef<BpmnModelerType>()
+
+
 
   useEffect(() => {
     const setModeler = async () => {
@@ -96,7 +103,6 @@ const Bpmn: FC<{}> = () => {
     setZLevel(zoomScale)
   }
 
-
   return <>
     <Fullscreen
       enabled={isFullScreen}
@@ -106,25 +112,25 @@ const Bpmn: FC<{}> = () => {
         <div className='canvas' ref={canvas}>
           <BpmnActionButton
             stringStyles={classes.bpmnCenterButton}
-            iconType={FOCUS_ICON}
+            icon={<CenterFocusStrongIcon fontSize='large' />}
             tooltipTitle='Centrar'
             onClick={fitToCenter}
           />
           <BpmnActionButton
             stringStyles={classes.bpmnZoomInButton}
-            iconType={ZOOM_IN_ICON}
+            icon={<ZoomInIcon fontSize='large' />}
             tooltipTitle='Acercar'
             onClick={zoomIn}
           />
           <BpmnActionButton
             stringStyles={classes.bpmnZoomOutButton}
-            iconType={ZOOM_OUT_ICON}
+            icon={<ZoomOutIcon fontSize='large' />}
             tooltipTitle='Alejar'
             onClick={zoomOut}
           />
           {isFullScreen ? <BpmnActionButton
             stringStyles={classes.bpmnFullscreenButton}
-            iconType={FULLSCREEN_EXIT_ICON}
+            icon={<FullscreenExitSharpIcon fontSize='large' />}
             tooltipTitle='Salir de pantalla completa'
             onClick={
               () => setIsFullScreen(false)
@@ -132,7 +138,7 @@ const Bpmn: FC<{}> = () => {
           /> :
             <BpmnActionButton
               stringStyles={classes.bpmnFullscreenButton}
-              iconType={FULLSCREEN_ICON}
+              icon={<FullscreenSharpIcon fontSize='large' />}
               tooltipTitle='Pantalla completa'
               onClick={() => setIsFullScreen(true)}
             />
