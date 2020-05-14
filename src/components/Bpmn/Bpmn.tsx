@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState, FC, useCallback } from 'react'
 import Fullscreen from 'react-full-screen'
-import axios from 'axios'
 
 import {
   GpsNotFixed as CenterFocusStrongIcon,
@@ -17,9 +16,10 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
 import BpmnActionButton from './BpmnActionButton'
+import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
+import { newBpmnDiagram } from './default-bpmn-layout'
 
 import { BpmnType, BpmnModelerType } from './types'
-import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
 
 import { useBpmnActionButtons } from './Bpmn.styles'
 import 'styles/index.scss'
@@ -34,7 +34,7 @@ const customTranslateModule = {
   }]
 }
 
-const Bpmn: FC<BpmnType> = ({ onTaskTarget, onError }) => {
+const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError }) => {
   const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -43,12 +43,7 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget, onError }) => {
 
   let modeler = useRef<BpmnModelerType>()
 
-  // Task settings event listeners
-  useEffect(() => {
-    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event) => onTaskTarget(e), false)
-  }, [onTaskTarget])
-
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Custom button handlers
   const fitViewport = (): void => (modeler && modeler.current)
     && modeler.current.get('canvas').zoom('fit-viewport', true)
@@ -57,32 +52,14 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget, onError }) => {
     (modeler && modeler.current) && modeler.current.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
-
-  // Helpers, definition and inicialization of BpmnModeler
-  const getXMLFile = async (source?: string): Promise<string> => {
-    let response = null
-    if (source)
-      response = await axios.get(source)
-    else
-      response = await axios.get('/newDiagram.bpmn')
-    return response.data
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeImportXML = useCallback((): void => {
-    const importXML = async (): Promise<any> => {
-      let xmlDiagram: string = await getXMLFile()
-      if (modeler && modeler.current)
-        modeler.current.importXML(xmlDiagram, (error: any) => {
-          if (error) {
-            console.error('error rendering', error)
-            alert(error.toString())
-          } else {
-            fitViewport()
-          }
-        })
-    }
-    importXML()
-  }, [])
+    (modeler && modeler.current) && modeler.current.importXML(
+      bpmnStringFile || newBpmnDiagram,
+      (error: any): void => (error) ? onError(error.toString()) : fitViewport()
+    )
+  }, [onError, bpmnStringFile])
 
   const bpmnPadCustomButtonEventBus = (): void => {
     if (modeler && modeler.current) {
@@ -120,6 +97,10 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget, onError }) => {
   useEffect(() => {
     memorizeSetModeler()
   }, [memorizeSetModeler])
+
+  useEffect(() => {
+    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event) => onTaskTarget(e), false)
+  }, [onTaskTarget])
 
   return <>
     <Fullscreen

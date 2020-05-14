@@ -1,4 +1,5 @@
 export type BpmnType = {
+  bpmnStringFile?: string
   onTaskTarget: Function
   onError: Function
 }
