@@ -41,12 +41,37 @@ const Bpmn: FC<{}> = () => {
 
   let modeler = useRef<BpmnModelerType>()
 
+  const fitViewport = (): void => (modeler && modeler.current)
+    && modeler.current.get('canvas').zoom('fit-viewport', true)
 
+  const handleZoom = (zoomScale: number): void => {
+    (modeler && modeler.current) && modeler.current.get('canvas').zoom(zoomScale, 'auto')
+    setZLevel(zoomScale)
+  }
+
+  const importXML = (xmlDiagram: string) => {
+    (modeler && modeler.current) && modeler.current.importXML(xmlDiagram, (error: any) => {
+      if (error) {
+        console.error('error rendering', error)
+        alert(error.toString())
+      } else {
+        fitViewport()
+      }
+    })
+  }
+
+  const getXMLFile = async (source?: string) => {
+    let response = null
+    if (source)
+      response = await axios.get(source)
+    else
+      response = await axios.get('/newDiagram.bpmn')
+    return response.data
+  }
 
   useEffect(() => {
     const setModeler = async () => {
       let xmlDiagram = await getXMLFile()
-
       modeler.current = new BpmnModeler({
         container: canvas.current,
         keyboard: { bindTo: document },
@@ -61,47 +86,10 @@ const Bpmn: FC<{}> = () => {
         height: 927,
       })
 
-      if (modeler && modeler.current)
-        modeler.current.importXML(xmlDiagram, (error: any) => {
-          if (error) {
-            console.error('error rendering', error)
-            alert(error.toString())
-          } else {
-            if (modeler && modeler.current)
-              modeler.current.get('canvas').zoom('fit-viewport', true)
-          }
-        })
+      importXML(xmlDiagram)
     }
     setModeler()
   }, [])
-
-  const getXMLFile = async (source?: string) => {
-    let response = null
-    if (source)
-      response = await axios.get(source)
-    else
-      response = await axios.get('/newDiagram.bpmn')
-    return response.data
-  }
-
-  const fitToCenter = () => {
-    if (modeler && modeler.current)
-      modeler.current.get('canvas').zoom('fit-viewport', true)
-  }
-
-  const zoomIn = () => {
-    const zoomScale = Math.min(zLevel + Z_STEP, 7)
-    if (modeler && modeler.current)
-      modeler.current.get('canvas').zoom(zoomScale, 'auto')
-    setZLevel(zoomScale)
-  }
-
-  const zoomOut = () => {
-    const zoomScale = Math.max(zLevel - Z_STEP, Z_STEP)
-    if (modeler && modeler.current)
-      modeler.current.get('canvas').zoom(zoomScale, 'auto')
-    setZLevel(zoomScale)
-  }
 
   return <>
     <Fullscreen
@@ -114,29 +102,30 @@ const Bpmn: FC<{}> = () => {
             stringStyles={classes.bpmnCenterButton}
             icon={<CenterFocusStrongIcon fontSize='large' />}
             tooltipTitle='Centrar'
-            onClick={fitToCenter}
+            onClick={fitViewport}
           />
           <BpmnActionButton
             stringStyles={classes.bpmnZoomInButton}
             icon={<ZoomInIcon fontSize='large' />}
             tooltipTitle='Acercar'
-            onClick={zoomIn}
+            onClick={() => handleZoom(Math.min(zLevel + Z_STEP, 7))}
           />
           <BpmnActionButton
             stringStyles={classes.bpmnZoomOutButton}
             icon={<ZoomOutIcon fontSize='large' />}
             tooltipTitle='Alejar'
-            onClick={zoomOut}
+            onClick={() => handleZoom(Math.max(zLevel - Z_STEP, Z_STEP))}
           />
-          {isFullScreen ? <BpmnActionButton
-            stringStyles={classes.bpmnFullscreenButton}
-            icon={<FullscreenExitSharpIcon fontSize='large' />}
-            tooltipTitle='Salir de pantalla completa'
-            onClick={
-              () => setIsFullScreen(false)
-            }
-          /> :
-            <BpmnActionButton
+          {isFullScreen
+            ? <BpmnActionButton
+              stringStyles={classes.bpmnFullscreenButton}
+              icon={<FullscreenExitSharpIcon fontSize='large' />}
+              tooltipTitle='Salir de pantalla completa'
+              onClick={
+                () => setIsFullScreen(false)
+              }
+            />
+            : <BpmnActionButton
               stringStyles={classes.bpmnFullscreenButton}
               icon={<FullscreenSharpIcon fontSize='large' />}
               tooltipTitle='Pantalla completa'
