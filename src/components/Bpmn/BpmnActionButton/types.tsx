@@ -1,5 +1,6 @@
+
 export type BpmnActionButtonType = {
-  iconType: string,
+  icon: JSX.Element,
   tooltipTitle: string,
   onClick: VoidFunction
   stringStyles: string

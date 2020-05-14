@@ -1,6 +1,14 @@
-import React, { useRef, useEffect, useState, FC, MutableRefObject } from 'react'
+import React, { useRef, useEffect, useState, FC, useCallback } from 'react'
 import Fullscreen from 'react-full-screen'
 import axios from 'axios'
+
+import {
+  GpsNotFixed as CenterFocusStrongIcon,
+  Add as ZoomInIcon,
+  Remove as ZoomOutIcon,
+  FullscreenSharp as FullscreenSharpIcon,
+  FullscreenExitSharp as FullscreenExitSharpIcon,
+} from '@material-ui/icons'
 
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
@@ -8,17 +16,10 @@ import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
-import BpmnActionButton, {
-  FOCUS_ICON,
-  ZOOM_IN_ICON,
-  ZOOM_OUT_ICON,
-  FULLSCREEN_ICON,
-  FULLSCREEN_EXIT_ICON,
-} from './BpmnActionButton'
-import CustomControlsModule from './CustomControlsModule'
+import BpmnActionButton from './BpmnActionButton'
 
-import { BpmnModelerType } from './types'
-import { TASK_SETTINGS_EVENT } from './CustomControlsModule'
+import { BpmnType, BpmnModelerType } from './types'
+import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
 
 import { useBpmnActionButtons } from './Bpmn.styles'
 import 'styles/index.scss'
@@ -33,11 +34,7 @@ const customTranslateModule = {
   }]
 }
 
-type BpmnType = {
-  onTaskTarget?: Function
-}
-
-const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
+const Bpmn: FC<BpmnType> = ({ onTaskTarget, onError }) => {
   const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -48,15 +45,21 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
 
   // Task settings event listeners
   useEffect(() => {
-    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event) => {
-      if (onTaskTarget)
-        onTaskTarget(e)
-    }, false)
+    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event) => onTaskTarget(e), false)
   }, [onTaskTarget])
 
 
+  // Custom button handlers
+  const fitViewport = (): void => (modeler && modeler.current)
+    && modeler.current.get('canvas').zoom('fit-viewport', true)
+
+  const handleZoom = (zoomScale: number): void => {
+    (modeler && modeler.current) && modeler.current.get('canvas').zoom(zoomScale, 'auto')
+    setZLevel(zoomScale)
+  }
+
   // Helpers, definition and inicialization of BpmnModeler
-  const getXMLFile = async (source?: string) => {
+  const getXMLFile = async (source?: string): Promise<string> => {
     let response = null
     if (source)
       response = await axios.get(source)
@@ -65,40 +68,37 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
     return response.data
   }
 
-  const importBpmnFile = (
-    modeler: MutableRefObject<BpmnModelerType | undefined>,
-    xmlDiagram: any
-  ): void => {
-    if (modeler && modeler.current)
-      modeler.current.importXML(xmlDiagram, (error: any) => {
-        if (error) {
-          console.error('error rendering', error)
-          alert(error.toString())
-        } else {
-          if (modeler && modeler.current)
-            modeler.current.get('canvas').zoom('fit-viewport', true)
-        }
-      })
-  }
+  const memorizeImportXML = useCallback((): void => {
+    const importXML = async (): Promise<any> => {
+      let xmlDiagram: string = await getXMLFile()
+      if (modeler && modeler.current)
+        modeler.current.importXML(xmlDiagram, (error: any) => {
+          if (error) {
+            console.error('error rendering', error)
+            alert(error.toString())
+          } else {
+            fitViewport()
+          }
+        })
+    }
+    importXML()
+  }, [])
 
-  const bpmnPadCustomButtonEventBus = (modeler: MutableRefObject<BpmnModelerType | undefined>): void => {
+  const bpmnPadCustomButtonEventBus = (): void => {
     if (modeler && modeler.current) {
       const eventBus = modeler.current.get('eventBus')
-      eventBus.on('contextPad.open', (e: any) => {
-        if (e.current.element)
-          if (e.current.element.type !== 'bpmn:Task') {
-            const groups = document.querySelectorAll('.group')
-            const group = groups[1]
-            if (group.lastChild)
-              group.lastChild.remove()
-          }
+      eventBus.on('contextPad.open', (e: { current: { element: { 'type': string } } }) => {
+        if (e.current.element.type !== 'bpmn:Task') {
+          const groups = document.querySelectorAll('.group')
+          const group = groups[1]
+          if (group.lastChild)
+            group.lastChild.remove()
+        }
       })
     }
   }
 
-  const setModeler = async () => {
-    let xmlDiagram = await getXMLFile()
-
+  const memorizeSetModeler = useCallback(async () => {
     modeler.current = new BpmnModeler({
       container: canvas.current,
       keyboard: { bindTo: document },
@@ -111,37 +111,15 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
       },
-      height: 927,
+      height: window.innerHeight,
     })
-
-    importBpmnFile(modeler, xmlDiagram)
-    bpmnPadCustomButtonEventBus(modeler)
-  }
+    memorizeImportXML()
+    bpmnPadCustomButtonEventBus()
+  }, [memorizeImportXML])
 
   useEffect(() => {
-    setModeler()
-  }, [])
-
-
-  const fitToCenter = () => {
-    if (modeler && modeler.current)
-      modeler.current.get('canvas').zoom('fit-viewport', true)
-  }
-
-  const zoomIn = () => {
-    const zoomScale = Math.min(zLevel + Z_STEP, 7)
-    if (modeler && modeler.current)
-      modeler.current.get('canvas').zoom(zoomScale, 'auto')
-    setZLevel(zoomScale)
-  }
-
-  const zoomOut = () => {
-    const zoomScale = Math.max(zLevel - Z_STEP, Z_STEP)
-    if (modeler && modeler.current)
-      modeler.current.get('canvas').zoom(zoomScale, 'auto')
-    setZLevel(zoomScale)
-  }
-
+    memorizeSetModeler()
+  }, [memorizeSetModeler])
 
   return <>
     <Fullscreen
@@ -152,33 +130,34 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
         <div className='canvas' ref={canvas}>
           <BpmnActionButton
             stringStyles={classes.bpmnCenterButton}
-            iconType={FOCUS_ICON}
+            icon={<CenterFocusStrongIcon fontSize='large' />}
             tooltipTitle='Centrar'
-            onClick={fitToCenter}
+            onClick={fitViewport}
           />
           <BpmnActionButton
             stringStyles={classes.bpmnZoomInButton}
-            iconType={ZOOM_IN_ICON}
+            icon={<ZoomInIcon fontSize='large' />}
             tooltipTitle='Acercar'
-            onClick={zoomIn}
+            onClick={() => handleZoom(Math.min(zLevel + Z_STEP, 7))}
           />
           <BpmnActionButton
             stringStyles={classes.bpmnZoomOutButton}
-            iconType={ZOOM_OUT_ICON}
+            icon={<ZoomOutIcon fontSize='large' />}
             tooltipTitle='Alejar'
-            onClick={zoomOut}
+            onClick={() => handleZoom(Math.max(zLevel - Z_STEP, Z_STEP))}
           />
-          {isFullScreen ? <BpmnActionButton
-            stringStyles={classes.bpmnFullscreenButton}
-            iconType={FULLSCREEN_EXIT_ICON}
-            tooltipTitle='Salir de pantalla completa'
-            onClick={
-              () => setIsFullScreen(false)
-            }
-          /> :
-            <BpmnActionButton
+          {isFullScreen
+            ? <BpmnActionButton
               stringStyles={classes.bpmnFullscreenButton}
-              iconType={FULLSCREEN_ICON}
+              icon={<FullscreenExitSharpIcon fontSize='large' />}
+              tooltipTitle='Salir de pantalla completa'
+              onClick={
+                () => setIsFullScreen(false)
+              }
+            />
+            : <BpmnActionButton
+              stringStyles={classes.bpmnFullscreenButton}
+              icon={<FullscreenSharpIcon fontSize='large' />}
               tooltipTitle='Pantalla completa'
               onClick={() => setIsFullScreen(true)}
             />
