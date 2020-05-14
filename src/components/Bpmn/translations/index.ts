@@ -1,1 +1,1 @@
-export { default } from './customTranslate'
+export { i18nSpanish } from './i18n'

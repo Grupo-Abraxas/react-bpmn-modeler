@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-
 export const useBpmnActionButtons = makeStyles(() => ({
   bpmnZoomInButton: {
     borderRadius: '0%',

@@ -7,7 +7,7 @@ import BpmnModeler from 'bpmn-js/lib/Modeler'
 import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
-import customTranslate from './translations'
+import { i18nSpanish } from './translations'
 import BpmnActionButton, {
   FOCUS_ICON,
   ZOOM_IN_ICON,
@@ -27,7 +27,10 @@ import 'bpmn-font/css/bpmn.css'
 
 
 const customTranslateModule = {
-  translate: ['value', customTranslate]
+  translate: ['value', (template: string, replacements: object): string => {
+    template = Object(i18nSpanish)[template] || template
+    return template.replace(/{([^}]+)}/g, (_: string, key: number): string => Object(replacements)[key] || `${key}`)
+  }]
 }
 
 type BpmnType = {
@@ -93,28 +96,29 @@ const Bpmn: FC<BpmnType> = ({ onTaskTarget }) => {
     }
   }
 
+  const setModeler = async () => {
+    let xmlDiagram = await getXMLFile()
+
+    modeler.current = new BpmnModeler({
+      container: canvas.current,
+      keyboard: { bindTo: document },
+      additionalModules: [
+        propertiesProviderModule,
+        minimapModule,
+        customTranslateModule,
+        CustomControlsModule,
+      ],
+      moddleExtensions: {
+        camunda: camundaModdleDescriptor,
+      },
+      height: 927,
+    })
+
+    importBpmnFile(modeler, xmlDiagram)
+    bpmnPadCustomButtonEventBus(modeler)
+  }
+
   useEffect(() => {
-    const setModeler = async () => {
-      let xmlDiagram = await getXMLFile()
-
-      modeler.current = new BpmnModeler({
-        container: canvas.current,
-        keyboard: { bindTo: document },
-        additionalModules: [
-          propertiesProviderModule,
-          minimapModule,
-          customTranslateModule,
-          CustomControlsModule,
-        ],
-        moddleExtensions: {
-          camunda: camundaModdleDescriptor,
-        },
-        height: 927,
-      })
-
-      importBpmnFile(modeler, xmlDiagram)
-      bpmnPadCustomButtonEventBus(modeler)
-    }
     setModeler()
   }, [])
 
