@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, FC } from 'react'
+import React, { useRef, useEffect, useState, FC, useCallback } from 'react'
 import Fullscreen from 'react-full-screen'
 import axios from 'axios'
 
@@ -49,18 +49,21 @@ const Bpmn: FC<{}> = () => {
     setZLevel(zoomScale)
   }
 
-  const importXML = (xmlDiagram: string) => {
-    (modeler && modeler.current) && modeler.current.importXML(xmlDiagram, (error: any) => {
-      if (error) {
-        console.error('error rendering', error)
-        alert(error.toString())
-      } else {
-        fitViewport()
-      }
-    })
-  }
+  const memorizeImportXML = useCallback((xmlDiagram: string): void => {
+    const importXML = (xmlDiagram: string): void => {
+      (modeler && modeler.current) && modeler.current.importXML(xmlDiagram, (error: any) => {
+        if (error) {
+          console.error('error rendering', error)
+          alert(error.toString())
+        } else {
+          fitViewport()
+        }
+      })
+    }
+    importXML(xmlDiagram)
+  }, [])
 
-  const getXMLFile = async (source?: string) => {
+  const getXMLFile = async (source?: string): Promise<string> => {
     let response = null
     if (source)
       response = await axios.get(source)
@@ -69,27 +72,28 @@ const Bpmn: FC<{}> = () => {
     return response.data
   }
 
-  useEffect(() => {
-    const setModeler = async () => {
-      let xmlDiagram = await getXMLFile()
-      modeler.current = new BpmnModeler({
-        container: canvas.current,
-        keyboard: { bindTo: document },
-        additionalModules: [
-          propertiesProviderModule,
-          minimapModule,
-          customTranslateModule,
-        ],
-        moddleExtensions: {
-          camunda: camundaModdleDescriptor,
-        },
-        height: 927,
-      })
+  const memorizeSetModeler = useCallback(async () => {
+    let xmlDiagram = await getXMLFile()
+    modeler.current = new BpmnModeler({
+      container: canvas.current,
+      keyboard: { bindTo: document },
+      additionalModules: [
+        propertiesProviderModule,
+        minimapModule,
+        customTranslateModule,
+      ],
+      moddleExtensions: {
+        camunda: camundaModdleDescriptor,
+      },
+      height: 927,
+    })
 
-      importXML(xmlDiagram)
-    }
-    setModeler()
-  }, [])
+    memorizeImportXML(xmlDiagram)
+  }, [memorizeImportXML])
+
+  useEffect(() => {
+    memorizeSetModeler()
+  }, [memorizeSetModeler])
 
   return <>
     <Fullscreen
