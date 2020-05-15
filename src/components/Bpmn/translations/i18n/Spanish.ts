@@ -70,7 +70,7 @@ export default {
   'Append Gateway': 'Agregar puerta de enlace',
   'Append Task': 'Añadir tarea',
   'Append Intermediate/Boundary Event': 'Añadir evento Intermedio/Límite',
-  'Append TextAnnotation': 'Agregar anotación',
+  'Append {type}': 'Agregar {type}',
   'Change type': 'Cambiar tipo',
   'Remove': 'Eliminar',
 
