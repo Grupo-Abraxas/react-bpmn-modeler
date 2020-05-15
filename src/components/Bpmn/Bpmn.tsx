@@ -29,8 +29,10 @@ import 'bpmn-font/css/bpmn.css'
 
 const customTranslateModule = {
   translate: ['value', (template: string, replacements: object): string => {
-    template = Object(i18nSpanish)[template] || template
-    return template.replace(/{([^}]+)}/g, (_: string, key: number): string => Object(replacements)[key] || `${key}`)
+    let templateTranslated = Object(i18nSpanish)[template] || template
+    return templateTranslated.replace(
+      /{([^}]+)}/g, (_: string, key: number): string => Object(replacements)[key] || `${key}`
+    )
   }]
 }
 
