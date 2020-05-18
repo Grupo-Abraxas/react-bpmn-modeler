@@ -1,5 +1,6 @@
 
 .bpmn-icon-screw-wrench:before { content: '\e800'; } /* '' */
+.bpmn-icon-task-settings:before { content: '\e5c3'; } /* '' */
 .bpmn-icon-trash:before { content: '\e801'; } /* '' */
 .bpmn-icon-conditional-flow:before { content: '\e802'; } /* '' */
 .bpmn-icon-default-flow:before { content: '\e803'; } /* '' */
@@ -104,4 +105,5 @@
 .bpmn-icon-data-input:before { content: '\e866'; } /* '' */
 .bpmn-icon-data-output:before { content: '\e867'; } /* '' */
 .bpmn-icon-hand-tool:before { content: '\e868'; } /* '' */
+.bpmn-icon-group:before { content: '\e869'; } /* '' */
 .bpmn-icon-transaction:before { content: '\e8c4'; } /* '' */
