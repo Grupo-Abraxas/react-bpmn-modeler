@@ -30,7 +30,7 @@ const customTranslateModule = {
   translate: [
     'value',
     (template: string, replacements: object): string => {
-      const templateTranslated = Object(i18nSpanish)[template] || template
+      const templateTranslated = i18nSpanish[template] || template
 
       return templateTranslated.replace(
         /{([^}]+)}/g,
@@ -67,8 +67,8 @@ const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError }) => {
 
   const memorizeImportXML = useCallback((): void => {
     if (modeler && modeler.current) {
-      modeler.current.importXML(bpmnStringFile || newBpmnDiagram, (error: any): void =>
-        error ? onError(error.toString()) : fitViewport()
+      modeler.current.importXML(bpmnStringFile || newBpmnDiagram, (error: Error): void =>
+        error ? onError(error) : fitViewport()
       )
     }
   }, [onError, bpmnStringFile])

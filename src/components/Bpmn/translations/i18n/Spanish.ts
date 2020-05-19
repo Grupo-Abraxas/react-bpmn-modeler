@@ -1,4 +1,4 @@
-export default {
+const i18nSpanish: Record<string, string> = {
   // Palette buttons
   'Activate the hand tool': 'Activar la herramienta de mano',
   'Activate the lasso tool': 'Activar la herramienta de lazo',
@@ -47,7 +47,7 @@ export default {
   'Create Task': 'Crear tarea',
   'Parallel Multi Instance': 'Instancia múltiple paralela',
   'Sequential Multi Instance': 'Instancia múltiple secuencial',
-  'Loop': 'Bucle',
+  Loop: 'Bucle',
   'Send Task': 'Enviar tarea',
   'Receive Task': 'Recibir tarea',
   'User Task': 'Tarea del usuario',
@@ -65,26 +65,31 @@ export default {
   'Add Lane below': 'Agregue carril a continuación',
 
   // Tool options
-  'Connect using Sequence/MessageFlow or Association': 'Conectar usando Secuencia/Flujo de mensajes o Asociación',
+  'Connect using Sequence/MessageFlow or Association':
+    'Conectar usando Secuencia/Flujo de mensajes o Asociación',
   'Append EndEvent': 'Añadir Evento Fin',
   'Append Gateway': 'Agregar puerta de enlace',
   'Append Task': 'Añadir tarea',
   'Append Intermediate/Boundary Event': 'Añadir evento Intermedio/Límite',
   'Append {type}': 'Agregar {type}',
   'Change type': 'Cambiar tipo',
-  'Remove': 'Eliminar',
+  Remove: 'Eliminar',
 
   // Errors
   'no parent for {element} in {parent}': 'Sin padre para {element} en {parent}',
   'no shape type specified': 'No se especificó ningún tipo de forma',
-  'flow elements must be children of pools/participants': 'Los elementos de flujo deben ser hijos grupos/participantes',
+  'flow elements must be children of pools/participants':
+    'Los elementos de flujo deben ser hijos grupos/participantes',
   'out of bounds release': 'lanzamiento fuera de límites',
   'more than {count} child lanes': 'más que {count} lineas hijas',
   'element required': 'elemento requerido',
   'diagram not part of bpmn:Definitions': 'diagrama no es parte de bpmn:Definitions',
   'no diagram to display': 'No hay diagrama para mostrar',
   'no process or collaboration to display': 'Sin proceso o colaboración para mostrar',
-  'element {element} referenced by {referenced}#{property} not yet drawn': 'elemento {element} referenciado por {referenced}#{property} aún no dibujado',
+  'element {element} referenced by {referenced}#{property} not yet drawn':
+    'elemento {element} referenciado por {referenced}#{property} aún no dibujado',
   'already rendered {element}': 'ya renderizado {element}',
   'failed to import {element}': 'falló al importar {element}'
 }
+
+export default i18nSpanish
