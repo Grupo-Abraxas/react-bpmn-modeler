@@ -74,6 +74,7 @@ const i18nSpanish: Record<string, string> = {
   'Append {type}': 'Agregar {type}',
   'Change type': 'Cambiar tipo',
   Remove: 'Eliminar',
+  TextAnnotation: 'Anotación de texto',
 
   // Errors
   'no parent for {element} in {parent}': 'Sin padre para {element} en {parent}',

@@ -29,13 +29,16 @@ import 'bpmn-font/css/bpmn.css'
 const customTranslateModule = {
   translate: [
     'value',
-    (template: string, replacements: object): string => {
+    (template: string, replacements: { type: string } | undefined): string => {
       const templateTranslated = i18nSpanish[template] || template
+      if (replacements && i18nSpanish[replacements.type]) {
+        return templateTranslated.replace(
+          /{([^}]+)}/g,
+          (_: string, key: number): string => `${i18nSpanish[replacements.type]}`
+        )
+      }
 
-      return templateTranslated.replace(
-        /{([^}]+)}/g,
-        (_: string, key: number): string => Object(replacements)[key] || `${key}`
-      )
+      return templateTranslated
     }
   ]
 }
