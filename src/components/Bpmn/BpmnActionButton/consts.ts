@@ -1,5 +1,0 @@
-export const FOCUS_ICON = 'focusIcon'
-export const ZOOM_IN_ICON = 'zoomInIcon'
-export const ZOOM_OUT_ICON = 'zoomOutIcon'
-export const FULLSCREEN_ICON = 'fullScreenIcon'
-export const FULLSCREEN_EXIT_ICON = 'fullScreenExitIcon'

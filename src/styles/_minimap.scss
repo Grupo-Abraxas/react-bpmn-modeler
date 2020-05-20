@@ -1,0 +1,112 @@
+@import './colors';
+@import './fonts';
+
+
+.djs-minimap {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: solid 2px $blue-border;
+  border-radius: 2px;
+  box-sizing: border-box;
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  background: #FAFAFA;
+}
+
+.djs-minimap:not(.open) {
+  overflow: hidden;
+}
+
+.djs-minimap .map {
+  display: none;
+}
+
+.djs-minimap.open .map {
+  display: block;
+}
+
+.djs-minimap .map {
+  width: 330px;
+  height: 180px;
+}
+
+.djs-minimap:not(.open) .toggle {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: $blue;
+  background-color: $blue-backgroundColor;
+  border: solid 2px $blue-border;
+  border-radius: 5%;
+}
+
+.djs-minimap:not(.open) .toggle:before {
+  font-family: "Material Icons";
+  font-size: 25px;
+  content: "\e55b";
+}
+
+.djs-minimap.open .toggle {
+  position: absolute;
+  right: 0;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: $blue;
+  background-color: $blue-backgroundColor;
+  border: solid 2px $blue-border;
+  border-radius: 5%;
+}
+
+.djs-minimap.open .toggle:before {
+  font-family: "Material Icons";
+  font-size: 25px;
+  content: "\e14c";
+}
+
+.djs-minimap .map {
+  cursor: crosshair;
+}
+
+.djs-minimap .viewport {
+  fill: none;
+  stroke: none;
+}
+
+.djs-minimap .viewport-dom {
+  position: absolute;
+  border: solid 2px $green;
+  border-radius: 8px;
+  box-sizing: border-box;
+  cursor: move;
+}
+
+.djs-minimap:not(.open) .viewport-dom {
+  display: none;
+}
+
+.djs-minimap.open .overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
+}
+
+.djs-minimap .cursor-crosshair {
+  cursor: crosshair;
+}
+
+.djs-minimap .cursor-move {
+  cursor: move;
+}
