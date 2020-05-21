@@ -1,22 +1,51 @@
-# arkon-bpmn-js #
+# react-bpmn-modeler #
 
-This is the first approach to the bpmn-js implementation of react for arkon.
+React bpmn modeler (Beta)
 
-## Technologic Stack ##
+## How to install ##
 
-* [React](https://es.reactjs.org/)
-* [Docker](https://docs.docker.com/)
-* [bpmn-js](https://github.com/bpmn-io/bpmn-js)
-
-Deploy with Docker
+With npm
 
 ```bash
-yarn run docker:build
-yarn run docker:run
+npm install @arkondata/react-bpmn-modeler
 ```
 
-Stop app
+With yarn
 
 ```bash
-yarn run docker:stop
+yarn add @arkondata/react-bpmn-modeler
+```
+
+## How to use ##
+
+With Typescript
+
+```tsx
+import React, { FC } from 'react'
+import Bpmn from './components/Bpmn'
+
+const App: FC = () => (
+  <Bpmn
+    onTaskTarget={(e: CustomEvent): void => alert(e.detail)}
+    onError={(error: Error): void => alert(error)}
+  />
+)
+
+export default App
+```
+
+With Jsx
+
+```jsx
+import React from 'react'
+import Bpmn from './components/Bpmn'
+
+const App = () => (
+  <Bpmn
+    onTaskTarget={(e: CustomEvent): void => alert(e.detail)}
+    onError={(error: Error): void => alert(error)}
+  />
+)
+
+export default App
 ```

@@ -1,35 +1,62 @@
 {
-  "name": "arkon-bpmn-js",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@arkondata/react-bpmn-modeler",
+  "version": "0.1.4",
+  "private": false,
+  "author": "JavierMolina",
+  "license": "MIT",
+  "description": "React bpmn modeler",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Grupo-Abraxas/react-bpmn-modeler.git"
+  },
+  "keywords": [
+    "react-bpmn-modeler"
+  ],
+  "bugs": {
+    "url": "https://github.com/Grupo-Abraxas/react-bpmn-modeler/issues"
+  },
+  "homepage": "https://github.com/Grupo-Abraxas/react-bpmn-modeler#readme",
+  "main": "lib/index.js",
+  "types": "lib",
+  "pearDependencies": {
+    "react": "<=16.0.0"
+  },
   "dependencies": {
+    "@material-ui/core": "^4.9.11",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "axios": "^0.19.2",
     "bpmn-js": "^6.4.2",
-    "bpmn-js-in-color": "bpmn-io/bpmn-js-in-color",
+    "bpmn-js-in-color": "github:bpmn-io/bpmn-js-in-color",
     "bpmn-js-properties-panel": "^0.33.2",
     "camunda-bpmn-moddle": "^4.4.0",
     "css-loader": "^3.5.2",
     "diagram-js-minimap": "^2.0.3",
-    "less": "^3.11.1",
-    "less-loader": "^5.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-full-screen": "^0.2.4",
     "react-scripts": "3.4.1",
     "react-xml-parser": "^1.1.6",
-    "style-loader": "^1.1.4"
+    "style-loader": "^1.1.4",
+    "yarn-run-all": "^3.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build:css": "node-sass src/ -o lib/ && cp -r src/bpmn-font lib/",
+    "watch:css": "yarn build:css && node-sass src/ -o lib/ -w -r",
+    "start:js": "react-scripts start",
+    "start": "npm-run-all -p watch:css start:js",
+    "build:js": "tsc -p .",
+    "build": "npm-run-all build:*",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "docker:build": "docker build -t arkon-bpmn_img .",
-    "docker:run": "docker run -d -p 80:80 --name arkon-bpmn arkon-bpmn_img",
-    "docker:stop": "docker rm -f arkon-bpmn"
+    "docker:build": "docker build -t react-bpmn-modeler_img .",
+    "docker:run": "docker run -d -p 80:80 --name react-bpmn-modeler react-bpmn-modeler_img",
+    "docker:stop": "docker rm -f react-bpmn-modeler"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,8 +74,11 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^25.2.2",
     "@types/node": "^14.0.1",
+    "@types/node-sass": "^4.11.1",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^2.33.0",

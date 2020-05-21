@@ -1,23 +1,32 @@
 {
   "compilerOptions": {
+    "target": "ES5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "ES2015",
+      "ES2016"
+    ],
+    "allowJs": true,
     "module": "esnext",
     "noImplicitAny": true,
     "noImplicitThis": true,
     "noImplicitReturns": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
-    "allowJs": true,
-    "baseUrl": "./src",
-    "target": "ES5",
     "alwaysStrict": true,
     "downlevelIteration": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strict": true,
     "noEmit": true,
+    "outDir": "lib",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
     "jsx": "react",
-    "lib": ["es6", "dom", "dom.iterable", "esnext"],
+    "baseUrl": ".",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -29,6 +38,10 @@
     "noFallthroughCasesInSwitch": true,
     "keyofStringsOnly": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
