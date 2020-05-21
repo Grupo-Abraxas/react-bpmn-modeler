@@ -2,11 +2,10 @@
   "compilerOptions": {
     "target": "ES5",
     "lib": [
+      "es6",
       "dom",
       "dom.iterable",
-      "esnext",
-      "ES2015",
-      "ES2016"
+      "esnext"
     ],
     "allowJs": true,
     "module": "esnext",
@@ -20,23 +19,23 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
     "outDir": "lib",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
     "jsx": "react",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "pretty": true,
     "noFallthroughCasesInSwitch": true,
-    "keyofStringsOnly": true
+    "keyofStringsOnly": true,
+    "isolatedModules": true
   },
   "include": [
     "src/**/*"

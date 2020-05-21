@@ -1,6 +1,6 @@
 {
   "name": "@arkondata/react-bpmn-modeler",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "author": "JavierMolina",
   "license": "MIT",
@@ -21,6 +21,19 @@
   "homepage": "https://github.com/Grupo-Abraxas/react-bpmn-modeler#readme",
   "main": "lib/index.js",
   "types": "lib",
+  "scripts": {
+    "build:css": "node-sass src/ -o src/ && cp -r src/bpmn-font lib/ && cp -r src/styles lib/",
+    "watch:css": "yarn build:css && node-sass src/ -o src/ -w -r",
+    "start:js": "react-scripts start",
+    "start": "npm-run-all -p watch:css start:js",
+    "build:js": "tsc -p .",
+    "build": "npm-run-all build:*",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "docker:build": "docker build -t react-bpmn-modeler_img .",
+    "docker:run": "docker run -d -p 80:80 --name react-bpmn-modeler react-bpmn-modeler_img",
+    "docker:stop": "docker rm -f react-bpmn-modeler"
+  },
   "pearDependencies": {
     "react": "<=16.0.0"
   },
@@ -45,34 +58,6 @@
     "style-loader": "^1.1.4",
     "yarn-run-all": "^3.1.1"
   },
-  "scripts": {
-    "build:css": "node-sass src/ -o lib/ && cp -r src/bpmn-font lib/",
-    "watch:css": "yarn build:css && node-sass src/ -o lib/ -w -r",
-    "start:js": "react-scripts start",
-    "start": "npm-run-all -p watch:css start:js",
-    "build:js": "tsc -p .",
-    "build": "npm-run-all build:*",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "docker:build": "docker build -t react-bpmn-modeler_img .",
-    "docker:run": "docker run -d -p 80:80 --name react-bpmn-modeler react-bpmn-modeler_img",
-    "docker:stop": "docker rm -f react-bpmn-modeler"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -94,6 +79,21 @@
     "lint-staged": "^10.2.2",
     "prettier": "^2.0.5",
     "typescript": "^3.8.3"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
