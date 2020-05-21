@@ -22,9 +22,9 @@ import { newBpmnDiagram } from './default-bpmn-layout'
 import { BpmnType, BpmnModelerType } from './types'
 
 import { useBpmnActionButtons } from './Bpmn.styles'
-import 'styles/index.scss'
-import 'bpmn-font/css/bpmn-embedded.css'
-import 'bpmn-font/css/bpmn.css'
+import '../../styles/index.css'
+import '../../bpmn-font/css/bpmn-embedded.css'
+import '../../bpmn-font/css/bpmn.css'
 
 const customTranslateModule = {
   translate: [
