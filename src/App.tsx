@@ -5,6 +5,8 @@ const App: FC = () => (
   <Bpmn
     onTaskTarget={(e: CustomEvent): void => alert(e.detail)}
     onError={(error: Error): void => alert(error)}
+    modelerInnerheight={window.innerHeight}
+    bpmnStringFile={''}
   />
 )
 

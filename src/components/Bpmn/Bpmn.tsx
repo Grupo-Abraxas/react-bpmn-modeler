@@ -34,7 +34,7 @@ const customTranslateModule = {
       if (replacements && i18nSpanish[replacements.type]) {
         return templateTranslated.replace(
           /{([^}]+)}/g,
-          (_: string, key: number): string => `${i18nSpanish[replacements.type]}`
+          (): string => `${i18nSpanish[replacements.type]}`
         )
       }
 
@@ -43,7 +43,7 @@ const customTranslateModule = {
   ]
 }
 
-const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError }) => {
+const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError, modelerInnerheight }) => {
   const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -104,11 +104,11 @@ const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError }) => {
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       },
-      height: window.innerHeight
+      height: modelerInnerheight || window.innerHeight
     })
     memorizeImportXML()
     bpmnPadCustomButtonEventBus()
-  }, [memorizeImportXML])
+  }, [memorizeImportXML, modelerInnerheight])
 
   useEffect((): void => {
     memorizeSetModeler()

@@ -22,12 +22,14 @@ With Typescript
 
 ```tsx
 import React, { FC } from 'react'
-import Bpmn from './components/Bpmn'
+import { Bpmn } from '@arkondata/react-bpmn-modeler/lib/components'
 
 const App: FC = () => (
   <Bpmn
-    onTaskTarget={(e: CustomEvent): void => alert(e.detail)}
+    onTaskTarget={(event: CustomEvent): void => alert(event.detail)}
     onError={(error: Error): void => alert(error)}
+    modelerInnerHeight={window.innerHeight}
+    bpmnStringFile={''}
   />
 )
 
@@ -38,12 +40,14 @@ With Jsx
 
 ```jsx
 import React from 'react'
-import Bpmn from './components/Bpmn'
+import { Bpmn } from '@arkondata/react-bpmn-modeler/lib/components'
 
 const App = () => (
   <Bpmn
-    onTaskTarget={(e: CustomEvent): void => alert(e.detail)}
-    onError={(error: Error): void => alert(error)}
+    onTaskTarget={event => alert(event.detail)}
+    onError={error => alert(error)}
+    modelerInnerHeight={window.innerHeight}
+    bpmnStringFile={''}
   />
 )
 
