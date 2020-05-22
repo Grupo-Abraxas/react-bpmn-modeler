@@ -43,7 +43,7 @@ const customTranslateModule = {
   ]
 }
 
-const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError, modelerInnerheight }) => {
+const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError, modelerInnerHeight }) => {
   const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
@@ -104,11 +104,11 @@ const Bpmn: FC<BpmnType> = ({ bpmnStringFile, onTaskTarget, onError, modelerInne
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       },
-      height: modelerInnerheight || window.innerHeight
+      height: modelerInnerHeight || window.innerHeight
     })
     memorizeImportXML()
     bpmnPadCustomButtonEventBus()
-  }, [memorizeImportXML, modelerInnerheight])
+  }, [memorizeImportXML, modelerInnerHeight])
 
   useEffect((): void => {
     memorizeSetModeler()
