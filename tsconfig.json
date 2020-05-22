@@ -19,7 +19,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
     "outDir": "lib",
     "sourceMap": true,
     "declaration": true,
