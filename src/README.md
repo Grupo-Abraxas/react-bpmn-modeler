@@ -24,9 +24,7 @@ yarn run docker:stop
 
 ## Run in dev mode
 
-- Install Docker
-
-- Run
+- Just Run
 
 ```bash
 yarn install
