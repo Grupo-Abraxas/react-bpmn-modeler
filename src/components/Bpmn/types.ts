@@ -1,7 +1,7 @@
 export type BpmnType = {
   onTaskTarget: Function
   onError: Function
-  bpmnStringFile: string | ArrayBuffer | null | undefined
+  bpmnStringFile: string | ArrayBuffer | false | null | undefined
   modelerInnerHeight?: number
 }
 
