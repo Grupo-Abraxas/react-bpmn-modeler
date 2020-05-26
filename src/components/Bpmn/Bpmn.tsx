@@ -48,7 +48,8 @@ const Bpmn: FC<BpmnType> = ({
   onTaskTarget,
   onError,
   modelerInnerHeight,
-  modelerRef
+  modelerRef,
+  onElementChange
 }) => {
   const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
@@ -81,20 +82,78 @@ const Bpmn: FC<BpmnType> = ({
     }
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
-  const bpmnPadCustomButtonEventBus = useCallback((): void => {
+  const removeCustomIcon = (divGroupIndex: number): void => {
+    const groups = document.querySelectorAll('.group')
+    const group = groups[divGroupIndex]
+    if (group.lastChild) {
+      group.lastChild.remove()
+    }
+  }
+
+  const removeCustomTaskButton = useCallback((type: string) => {
+    type bpmnElementPadDivType = {
+      [key: string]: number
+    }
+    const bpmnElementPadDiv: bpmnElementPadDivType = {
+      StartEvent: 1,
+      IntermediateThrowEvent: 1,
+      IntermediateCatchEvent: 1,
+      EndEvent: 0,
+      CallActivity: 1,
+      SubProcess: 1,
+      Gateway: 1,
+      SequenceFlow: 0,
+      TextAnnotation: 0,
+      Participant: 3,
+      DataStoreReference: 2,
+      DataObjectReference: 2
+    }
+    for (const key in bpmnElementPadDiv) {
+      if (type.includes(key)) {
+        const divGroupIndex: number = bpmnElementPadDiv[key]
+        removeCustomIcon(divGroupIndex)
+      }
+    }
+  }, [])
+
+  const saveModel = useCallback((): void => {
     if (modelerRef && modelerRef.current) {
-      const eventBus = modelerRef.current.get('eventBus')
-      eventBus.on('contextPad.open', (e: { current: { element: { type: string } } }): void => {
-        if (!e.current.element.type.includes('Task')) {
-          const groups = document.querySelectorAll('.group')
-          const group = groups[1]
-          if (group.lastChild) {
-            group.lastChild.remove()
+      modelerRef.current.saveXML(
+        {
+          format: true
+        },
+        (err: any, xml: string) => {
+          if (err) {
+            onError(err)
+          } else {
+            if (onElementChange) {
+              onElementChange(xml)
+            }
           }
         }
-      })
+      )
     }
-  }, [modelerRef])
+  }, [modelerRef, onElementChange, onError])
+
+  const bpmnPadCustomButtonEventBus = useCallback((): void => {
+    type eventBusType = { current: { element: { type: string } } }
+    if (modelerRef && modelerRef.current) {
+      const eventBus = modelerRef.current.get('eventBus')
+      eventBus.on('elements.changed', (): void => {
+        saveModel()
+      })
+      eventBus.on(
+        'contextPad.open',
+        ({
+          current: {
+            element: { type }
+          }
+        }: eventBusType): void => {
+          removeCustomTaskButton(type)
+        }
+      )
+    }
+  }, [modelerRef, removeCustomTaskButton, saveModel])
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({

@@ -4,12 +4,14 @@ export type BpmnModelerType = {
   importXML: Function
   get: Function
   on: Function
+  saveXML: Function
 }
 
 export type BpmnType = {
+  modelerRef: MutableRefObject<BpmnModelerType | undefined>
+  bpmnStringFile: string | ArrayBuffer | false | null | undefined
+  modelerInnerHeight?: number
   onTaskTarget: Function
   onError: Function
-  bpmnStringFile: string | ArrayBuffer | false | null | undefined
-  modelerRef: MutableRefObject<BpmnModelerType | undefined>
-  modelerInnerHeight?: number
+  onElementChange?: (xml: string) => void
 }
