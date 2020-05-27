@@ -1,6 +1,6 @@
 {
   "name": "@arkondata/react-bpmn-modeler",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "private": false,
   "author": "JavierMolina",
   "license": "MIT",
@@ -40,13 +40,10 @@
     "react": "<=16.0.0"
   },
   "dependencies": {
-    "@material-ui/core": "^4.9.11",
-    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "bpmn-js": "^6.4.2",
-    "bpmn-js-in-color": "github:bpmn-io/bpmn-js-in-color",
     "bpmn-js-properties-panel": "^0.33.2",
     "camunda-bpmn-moddle": "^4.4.0",
     "css-loader": "^3.5.2",
@@ -54,9 +51,7 @@
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-full-screen": "^0.2.4",
     "react-scripts": "3.4.1",
-    "react-xml-parser": "^1.1.6",
     "style-loader": "^1.1.4",
     "yarn-run-all": "^3.1.1"
   },

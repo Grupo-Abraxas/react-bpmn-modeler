@@ -26,8 +26,7 @@ import { Bpmn, BpmnModelerType } from '@arkondata/react-bpmn-modeler/lib/compone
 
 const App: FC = () => {
   const modelerRef: MutableRefObject<BpmnModelerType | undefined> = useRef()
-
-  return (
+  const bpmnModelerRef: MutableRefObject<JSX.Element> = useRef(
     <Bpmn
       modelerRef={modelerRef}
       onTaskTarget={(event: CustomEvent): void => alert(event.detail)}
@@ -37,22 +36,27 @@ const App: FC = () => {
       onElementChange={(xml: string): void => console.log(xml)}
     />
   )
+
+  return (
+    <>
+      {bpmnModelerRef.current}
+    </>
+  )
 }
 
 export default App
-
 ```
 
 With React
 
 ```jsx
-import React, { useRef } from 'react'
+
+import React, { FC, useRef } from 'react'
 import { Bpmn } from '@arkondata/react-bpmn-modeler/lib/components'
 
-const App = () => {
+const App: FC = () => {
   const modelerRef = useRef()
-
-  return (
+  const bpmnModelerRef = useRef(
     <Bpmn
       modelerRef={modelerRef}
       onTaskTarget={event => alert(event.detail)}
@@ -61,6 +65,12 @@ const App = () => {
       bpmnStringFile={''}
       onElementChange={xml => console.log(xml)}
     />
+  )
+
+  return (
+    <>
+      {bpmnModelerRef.current}
+    </>
   )
 }
 

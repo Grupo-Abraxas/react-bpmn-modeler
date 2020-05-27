@@ -1,13 +1,4 @@
-import React, { useRef, useEffect, useState, FC, useCallback } from 'react'
-import Fullscreen from 'react-full-screen'
-
-import {
-  GpsNotFixed as CenterFocusStrongIcon,
-  Add as ZoomInIcon,
-  Remove as ZoomOutIcon,
-  FullscreenSharp as FullscreenSharpIcon,
-  FullscreenExitSharp as FullscreenExitSharpIcon
-} from '@material-ui/icons'
+import React, { useRef, useEffect, FC, useCallback } from 'react'
 
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
@@ -15,13 +6,11 @@ import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
-import BpmnActionButton from './BpmnActionButton'
 import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 
 import { BpmnType } from './types'
 
-import { useBpmnActionButtons } from './Bpmn.styles'
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
 import '../../bpmn-font/css/bpmn.css'
@@ -49,30 +38,16 @@ const Bpmn: FC<BpmnType> = ({
   onError,
   modelerInnerHeight,
   modelerRef,
-  onElementChange
+  onElementChange,
+  children,
 }) => {
-  const classes = useBpmnActionButtons()
-  const [zLevel, setZLevel] = useState(1)
-  const [isFullScreen, setIsFullScreen] = useState(false)
-  const Z_STEP = 0.4
   const canvas = useRef<HTMLDivElement>(null)
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Custom button handlers
   const fitViewport = useCallback((): void => {
     if (modelerRef && modelerRef.current) {
       modelerRef.current.get('canvas').zoom('fit-viewport', true)
-      setZLevel(1)
     }
   }, [modelerRef])
-
-  const handleZoom = (zoomScale: number): void => {
-    if (modelerRef && modelerRef.current) {
-      modelerRef.current.get('canvas').zoom(zoomScale, 'auto')
-      setZLevel(zoomScale)
-    }
-  }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeImportXML = useCallback((): void => {
     if (modelerRef && modelerRef.current) {
@@ -183,47 +158,10 @@ const Bpmn: FC<BpmnType> = ({
   }, [onTaskTarget])
 
   return (
-    <Fullscreen
-      enabled={isFullScreen}
-      onChange={(isFull: boolean): void => setIsFullScreen(isFull)}
-    >
-      <div className="content" id="js-drop-zone">
-        <div className="canvas" ref={canvas} />
-        <BpmnActionButton
-          stringStyles={classes.bpmnCenterButton}
-          icon={<CenterFocusStrongIcon fontSize="large" />}
-          tooltipTitle="Centrar"
-          onClick={fitViewport}
-        />
-        <BpmnActionButton
-          stringStyles={classes.bpmnZoomInButton}
-          icon={<ZoomInIcon fontSize="large" />}
-          tooltipTitle="Acercar"
-          onClick={(): void => handleZoom(Math.min(zLevel + Z_STEP, 7))}
-        />
-        <BpmnActionButton
-          stringStyles={classes.bpmnZoomOutButton}
-          icon={<ZoomOutIcon fontSize="large" />}
-          tooltipTitle="Alejar"
-          onClick={(): void => handleZoom(Math.max(zLevel - Z_STEP, Z_STEP))}
-        />
-        {isFullScreen ? (
-          <BpmnActionButton
-            stringStyles={classes.bpmnFullscreenButton}
-            icon={<FullscreenExitSharpIcon fontSize="large" />}
-            tooltipTitle="Salir de pantalla completa"
-            onClick={(): void => setIsFullScreen(false)}
-          />
-        ) : (
-          <BpmnActionButton
-            stringStyles={classes.bpmnFullscreenButton}
-            icon={<FullscreenSharpIcon fontSize="large" />}
-            tooltipTitle="Pantalla completa"
-            onClick={(): void => setIsFullScreen(true)}
-          />
-        )}
-      </div>
-    </Fullscreen>
+    <div className="content" id="js-drop-zone">
+      <div className="canvas" ref={canvas} />
+      {children}
+    </div>
   )
 }
 
