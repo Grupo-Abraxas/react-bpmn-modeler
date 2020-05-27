@@ -1,6 +1,6 @@
 {
   "name": "@arkondata/react-bpmn-modeler",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "private": false,
   "author": "JavierMolina",
   "license": "MIT",
@@ -22,7 +22,8 @@
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
-    "build:css": "rm -rf .lib/ && node-sass src/ -o src/ && cp -r src/bpmn-font lib/ && cp -r src/styles lib/",
+    "build:css": "rm -rf ./lib/ && node-sass src/ -o src/ && mkdir -p lib/styles && cp -r src/styles lib/styles",
+    "build:font": "mkdir -p lib/bpmn-font && cp -r src/bpmn-font lib/bpmn-font",
     "watch:css": "yarn build:css && node-sass src/ -o src/ -w -r",
     "start:js": "react-scripts start",
     "start": "npm-run-all -p watch:css start:js",
