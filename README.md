@@ -85,7 +85,7 @@ export default App
 
 * onError - It is executed in case of error, it accepts a function that receives the error as a parameter.
 
-* modelerInnerHeight - Configuración de la altura de la ventana, si no se proporciona, toma el tamaño de la ventana actual de forma predeterminada.
+* modelerInnerHeight - Window height setting, if not provided, takes the size of the current window by default.
 
 * bpmnStringFile - A .bpmn file in text string, if not provided an empty .bpmn file will be generated.
 
