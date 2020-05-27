@@ -22,7 +22,7 @@
   "main": "lib/index.js",
   "types": "lib",
   "scripts": {
-    "build:css": "rm -rf .lib/ && node-sass src/ -o src/ && cp -r src/bpmn-font lib/bpmn-font && cp -r src/styles lib/",
+    "build:css": "rm -rf .lib/ && node-sass src/ -o src/ && cp -r src/bpmn-font lib/ && cp -r src/styles lib/",
     "watch:css": "yarn build:css && node-sass src/ -o src/ -w -r",
     "start:js": "react-scripts start",
     "start": "npm-run-all -p watch:css start:js",
