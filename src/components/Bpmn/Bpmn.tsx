@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, FC, useCallback } from 'react'
+import React, { useRef, useEffect, FC, useCallback, useState } from 'react'
+import Fullscreen from 'react-full-screen'
 
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
@@ -8,6 +9,7 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import { i18nSpanish } from './translations'
 import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
+import ActionButton from './ActionButton'
 
 import { BpmnType } from './types'
 
@@ -33,21 +35,37 @@ const customTranslateModule = {
 }
 
 const Bpmn: FC<BpmnType> = ({
+  modelerRef,
   bpmnStringFile,
+  modelerInnerHeight,
+  actionButtonClassName = '',
+  zStep = 0.4,
+  onElementChange,
   onTaskTarget,
   onError,
-  modelerInnerHeight,
-  modelerRef,
-  onElementChange,
-  children,
+  children
 }) => {
+  const [zLevel, setZLevel] = useState(1)
+  const [isFullScreen, setIsFullScreen] = useState(false)
+
   const canvas = useRef<HTMLDivElement>(null)
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Button handlers
   const fitViewport = useCallback((): void => {
     if (modelerRef && modelerRef.current) {
       modelerRef.current.get('canvas').zoom('fit-viewport', true)
+      setZLevel(1)
     }
   }, [modelerRef])
+
+  const handleZoom = (zoomScale: number): void => {
+    if (modelerRef && modelerRef.current) {
+      modelerRef.current.get('canvas').zoom(zoomScale, 'auto')
+      setZLevel(zoomScale)
+    }
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeImportXML = useCallback((): void => {
     if (modelerRef && modelerRef.current) {
@@ -158,10 +176,43 @@ const Bpmn: FC<BpmnType> = ({
   }, [onTaskTarget])
 
   return (
-    <div className="content" id="js-drop-zone">
-      <div className="canvas" ref={canvas} />
-      {children}
-    </div>
+    <Fullscreen
+      enabled={isFullScreen}
+      onChange={(isFull: boolean): void => setIsFullScreen(isFull)}
+    >
+      <div className="content" id="js-drop-zone">
+        <div className="canvas" ref={canvas} />
+        <ActionButton
+          actionButtonId="action-button-fit"
+          actionButtonClass={`action-button-fit ${actionButtonClassName}`}
+          onClick={fitViewport}
+        />
+        <ActionButton
+          actionButtonId="action-button-zoom-in"
+          actionButtonClass={`action-button-zoom-in ${actionButtonClassName}`}
+          onClick={(): void => handleZoom(Math.min(zLevel + zStep, 7))}
+        />
+        <ActionButton
+          actionButtonId="action-button-zoom-out"
+          actionButtonClass={`action-button-zoom-out ${actionButtonClassName}`}
+          onClick={(): void => handleZoom(Math.max(zLevel - zStep, zStep))}
+        />
+        {isFullScreen ? (
+          <ActionButton
+            actionButtonId="action-button-full-screen-exit"
+            actionButtonClass={`action-button-full-screen-exit ${actionButtonClassName}`}
+            onClick={(): void => setIsFullScreen(false)}
+          />
+        ) : (
+          <ActionButton
+            actionButtonId="action-button-full-screen"
+            actionButtonClass={`action-button-full-screen ${actionButtonClassName}`}
+            onClick={(): void => setIsFullScreen(true)}
+          />
+        )}
+        {children}
+      </div>
+    </Fullscreen>
   )
 }
 

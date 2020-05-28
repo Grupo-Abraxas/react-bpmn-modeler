@@ -1,14 +1,15 @@
-@import "./diagram-js";
-@import "./minimap";
-@import "./tools-pallete";
-
+@import './diagram-js';
+@import './minimap';
+@import './tools-pallete';
+@import './action-button';
 
 * {
   box-sizing: border-box;
 }
 
-body, html {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+body,
+html {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
   height: 100%;
   padding: 0;
@@ -19,10 +20,10 @@ a:link {
   text-decoration: none;
 }
 
-.content{
+.content {
   width: 100%;
   height: 100%;
-  overflow: hidden
+  overflow: hidden;
 }
 
 /* FIX CONTEXT PAD ENTRIES */
@@ -37,11 +38,11 @@ a:link {
   width: 100%;
   height: 100%;
   // background-color: rgb(204, 204, 204);
-  background-color:transparent;
-  fill:rgb(215, 215, 215);
-  background-size:59px 59px;
-  background-repeat:repeat;
-  background-image:url("data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' fill-opacity='1' style='enable-background:new 0 0 500 500'%3E%3Cstyle%3E .st0{fill:rgb(215, 215, 215)} %3C/style%3E%3Ccircle class='st0' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='336.6' r='12.7'/%3E%3Cg%3E%3Ccircle class='st0' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='.7' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='419.5' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='500.7' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='170.9' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='253.8' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='88' r='12.7'/%3E%3C/g%3E%3C/svg%3E");
+  background-color: transparent;
+  fill: rgb(215, 215, 215);
+  background-size: 59px 59px;
+  background-repeat: repeat;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg id='Layer_1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500' fill-opacity='1' style='enable-background:new 0 0 500 500'%3E%3Cstyle%3E .st0{fill:rgb(215, 215, 215)} %3C/style%3E%3Ccircle class='st0' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='336.6' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='336.6' r='12.7'/%3E%3Cg%3E%3Ccircle class='st0' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='.7' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='.7' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='419.5' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='419.5' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='500.7' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='500.7' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='170.9' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='170.9' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='253.8' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='253.8' r='12.7'/%3E%3C/g%3E%3Cg%3E%3Ccircle class='st0' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='83.3' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='166.7' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='250' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='333.3' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='416.7' cy='88' r='12.7'/%3E%3Ccircle class='st0' cx='500' cy='88' r='12.7'/%3E%3C/g%3E%3C/svg%3E");
   overflow-y: hidden;
 }
 
@@ -51,11 +52,9 @@ a:link {
   display: none;
 }
 
-
 .content.with-diagram .canvas {
   visibility: visible;
 }
-
 
 .fullscreen {
   background: white;

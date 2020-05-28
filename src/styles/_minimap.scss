@@ -1,7 +1,6 @@
 @import './colors';
 @import './fonts';
 
-
 .djs-minimap {
   position: absolute;
   top: 20px;
@@ -15,7 +14,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
-  background: #FAFAFA;
+  background: #fafafa;
 }
 
 .djs-minimap:not(.open) {
@@ -47,9 +46,10 @@
 }
 
 .djs-minimap:not(.open) .toggle:before {
-  font-family: "Material Icons";
+  font-family: 'Material Icons';
   font-size: 25px;
-  content: "\e55b";
+  content: '\e55b';
+  cursor: pointer;
 }
 
 .djs-minimap.open .toggle {
@@ -64,12 +64,30 @@
   background-color: $blue-backgroundColor;
   border: solid 2px $blue-border;
   border-radius: 5%;
+  transition: 200ms;
+  cursor: pointer;
+}
+
+.djs-minimap:not(.open) .toggle:hover {
+  background-color: $blue-backgroundColorHover;
+}
+
+.djs-minimap:not(.open) .toggle:active {
+  background-color: $blue-backgroundColorActive;
+}
+
+.djs-minimap.open .toggle:hover {
+  background-color: $blue-backgroundColorHover;
+}
+
+.djs-minimap.open .toggle:active {
+  background-color: $blue-backgroundColorActive;
 }
 
 .djs-minimap.open .toggle:before {
-  font-family: "Material Icons";
+  font-family: 'Material Icons';
   font-size: 25px;
-  content: "\e14c";
+  content: '\e14c';
 }
 
 .djs-minimap .map {

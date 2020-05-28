@@ -11,7 +11,9 @@ export type BpmnType = {
   modelerRef: MutableRefObject<BpmnModelerType | undefined>
   bpmnStringFile: string | ArrayBuffer | false | null | undefined
   modelerInnerHeight?: number
+  actionButtonClassName?: string
+  zStep?: number
+  onElementChange?: (xml: string) => void
   onTaskTarget: Function
   onError: Function
-  onElementChange?: (xml: string) => void
 }
