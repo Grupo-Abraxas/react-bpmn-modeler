@@ -29,11 +29,11 @@ const App: FC = () => {
   const bpmnModelerRef: MutableRefObject<JSX.Element> = useRef(
     <Bpmn
       modelerRef={modelerRef}
+      bpmnStringFile={''}
+      modelerInnerHeight={window.innerHeight}
+      onElementChange={(xml: string): void => console.log(xml)}
       onTaskTarget={(event: CustomEvent): void => alert(event.detail)}
       onError={(error: Error): void => alert(error)}
-      modelerInnerHeight={window.innerHeight}
-      bpmnStringFile={''}
-      onElementChange={(xml: string): void => console.log(xml)}
     />
   )
 
@@ -59,11 +59,11 @@ const App: FC = () => {
   const bpmnModelerRef = useRef(
     <Bpmn
       modelerRef={modelerRef}
+      bpmnStringFile={''}
+      modelerInnerHeight={window.innerHeight}
+      onElementChange={xml => console.log(xml)}
       onTaskTarget={event => alert(event.detail)}
       onError={error => alert(error)}
-      modelerInnerHeight={window.innerHeight}
-      bpmnStringFile={''}
-      onElementChange={xml => console.log(xml)}
     />
   )
 
@@ -79,14 +79,20 @@ export default App
 
 ## Params ##
 
-* modelerRef - It's the reference to the "div" of the "container" of the bpmn modeler.
+* **modelerRef:** It's the reference to the "div" of the "container" of the bpmn modeler. **\***
 
-* onTaskTarget - It is a function that is executed when you click on the gear icon in the side pad of an element, it accepts a function that receives as event parameter of the selected element.
+* **bpmnStringFile:** A .bpmn file in text string, if not provided an empty .bpmn file will be generated. **\***
 
-* onError - It is executed in case of error, it accepts a function that receives the error as a parameter.
+* **modelerInnerHeight:** Window height setting, if not provided, takes the size of the current window by default.
 
-* modelerInnerHeight - Window height setting, if not provided, takes the size of the current window by default.
+* **actionButtonClassName:** React className of action button.
 
-* bpmnStringFile - A .bpmn file in text string, if not provided an empty .bpmn file will be generated.
+* **zStep:** Number of zoom step of zoom in/out action button.
 
-* onElementChange - A function that runs every time a bpmn modeler element changes, accepts as a parameter a variable that contains the exported file in a text string.
+* **onElementChange:** A function that runs every time a bpmn modeler element changes, accepts as a parameter a variable that contains the exported file in a text string.
+
+* **onTaskTarget:** It is a function that is executed when you click on the gear icon in the side pad of an element, it accepts a function that receives as event parameter of the selected element. **\***
+
+* **onError:** It is executed in case of error, it accepts a function that receives the error as a parameter. **\***
+
+*Required params*  *
