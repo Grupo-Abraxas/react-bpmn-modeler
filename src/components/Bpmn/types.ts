@@ -15,5 +15,5 @@ export type BpmnType = {
   zStep?: number
   onElementChange?: (xml: string) => void
   onTaskTarget: Function
-  onError: Function
+  onError: (error: Error) => void
 }

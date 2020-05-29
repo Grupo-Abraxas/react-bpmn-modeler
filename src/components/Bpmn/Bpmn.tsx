@@ -53,14 +53,14 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Button handlers
   const fitViewport = useCallback((): void => {
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       modelerRef.current.get('canvas').zoom('fit-viewport', true)
       setZLevel(1)
     }
   }, [modelerRef])
 
   const handleZoom = (zoomScale: number): void => {
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       modelerRef.current.get('canvas').zoom(zoomScale, 'auto')
       setZLevel(zoomScale)
     }
@@ -68,8 +68,8 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeImportXML = useCallback((): void => {
-    if (modelerRef && modelerRef.current) {
-      modelerRef.current.importXML(bpmnStringFile || newBpmnDiagram, (error: Error): void =>
+    if (modelerRef?.current) {
+      modelerRef.current.importXML(bpmnStringFile ?? newBpmnDiagram, (error: Error): void =>
         error ? onError(error) : fitViewport()
       )
     }
@@ -110,14 +110,14 @@ const Bpmn: FC<BpmnType> = ({
   }, [])
 
   const saveModel = useCallback((): void => {
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       modelerRef.current.saveXML(
         {
           format: true
         },
-        (err: any, xml: string) => {
-          if (err) {
-            onError(err)
+        (error: Error, xml: string) => {
+          if (error) {
+            onError(error)
           } else {
             if (onElementChange) {
               onElementChange(xml)
@@ -130,7 +130,7 @@ const Bpmn: FC<BpmnType> = ({
 
   const bpmnPadCustomButtonEventBus = useCallback((): void => {
     type eventBusType = { current: { element: { type: string } } }
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       const eventBus = modelerRef.current.get('eventBus')
       eventBus.on('elements.changed', (): void => {
         saveModel()
@@ -161,7 +161,7 @@ const Bpmn: FC<BpmnType> = ({
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       },
-      height: modelerInnerHeight || window.innerHeight
+      height: modelerInnerHeight ?? window.innerHeight
     })
     memorizeImportXML()
     bpmnPadCustomButtonEventBus()
@@ -172,7 +172,11 @@ const Bpmn: FC<BpmnType> = ({
   }, [memorizeSetModeler])
 
   useEffect((): void => {
-    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event): void => onTaskTarget(e), false)
+    document.addEventListener(
+      TASK_SETTINGS_EVENT,
+      (event: Event): void => onTaskTarget(event),
+      false
+    )
   }, [onTaskTarget])
 
   return (

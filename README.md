@@ -31,8 +31,8 @@ const App: FC = () => {
       modelerRef={modelerRef}
       bpmnStringFile={''}
       modelerInnerHeight={window.innerHeight}
-      onElementChange={(xml: string): void => console.log(xml)}
-      onTaskTarget={(event: CustomEvent): void => alert(event.detail)}
+      onElementChange={(xml: string): void => alert(xml)}
+      onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
       onError={(error: Error): void => alert(error)}
     />
   )
@@ -61,8 +61,8 @@ const App: FC = () => {
       modelerRef={modelerRef}
       bpmnStringFile={''}
       modelerInnerHeight={window.innerHeight}
-      onElementChange={xml => console.log(xml)}
-      onTaskTarget={event => alert(event.detail)}
+      onElementChange={xml => alert(xml)}
+      onTaskTarget={event => alert(JSON.stringify(event.detail))}
       onError={error => alert(error)}
     />
   )
