@@ -69,8 +69,9 @@ const Bpmn: FC<BpmnType> = ({
 
   const memorizeImportXML = useCallback((): void => {
     if (modelerRef?.current) {
-      modelerRef.current.importXML(bpmnStringFile ?? newBpmnDiagram, (error: Error): void =>
-        error instanceof Error ? onError(error) : fitViewport()
+      modelerRef.current.importXML(
+        bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
+        (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
       )
     }
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
@@ -161,7 +162,7 @@ const Bpmn: FC<BpmnType> = ({
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       },
-      height: modelerInnerHeight ?? window.innerHeight
+      height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
     memorizeImportXML()
     bpmnPadCustomButtonEventBus()
