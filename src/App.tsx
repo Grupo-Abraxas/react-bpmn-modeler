@@ -1,4 +1,4 @@
-import React, { FC, useRef, MutableRefObject } from 'react'
+import React, { FC, useRef, MutableRefObject, Fragment } from 'react'
 import Bpmn, { BpmnModelerType } from './components/Bpmn'
 
 const App: FC = () => {
@@ -14,7 +14,7 @@ const App: FC = () => {
     />
   )
 
-  return <>{bpmnModelerRef.current}</>
+  return <Fragment>{bpmnModelerRef.current}</Fragment>
 }
 
 export default App

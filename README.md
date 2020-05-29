@@ -21,7 +21,7 @@ yarn add @arkondata/react-bpmn-modeler
 With React Typescript
 
 ```tsx
-import React, { FC, useRef, MutableRefObject } from 'react'
+import React, { FC, useRef, MutableRefObject, Fragment } from 'react'
 import { Bpmn, BpmnModelerType } from '@arkondata/react-bpmn-modeler/lib/components'
 
 const App: FC = () => {
@@ -38,9 +38,7 @@ const App: FC = () => {
   )
 
   return (
-    <>
-      {bpmnModelerRef.current}
-    </>
+    <Fragment>{bpmnModelerRef.current}</Fragment>
   )
 }
 
@@ -68,9 +66,7 @@ const App: FC = () => {
   )
 
   return (
-    <>
-      {bpmnModelerRef.current}
-    </>
+    <Fragment>{bpmnModelerRef.current}</Fragment>
   )
 }
 
