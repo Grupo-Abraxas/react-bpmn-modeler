@@ -70,7 +70,7 @@ const Bpmn: FC<BpmnType> = ({
   const memorizeImportXML = useCallback((): void => {
     if (modelerRef?.current) {
       modelerRef.current.importXML(bpmnStringFile ?? newBpmnDiagram, (error: Error): void =>
-        error ? onError(error) : fitViewport()
+        error instanceof Error ? onError(error) : fitViewport()
       )
     }
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
@@ -116,7 +116,7 @@ const Bpmn: FC<BpmnType> = ({
           format: true
         },
         (error: Error, xml: string) => {
-          if (error) {
+          if (error instanceof Error) {
             onError(error)
           } else {
             if (onElementChange) {
