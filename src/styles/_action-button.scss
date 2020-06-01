@@ -1,0 +1,51 @@
+@import './colors';
+
+@mixin action-button($bottom) {
+  position: absolute;
+  bottom: $bottom;
+  right: 20px;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+  text-align: center;
+  color: $blue;
+  background-color: $blue-backgroundColor;
+  border: solid 2px $blue-border;
+  border-radius: 2px;
+  z-index: 1;
+  transition: 200ms;
+  cursor: pointer;
+}
+
+@mixin action-button-before($content) {
+  font-family: 'Material Icons';
+  font-size: 25px;
+  content: $content;
+}
+
+@mixin action-button-hover {
+  background-color: $blue-backgroundColorHover;
+}
+
+@mixin action-button-active {
+  background-color: $blue-backgroundColorActive;
+}
+
+$button-position: 'fit' '\e1b4'170px, 'zoom-in' '\e145'116px, 'zoom-out' '\e15b'74px,
+  'full-screen' '\e5d0'20px, 'full-screen-exit' '\e5d1'20px;
+
+@each $name, $glyph, $position in $button-position {
+  .action-button-#{$name} {
+    @include action-button($position);
+  }
+  .action-button-#{$name}:before {
+    @include action-button-before($glyph);
+  }
+  .action-button-#{$name}:hover {
+    @include action-button-hover;
+  }
+  .action-button-#{$name}:active {
+    @include action-button-active;
+  }
+}

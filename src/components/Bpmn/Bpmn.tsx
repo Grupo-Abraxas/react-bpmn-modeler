@@ -1,13 +1,5 @@
-import React, { useRef, useEffect, useState, FC, useCallback } from 'react'
+import React, { useRef, useEffect, FC, useCallback, useState } from 'react'
 import Fullscreen from 'react-full-screen'
-
-import {
-  GpsNotFixed as CenterFocusStrongIcon,
-  Add as ZoomInIcon,
-  Remove as ZoomOutIcon,
-  FullscreenSharp as FullscreenSharpIcon,
-  FullscreenExitSharp as FullscreenExitSharpIcon
-} from '@material-ui/icons'
 
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
@@ -15,13 +7,12 @@ import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
-import BpmnActionButton from './BpmnActionButton'
 import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
+import ActionButton from './ActionButton'
 
 import { BpmnType } from './types'
 
-import { useBpmnActionButtons } from './Bpmn.styles'
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
 import '../../bpmn-font/css/bpmn.css'
@@ -44,30 +35,32 @@ const customTranslateModule = {
 }
 
 const Bpmn: FC<BpmnType> = ({
+  modelerRef,
   bpmnStringFile,
+  modelerInnerHeight,
+  actionButtonClassName = '',
+  zStep = 0.4,
+  onElementChange,
   onTaskTarget,
   onError,
-  modelerInnerHeight,
-  modelerRef,
-  onElementChange
+  children
 }) => {
-  const classes = useBpmnActionButtons()
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
-  const Z_STEP = 0.4
+
   const canvas = useRef<HTMLDivElement>(null)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Custom button handlers
+  // Button handlers
   const fitViewport = useCallback((): void => {
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       modelerRef.current.get('canvas').zoom('fit-viewport', true)
       setZLevel(1)
     }
   }, [modelerRef])
 
   const handleZoom = (zoomScale: number): void => {
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       modelerRef.current.get('canvas').zoom(zoomScale, 'auto')
       setZLevel(zoomScale)
     }
@@ -75,9 +68,10 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeImportXML = useCallback((): void => {
-    if (modelerRef && modelerRef.current) {
-      modelerRef.current.importXML(bpmnStringFile || newBpmnDiagram, (error: Error): void =>
-        error ? onError(error) : fitViewport()
+    if (modelerRef?.current) {
+      modelerRef.current.importXML(
+        bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
+        (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
       )
     }
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
@@ -117,14 +111,14 @@ const Bpmn: FC<BpmnType> = ({
   }, [])
 
   const saveModel = useCallback((): void => {
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       modelerRef.current.saveXML(
         {
           format: true
         },
-        (err: any, xml: string) => {
-          if (err) {
-            onError(err)
+        (error: Error, xml: string) => {
+          if (error instanceof Error) {
+            onError(error)
           } else {
             if (onElementChange) {
               onElementChange(xml)
@@ -137,7 +131,7 @@ const Bpmn: FC<BpmnType> = ({
 
   const bpmnPadCustomButtonEventBus = useCallback((): void => {
     type eventBusType = { current: { element: { type: string } } }
-    if (modelerRef && modelerRef.current) {
+    if (modelerRef?.current) {
       const eventBus = modelerRef.current.get('eventBus')
       eventBus.on('elements.changed', (): void => {
         saveModel()
@@ -168,7 +162,7 @@ const Bpmn: FC<BpmnType> = ({
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       },
-      height: modelerInnerHeight || window.innerHeight
+      height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
     memorizeImportXML()
     bpmnPadCustomButtonEventBus()
@@ -179,7 +173,11 @@ const Bpmn: FC<BpmnType> = ({
   }, [memorizeSetModeler])
 
   useEffect((): void => {
-    document.addEventListener(TASK_SETTINGS_EVENT, (e: Event): void => onTaskTarget(e), false)
+    document.addEventListener(
+      TASK_SETTINGS_EVENT,
+      (event: Event): void => onTaskTarget(event),
+      false
+    )
   }, [onTaskTarget])
 
   return (
@@ -189,39 +187,35 @@ const Bpmn: FC<BpmnType> = ({
     >
       <div className="content" id="js-drop-zone">
         <div className="canvas" ref={canvas} />
-        <BpmnActionButton
-          stringStyles={classes.bpmnCenterButton}
-          icon={<CenterFocusStrongIcon fontSize="large" />}
-          tooltipTitle="Centrar"
+        <ActionButton
+          actionButtonId="action-button-fit"
+          actionButtonClass={`action-button-fit ${actionButtonClassName}`}
           onClick={fitViewport}
         />
-        <BpmnActionButton
-          stringStyles={classes.bpmnZoomInButton}
-          icon={<ZoomInIcon fontSize="large" />}
-          tooltipTitle="Acercar"
-          onClick={(): void => handleZoom(Math.min(zLevel + Z_STEP, 7))}
+        <ActionButton
+          actionButtonId="action-button-zoom-in"
+          actionButtonClass={`action-button-zoom-in ${actionButtonClassName}`}
+          onClick={(): void => handleZoom(Math.min(zLevel + zStep, 7))}
         />
-        <BpmnActionButton
-          stringStyles={classes.bpmnZoomOutButton}
-          icon={<ZoomOutIcon fontSize="large" />}
-          tooltipTitle="Alejar"
-          onClick={(): void => handleZoom(Math.max(zLevel - Z_STEP, Z_STEP))}
+        <ActionButton
+          actionButtonId="action-button-zoom-out"
+          actionButtonClass={`action-button-zoom-out ${actionButtonClassName}`}
+          onClick={(): void => handleZoom(Math.max(zLevel - zStep, zStep))}
         />
         {isFullScreen ? (
-          <BpmnActionButton
-            stringStyles={classes.bpmnFullscreenButton}
-            icon={<FullscreenExitSharpIcon fontSize="large" />}
-            tooltipTitle="Salir de pantalla completa"
+          <ActionButton
+            actionButtonId="action-button-full-screen-exit"
+            actionButtonClass={`action-button-full-screen-exit ${actionButtonClassName}`}
             onClick={(): void => setIsFullScreen(false)}
           />
         ) : (
-          <BpmnActionButton
-            stringStyles={classes.bpmnFullscreenButton}
-            icon={<FullscreenSharpIcon fontSize="large" />}
-            tooltipTitle="Pantalla completa"
+          <ActionButton
+            actionButtonId="action-button-full-screen"
+            actionButtonClass={`action-button-full-screen ${actionButtonClassName}`}
             onClick={(): void => setIsFullScreen(true)}
           />
         )}
+        {children}
       </div>
     </Fullscreen>
   )
