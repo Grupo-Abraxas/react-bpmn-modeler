@@ -3,23 +3,6 @@
 @import './tools-pallete';
 @import './action-button';
 
-* {
-  box-sizing: border-box;
-}
-
-body,
-html {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-a:link {
-  text-decoration: none;
-}
-
 .content {
   width: 100%;
   height: 100%;
