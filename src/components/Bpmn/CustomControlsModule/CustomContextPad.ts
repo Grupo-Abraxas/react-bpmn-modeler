@@ -1,4 +1,9 @@
-import { TASK_SETTINGS_EVENT, getContextPadEntriesType, ContextPadEntriesType } from './types'
+import {
+  TASK_SETTINGS_EVENT,
+  TASK_LABEL_EVENT,
+  getContextPadEntriesType,
+  ContextPadEntriesType
+} from './types'
 
 class CustomContextPad {
   public autoPlace: object | undefined
@@ -32,6 +37,20 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
+    const taskLabel = (): void => {
+      const customEvent = new CustomEvent(TASK_LABEL_EVENT, {
+        detail: {
+          id: element.businessObject.id,
+          $type: element.businessObject.$type,
+          $parent: {
+            id: element.businessObject.$parent.id,
+            $type: element.businessObject.$parent.$type
+          }
+        }
+      })
+      document.dispatchEvent(customEvent)
+    }
+
     return {
       $inject: ['config', 'contextPad', 'injector', 'translate'],
       'task-configuration': {
@@ -40,6 +59,14 @@ class CustomContextPad {
         title: this.translate('Task settings'),
         action: {
           click: taskSettings
+        }
+      },
+      'task-label': {
+        group: 'edit',
+        className: 'bpmn-icon-custom-task-label',
+        title: this.translate('Task label'),
+        action: {
+          click: taskLabel
         }
       }
     }

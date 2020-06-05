@@ -7,7 +7,7 @@ import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
-import CustomControlsModule, { TASK_SETTINGS_EVENT } from './CustomControlsModule'
+import CustomControlsModule, { TASK_SETTINGS_EVENT, TASK_LABEL_EVENT } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
@@ -42,6 +42,7 @@ const Bpmn: FC<BpmnType> = ({
   zStep = 0.4,
   onElementChange,
   onTaskTarget,
+  onTaskLabelTarget,
   onError,
   children
 }) => {
@@ -53,33 +54,28 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Button handlers
   const fitViewport = useCallback((): void => {
-    if (modelerRef?.current) {
-      modelerRef.current.get('canvas').zoom('fit-viewport', true)
-      setZLevel(1)
-    }
+    modelerRef?.current?.get('canvas').zoom('fit-viewport', true)
+    setZLevel(1)
   }, [modelerRef])
 
   const handleZoom = (zoomScale: number): void => {
-    if (modelerRef?.current) {
-      modelerRef.current.get('canvas').zoom(zoomScale, 'auto')
-      setZLevel(zoomScale)
-    }
+    modelerRef?.current?.get('canvas').zoom(zoomScale, 'auto')
+    setZLevel(zoomScale)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeImportXML = useCallback((): void => {
-    if (modelerRef?.current) {
-      modelerRef.current.importXML(
-        bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
-        (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
-      )
-    }
+    modelerRef?.current?.importXML(
+      bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
+      (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
+    )
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
   const removeCustomIcon = (divGroupIndex: number): void => {
     const groups = document.querySelectorAll('.group')
     const group = groups[divGroupIndex]
     if (group.lastChild) {
+      group.lastChild.remove()
       group.lastChild.remove()
     }
   }
@@ -111,42 +107,38 @@ const Bpmn: FC<BpmnType> = ({
   }, [])
 
   const saveModel = useCallback((): void => {
-    if (modelerRef?.current) {
-      modelerRef.current.saveXML(
-        {
-          format: true
-        },
-        (error: Error, xml: string) => {
-          if (error instanceof Error) {
-            onError(error)
-          } else {
-            if (onElementChange) {
-              onElementChange(xml)
-            }
+    modelerRef?.current?.saveXML(
+      {
+        format: true
+      },
+      (error: Error, xml: string) => {
+        if (error instanceof Error) {
+          onError(error)
+        } else {
+          if (onElementChange) {
+            onElementChange(xml)
           }
         }
-      )
-    }
+      }
+    )
   }, [modelerRef, onElementChange, onError])
 
   const bpmnPadCustomButtonEventBus = useCallback((): void => {
     type eventBusType = { current: { element: { type: string } } }
-    if (modelerRef?.current) {
-      const eventBus = modelerRef.current.get('eventBus')
-      eventBus.on('elements.changed', (): void => {
-        saveModel()
-      })
-      eventBus.on(
-        'contextPad.open',
-        ({
-          current: {
-            element: { type }
-          }
-        }: eventBusType): void => {
-          removeCustomTaskButton(type)
+    const eventBus = modelerRef?.current?.get('eventBus')
+    eventBus.on('elements.changed', (): void => {
+      saveModel()
+    })
+    eventBus.on(
+      'contextPad.open',
+      ({
+        current: {
+          element: { type }
         }
-      )
-    }
+      }: eventBusType): void => {
+        removeCustomTaskButton(type)
+      }
+    )
   }, [modelerRef, removeCustomTaskButton, saveModel])
 
   const memorizeSetModeler = useCallback((): void => {
@@ -179,6 +171,14 @@ const Bpmn: FC<BpmnType> = ({
       false
     )
   }, [onTaskTarget])
+
+  useEffect((): void => {
+    document.addEventListener(
+      TASK_LABEL_EVENT,
+      (event: Event): void => onTaskLabelTarget(event),
+      false
+    )
+  }, [onTaskLabelTarget])
 
   return (
     <Fullscreen
