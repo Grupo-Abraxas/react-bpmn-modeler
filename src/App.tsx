@@ -10,6 +10,12 @@ const App: FC = () => {
       modelerInnerHeight={window.innerHeight}
       onElementChange={(xml: string): void => alert(xml)}
       onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
+      onTaskLabelTarget={(event: CustomEvent): void => {
+        const modeling = modelerRef?.current?.get('modeling')
+        const elementRegistry = modelerRef?.current?.get('elementRegistry')
+        const element = elementRegistry.get(event.detail.id)
+        modeling.updateProperties(element, { name: 'Example task label' })
+      }}
       onError={(error: Error): void => alert(error)}
     />
   )
