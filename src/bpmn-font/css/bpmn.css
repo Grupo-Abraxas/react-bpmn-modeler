@@ -1,9 +1,12 @@
+@charset "UTF-8";
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
+  src: url(https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2)
+    format('woff2');
 }
+
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
 /*
@@ -14,41 +17,42 @@
   }
 }
 */
-
- [class^="bpmn-icon-custom-"]:before, [class*=" bpmn-icon-custom-"]:before {
-  font-family: "Material Icons";
+[class^='bpmn-icon-custom-']:before,
+[class*=' bpmn-icon-custom-']:before {
+  font-family: 'Material Icons';
   font-style: normal;
   font-weight: normal;
   /* speak: none; */
-
   display: inline-block;
   text-decoration: inherit;
   width: 1em;
   /* margin-right: .2em; */
   text-align: center;
   /* opacity: .8; */
-
   /* For safety - reset parent styles, that can break glyph codes*/
   font-variant: normal;
   text-transform: none;
-
   /* fix buttons height, for twitter bootstrap */
   line-height: 1em;
-
   /* Animation center compensation - margins should be symmetric */
   /* remove if not needed */
-  margin-left: .2em;
-
+  margin-left: 0.2em;
   /* you can be more comfortable with increased icons size */
   /* font-size: 120%; */
-
   /* Font smoothing. That was taken from TWBS */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
   /* Uncomment for 3D effect */
   text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.562);
 }
 
+.bpmn-icon-custom-task-settings:before {
+  content: '\e8b8';
+}
 
-.bpmn-icon-custom-task-settings:before { content: '\e8b8'; } /* '' */
+/* '' */
+.bpmn-icon-custom-task-label:before {
+  content: '\e873';
+}
+
+/* '' */
