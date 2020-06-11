@@ -18,3 +18,7 @@ export type BpmnType = {
   onTaskLabelTarget: Function
   onError: (error: Error) => void
 }
+
+export type ElementCustomPadEntriesType = {
+  [key: string]: string[]
+}
