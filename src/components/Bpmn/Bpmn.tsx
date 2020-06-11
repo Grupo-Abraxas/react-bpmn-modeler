@@ -65,6 +65,8 @@ const Bpmn: FC<BpmnType> = ({
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Custom pad entries
   const memorizeImportXML = useCallback((): void => {
     modelerRef?.current?.importXML(
       bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
@@ -99,7 +101,7 @@ const Bpmn: FC<BpmnType> = ({
     )
   }, [modelerRef, onElementChange, onError])
 
-  const bpmnPadCustomButtonEventBus = useCallback((): void => {
+  const handleEventBus = useCallback((): void => {
     type eventBusType = { current: { element: { type: string } } }
     const eventBus = modelerRef?.current?.get('eventBus')
     eventBus.on('elements.changed', (): void => {
@@ -116,6 +118,7 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
   }, [modelerRef, removeCustomTaskEntry, saveModel])
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({
@@ -133,8 +136,8 @@ const Bpmn: FC<BpmnType> = ({
       height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
     memorizeImportXML()
-    bpmnPadCustomButtonEventBus()
-  }, [memorizeImportXML, modelerInnerHeight, bpmnPadCustomButtonEventBus, modelerRef])
+    handleEventBus()
+  }, [memorizeImportXML, modelerInnerHeight, handleEventBus, modelerRef])
 
   useEffect((): void => {
     memorizeSetModeler()
