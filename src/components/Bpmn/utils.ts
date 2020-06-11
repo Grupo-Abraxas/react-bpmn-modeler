@@ -11,6 +11,7 @@ const entriesToRemove: ElementCustomPadEntriesType = {
   SequenceFlow: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   TextAnnotation: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   Participant: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Lane: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   DataStoreReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   DataObjectReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   Task: []
