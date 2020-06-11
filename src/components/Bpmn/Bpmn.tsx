@@ -12,6 +12,7 @@ import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
 import { BpmnType } from './types'
+import { findLateralPadEntries } from './utils'
 
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
@@ -71,38 +72,13 @@ const Bpmn: FC<BpmnType> = ({
     )
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
-  const removeCustomIcon = (divGroupIndex: number): void => {
-    const groups = document.querySelectorAll('.group')
-    const group = groups[divGroupIndex]
-    if (group.lastChild) {
-      group.lastChild.remove()
-      group.lastChild.remove()
-    }
-  }
+  const removeCustomTaskEntry = useCallback((type: string) => {
+    const lateralPadEntries: Element[] = findLateralPadEntries(type)
 
-  const removeCustomTaskButton = useCallback((type: string) => {
-    type bpmnElementPadDivType = {
-      [key: string]: number
-    }
-    const bpmnElementPadDiv: bpmnElementPadDivType = {
-      StartEvent: 1,
-      IntermediateThrowEvent: 1,
-      IntermediateCatchEvent: 1,
-      EndEvent: 0,
-      CallActivity: 1,
-      SubProcess: 1,
-      Gateway: 1,
-      SequenceFlow: 0,
-      TextAnnotation: 0,
-      Participant: 3,
-      DataStoreReference: 2,
-      DataObjectReference: 2
-    }
-    for (const key in bpmnElementPadDiv) {
-      if (type.includes(key)) {
-        const divGroupIndex: number = bpmnElementPadDiv[key]
-        removeCustomIcon(divGroupIndex)
-      }
+    if (lateralPadEntries.length > 0) {
+      lateralPadEntries.forEach((element: Element) => {
+        element.parentNode?.removeChild(element)
+      })
     }
   }, [])
 
@@ -136,10 +112,10 @@ const Bpmn: FC<BpmnType> = ({
           element: { type }
         }
       }: eventBusType): void => {
-        removeCustomTaskButton(type)
+        removeCustomTaskEntry(type)
       }
     )
-  }, [modelerRef, removeCustomTaskButton, saveModel])
+  }, [modelerRef, removeCustomTaskEntry, saveModel])
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({
