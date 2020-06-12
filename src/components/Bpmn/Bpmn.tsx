@@ -11,7 +11,7 @@ import CustomControlsModule, { TASK_SETTINGS_EVENT, TASK_LABEL_EVENT } from './C
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType } from './types'
+import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
 import { findLateralPadEntries } from './utils'
 
 import '../../styles/index.css'
@@ -44,6 +44,7 @@ const Bpmn: FC<BpmnType> = ({
   onElementChange,
   onTaskTarget,
   onTaskLabelTarget,
+  onShapeCreate,
   onError,
   children
 }) => {
@@ -100,25 +101,39 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
   }, [modelerRef, onElementChange, onError])
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
-    type eventBusType = { current: { element: { type: string } } }
     const eventBus = modelerRef?.current?.get('eventBus')
+
     eventBus.on('elements.changed', (): void => {
       saveModel()
     })
+
     eventBus.on(
       'contextPad.open',
       ({
         current: {
           element: { type }
         }
-      }: eventBusType): void => {
+      }: RemoveCustomTaskEntryType): void => {
         removeCustomTaskEntry(type)
       }
     )
-  }, [modelerRef, removeCustomTaskEntry, saveModel])
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    eventBus.on(
+      'commandStack.shape.create.postExecuted',
+      ({
+        context: {
+          shape: { id }
+        }
+      }: OnShapeCreateType): void => {
+        if (onShapeCreate) {
+          onShapeCreate(id)
+        }
+      }
+    )
+  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate])
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({
@@ -146,7 +161,7 @@ const Bpmn: FC<BpmnType> = ({
   useEffect((): void => {
     document.addEventListener(
       TASK_SETTINGS_EVENT,
-      (event: Event): void => onTaskTarget(event),
+      (event: Event): void => onTaskTarget?.(event),
       false
     )
   }, [onTaskTarget])
@@ -154,7 +169,7 @@ const Bpmn: FC<BpmnType> = ({
   useEffect((): void => {
     document.addEventListener(
       TASK_LABEL_EVENT,
-      (event: Event): void => onTaskLabelTarget(event),
+      (event: Event): void => onTaskLabelTarget?.(event),
       false
     )
   }, [onTaskLabelTarget])

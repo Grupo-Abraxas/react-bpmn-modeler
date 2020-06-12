@@ -51,10 +51,16 @@ const App: FC = () => {
         onElementChange={(xml: string): void => alert(xml)}
         onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
         onTaskLabelTarget={(event: CustomEvent): void => {
-          const modeling = modelerRef?.current?.get('modeling')
           const elementRegistry = modelerRef?.current?.get('elementRegistry')
+          const modeling = modelerRef?.current?.get('modeling')
           const element = elementRegistry.get(event.detail.id)
           modeling.updateProperties(element, { name: 'Example task label' })
+        }}
+        onShapeCreate={(elementId: string): void => {
+          const elementRegistry = modelerRef.current?.get('elementRegistry')
+          const modeling = modelerRef.current?.get('modeling')
+          const element = elementRegistry.get(elementId)
+          modeling.updateProperties(element, { id: `${elementId}_customId` })
         }}
         onError={(error: Error): void => alert(error)}
       />

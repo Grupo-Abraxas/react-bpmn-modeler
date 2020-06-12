@@ -14,6 +14,8 @@ const entriesToRemove: ElementCustomPadEntriesType = {
   Lane: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   DataStoreReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   DataObjectReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  label: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Association: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
   Task: []
 }
 
