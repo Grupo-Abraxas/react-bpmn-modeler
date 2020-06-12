@@ -1,5 +1,6 @@
 import React, { FC, useRef, Fragment, useState, useCallback, useEffect } from 'react'
 import Bpmn, { BpmnModelerType } from './components/Bpmn'
+import { PadEntriesToRemoveType } from './components/Bpmn/types'
 
 //load bpmnStringFile from anywere
 const getBpmnFile = (): string => `<?xml version="1.0" encoding="UTF-8"?>
@@ -38,6 +39,39 @@ const getBpmnFile = (): string => `<?xml version="1.0" encoding="UTF-8"?>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>`
 
+// Item classes to remove from the item popup panel
+export const elementClassesToRemove = [
+  'bpmn-icon-subprocess-collapsed',
+  'bpmn-icon-subprocess-expanded',
+  'bpmn-icon-business-rule',
+  'bpmn-icon-service',
+  'bpmn-icon-start-event-condition',
+  'bpmn-icon-start-event-signal',
+  'bpmn-icon-data-object',
+  'bpmn-icon-data-store'
+]
+
+// Item classes to remove from the item lateral pad
+
+export const padEntriesToRemove: PadEntriesToRemoveType = {
+  StartEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  IntermediateThrowEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  IntermediateCatchEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  EndEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  CallActivity: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  SubProcess: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Gateway: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  SequenceFlow: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  TextAnnotation: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Participant: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Lane: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  DataStoreReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  DataObjectReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  label: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Association: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  Task: []
+}
+
 const App: FC = () => {
   const modelerRef = useRef<BpmnModelerType>()
   const [model, setModel] = useState<JSX.Element>()
@@ -48,6 +82,8 @@ const App: FC = () => {
         modelerRef={modelerRef}
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
+        elementClassesToRemove={elementClassesToRemove}
+        padEntriesToRemove={padEntriesToRemove}
         onElementChange={(xml: string): void => alert(xml)}
         onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
         onTaskLabelTarget={(event: CustomEvent): void => {

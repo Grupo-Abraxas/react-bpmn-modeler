@@ -12,7 +12,7 @@ import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
 import { BpmnType } from './types'
-import { findLateralPadEntries } from './utils'
+import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
@@ -41,6 +41,8 @@ const Bpmn: FC<BpmnType> = ({
   modelerInnerHeight,
   actionButtonClassName = '',
   zStep = 0.4,
+  elementClassesToRemove,
+  padEntriesToRemove,
   onElementChange,
   onTaskTarget,
   onTaskLabelTarget,
@@ -74,15 +76,18 @@ const Bpmn: FC<BpmnType> = ({
     )
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
-  const removeCustomTaskEntry = useCallback((type: string) => {
-    const lateralPadEntries: Element[] = findLateralPadEntries(type)
+  const removeCustomTaskEntry = useCallback(
+    (type: string) => {
+      const lateralPadEntries: Element[] = findLateralPadEntries(type, padEntriesToRemove)
 
-    if (lateralPadEntries.length > 0) {
-      lateralPadEntries.forEach((element: Element) => {
-        element.parentNode?.removeChild(element)
-      })
-    }
-  }, [])
+      if (lateralPadEntries.length > 0) {
+        lateralPadEntries.forEach((element: Element) => {
+          element.parentNode?.removeChild(element)
+        })
+      }
+    },
+    [padEntriesToRemove]
+  )
 
   const saveModel = useCallback((): void => {
     modelerRef?.current?.saveXML(
@@ -117,7 +122,10 @@ const Bpmn: FC<BpmnType> = ({
         removeCustomTaskEntry(type)
       }
     )
-  }, [modelerRef, removeCustomTaskEntry, saveModel])
+    eventBus.on('popupMenu.open', () => {
+      setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
+    })
+  }, [modelerRef, removeCustomTaskEntry, saveModel, elementClassesToRemove])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
@@ -137,7 +145,8 @@ const Bpmn: FC<BpmnType> = ({
     })
     memorizeImportXML()
     handleEventBus()
-  }, [memorizeImportXML, modelerInnerHeight, handleEventBus, modelerRef])
+    removeElementsByClass(elementClassesToRemove)
+  }, [memorizeImportXML, modelerInnerHeight, handleEventBus, modelerRef, elementClassesToRemove])
 
   useEffect((): void => {
     memorizeSetModeler()
@@ -146,7 +155,7 @@ const Bpmn: FC<BpmnType> = ({
   useEffect((): void => {
     document.addEventListener(
       TASK_SETTINGS_EVENT,
-      (event: Event): void => onTaskTarget(event),
+      (event: Event): void => onTaskTarget?.(event),
       false
     )
   }, [onTaskTarget])
@@ -154,7 +163,7 @@ const Bpmn: FC<BpmnType> = ({
   useEffect((): void => {
     document.addEventListener(
       TASK_LABEL_EVENT,
-      (event: Event): void => onTaskLabelTarget(event),
+      (event: Event): void => onTaskLabelTarget?.(event),
       false
     )
   }, [onTaskLabelTarget])
