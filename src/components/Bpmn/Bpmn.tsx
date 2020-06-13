@@ -11,7 +11,7 @@ import CustomControlsModule, { TASK_SETTINGS_EVENT, TASK_LABEL_EVENT } from './C
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
+import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType, OnUpdateRootType } from './types'
 import { findLateralPadEntries } from './utils'
 
 import '../../styles/index.css'
@@ -45,6 +45,7 @@ const Bpmn: FC<BpmnType> = ({
   onTaskTarget,
   onTaskLabelTarget,
   onShapeCreate,
+  onRootShapeUpdate,
   onError,
   children
 }) => {
@@ -133,7 +134,20 @@ const Bpmn: FC<BpmnType> = ({
         }
       }
     )
-  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate])
+
+    eventBus.on(
+      'commandStack.canvas.updateRoot.postExecute',
+      ({
+        context: {
+          newRoot: { id, type }
+        }
+      }: OnUpdateRootType): void => {
+        if (onRootShapeUpdate) {
+          onRootShapeUpdate(id, type)
+        }
+      }
+    )
+  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, onRootShapeUpdate])
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({

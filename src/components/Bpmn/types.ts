@@ -17,6 +17,7 @@ export type BpmnType = {
   onTaskTarget?: Function
   onTaskLabelTarget?: Function
   onShapeCreate?: Function
+  onRootShapeUpdate?: Function
   onError: (error: Error) => void
 }
 
@@ -27,3 +28,5 @@ export type ElementCustomPadEntriesType = {
 export type OnShapeCreateType = { context: { shape: { id: string } } }
 
 export type RemoveCustomTaskEntryType = { current: { element: { type: string } } }
+
+export type OnUpdateRootType = { context: { newRoot: { id: string; type: string } } }

@@ -62,6 +62,9 @@ const App: FC = () => {
           const element = elementRegistry.get(elementId)
           modeling.updateProperties(element, { id: `${elementId}_customId` })
         }}
+        onRootShapeUpdate={(id: string, type: string): void =>
+          alert(`${id} ${type} root shape updated!`)
+        }
         onError={(error: Error): void => alert(error)}
       />
     ),

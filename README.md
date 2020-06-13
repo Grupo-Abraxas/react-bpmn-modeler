@@ -40,6 +40,7 @@ const App: FC = () => {
         const element = elementRegistry.get(event.detail.id)
         modeling.updateProperties(element, { name: 'Example task label' })
       }}
+      onRootShapeUpdate={(id: string, type: string): void => alert(`${id} ${type} root shape updated!`)}
       onError={(error: Error): void => alert(error)}
     />
   )
@@ -75,6 +76,7 @@ const App: FC = () => {
         const element = elementRegistry.get(event.detail.id)
         modeling.updateProperties(element, { name: 'Example task label' })
       }}
+      onRootShapeUpdate={(id: string, type: string): void => alert(`${id} ${type} root shape updated!`)}
       onError={error => alert(error)}
     />
   )
@@ -107,13 +109,13 @@ export default App
 
 ```typescript
 {
+  id: string
+  $type: string
+  $parent: {
     id: string
     $type: string
-    $parent: {
-      id: string
-      $type: string
-    }
   }
+}
 ```
 
 * **onTaskLabelTarget:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
@@ -122,13 +124,22 @@ export default App
 
 ```typescript
 {
+  id: string
+  $type: string
+  $parent: {
     id: string
     $type: string
-    $parent: {
-      id: string
-      $type: string
-    }
   }
+}
+```
+
+* **onRootShapeUpdate** It is a function that is executed when a Pool/Participant is created or deleted.
+
+*event.detail* returns
+
+```typescript
+id: string
+type: string
 ```
 
 * **onError:** It is executed in case of error, it accepts a function that receives the error as a parameter. **\***
