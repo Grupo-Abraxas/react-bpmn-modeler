@@ -52,9 +52,8 @@ class CustomContextPad {
     }
 
     return {
-      $inject: ['config', 'contextPad', 'injector', 'translate'],
       'task-configuration': {
-        group: 'edit',
+        group: 'default',
         className: 'bpmn-icon-custom-task-settings',
         title: this.translate('Task settings'),
         action: {
@@ -62,7 +61,7 @@ class CustomContextPad {
         }
       },
       'task-documentation': {
-        group: 'edit',
+        group: 'default',
         className: 'bpmn-icon-custom-task-documentation',
         title: this.translate('Task documentation'),
         action: {
