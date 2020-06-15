@@ -1,4 +1,4 @@
-import React, { FC, useRef, Fragment, useState, useCallback, useEffect } from 'react'
+import React, { FC, useRef, useState, useCallback, useEffect } from 'react'
 import Bpmn, { BpmnModelerType } from './components/Bpmn'
 import { PadEntriesToRemoveType } from './components/Bpmn/types'
 
@@ -108,7 +108,7 @@ const App: FC = () => {
     }
   }, [bpmnStringFile, model, setModeler])
 
-  return <Fragment>{model}</Fragment>
+  return <>{model}</>
 }
 
 export default App

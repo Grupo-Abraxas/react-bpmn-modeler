@@ -21,7 +21,7 @@ yarn add @arkondata/react-bpmn-modeler
 With React Typescript
 
 ```tsx
-import React, { FC, useRef, MutableRefObject, Fragment } from 'react'
+import React, { FC, useRef, MutableRefObject } from 'react'
 import { Bpmn } from '@arkondata/react-bpmn-modeler/lib/components'
 import { BpmnModelerType, PadEntriesToRemoveType } from '@arkondata/react-bpmn-modeler/lib/components/types'
 
@@ -140,7 +140,7 @@ const App: FC = () => {
     }
   }, [bpmnStringFile, model, setModeler])
 
-  return <Fragment>{model}</Fragment>
+  return <>{model}</>
 }
 
 export default App
@@ -151,7 +151,7 @@ With React
 
 ```jsx
 
-import React, { useRef, Fragment } from 'react'
+import React, { useRef } from 'react'
 import { Bpmn } from '@arkondata/react-bpmn-modeler/lib/components'
 
 //load bpmnStringFile from anywere
@@ -266,7 +266,7 @@ const App = () => {
     }
   }, [bpmnStringFile, model, setModeler])
 
-  return <Fragment>{model}</Fragment>
+  return <>{model}</>
 }
 
 export default App

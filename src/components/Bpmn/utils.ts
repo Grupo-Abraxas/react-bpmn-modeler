@@ -3,7 +3,7 @@ import { PadEntriesToRemoveType } from './types'
 const getElements = (elementClasses: string[]): Element[] => {
   let elements: Element[] = []
 
-  elementClasses.forEach((elementClass: string) => {
+  elementClasses.forEach(elementClass => {
     const element = document.getElementsByClassName(elementClass)
     elements = [...elements, ...element]
   })
