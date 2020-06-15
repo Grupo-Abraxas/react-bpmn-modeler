@@ -7,7 +7,10 @@ import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
-import CustomControlsModule, { TASK_SETTINGS_EVENT, TASK_LABEL_EVENT } from './CustomControlsModule'
+import CustomControlsModule, {
+  TASK_SETTINGS_EVENT,
+  TASK_DOCUMENTATION_EVENT
+} from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
@@ -45,7 +48,7 @@ const Bpmn: FC<BpmnType> = ({
   padEntriesToRemove,
   onElementChange,
   onTaskTarget,
-  onTaskLabelTarget,
+  onTaskDocumentationTarget,
   onError,
   children
 }) => {
@@ -162,11 +165,11 @@ const Bpmn: FC<BpmnType> = ({
 
   useEffect((): void => {
     document.addEventListener(
-      TASK_LABEL_EVENT,
-      (event: Event): void => onTaskLabelTarget?.(event),
+      TASK_DOCUMENTATION_EVENT,
+      (event: Event): void => onTaskDocumentationTarget?.(event),
       false
     )
-  }, [onTaskLabelTarget])
+  }, [onTaskDocumentationTarget])
 
   return (
     <Fullscreen

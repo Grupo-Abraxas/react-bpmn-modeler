@@ -85,21 +85,21 @@ export const elementClassesToRemove = [
 // Item classes to remove from the item lateral pad
 
 export const padEntriesToRemove: PadEntriesToRemoveType = {
-  StartEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  IntermediateThrowEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  IntermediateCatchEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  EndEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  CallActivity: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  SubProcess: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Gateway: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  SequenceFlow: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  TextAnnotation: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Participant: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Lane: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  DataStoreReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  DataObjectReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  label: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Association: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  StartEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  IntermediateThrowEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  IntermediateCatchEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  EndEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  CallActivity: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  SubProcess: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Gateway: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  SequenceFlow: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  TextAnnotation: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Participant: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Lane: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  DataStoreReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  DataObjectReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  label: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Association: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
   Task: []
 }
 
@@ -117,13 +117,15 @@ const App: FC = () => {
         padEntriesToRemove={padEntriesToRemove}
         onElementChange={(xml: string): void => alert(xml)}
         onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
-        onTaskLabelTarget={(event: CustomEvent): void => {
-        // Set an element programmatically
-        const modeling = modelerRef?.current?.get('modeling')
-        const elementRegistry = modelerRef?.current?.get('elementRegistry')
-        const element = elementRegistry.get(event.detail.id)
-        modeling.updateProperties(element, { name: 'Example task label' })
-      }}
+        onTaskDocumentationTarget={(event: CustomEvent): void => {
+          // Create an element programmatically
+          const elementRegistry = modelerRef?.current?.get('elementRegistry')
+          const modeling = modelerRef?.current?.get('modeling')
+          const moddle = modelerRef?.current?.get('moddle')
+          const element = elementRegistry.get(event.detail.id)
+          const documentation = moddle.create('bpmn:Documentation', { text: 'Documenation text' })
+          modeling.updateProperties(element, { documentation: [documentation] })
+        }}
         onError={(error: Error): void => alert(error)}
       />
     ),
@@ -211,21 +213,21 @@ export const elementClassesToRemove = [
 ]
 
 export const padEntriesToRemove = {
-  StartEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  IntermediateThrowEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  IntermediateCatchEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  EndEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  CallActivity: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  SubProcess: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Gateway: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  SequenceFlow: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  TextAnnotation: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Participant: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Lane: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  DataStoreReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  DataObjectReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  label: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Association: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
+  StartEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  IntermediateThrowEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  IntermediateCatchEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  EndEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  CallActivity: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  SubProcess: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Gateway: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  SequenceFlow: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  TextAnnotation: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Participant: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Lane: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  DataStoreReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  DataObjectReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  label: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  Association: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
   Task: []
 }
 
@@ -243,13 +245,15 @@ const App = () => {
         padEntriesToRemove={padEntriesToRemove}
         onElementChange={xml => alert(xml)}
         onTaskTarget={event => alert(JSON.stringify(event.detail))}
-        onTaskLabelTarget={event => {
-        // Set an element programmatically
-        const modeling = modelerRef?.current?.get('modeling')
-        const elementRegistry = modelerRef?.current?.get('elementRegistry')
-        const element = elementRegistry.get(event.detail.id)
-        modeling.updateProperties(element, { name: 'Example task label' })
-      }}
+        onTaskDocumentationTarget={event => {
+          // Create an element programmatically
+          const elementRegistry = modelerRef?.current?.get('elementRegistry')
+          const modeling = modelerRef?.current?.get('modeling')
+          const moddle = modelerRef?.current?.get('moddle')
+          const element = elementRegistry.get(event.detail.id)
+          const documentation = moddle.create('bpmn:Documentation', { text: 'Documenation text' })
+          modeling.updateProperties(element, { documentation: [documentation] })
+        }}
         onError={error => alert(error)}
       />
     ),
@@ -306,7 +310,7 @@ export default App
   }
 ```
 
-* **onTaskLabelTarget:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
+* **onTaskDocumentationTarget:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
 
 *event.detail* returns
 

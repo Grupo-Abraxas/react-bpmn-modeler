@@ -1,6 +1,6 @@
 import {
   TASK_SETTINGS_EVENT,
-  TASK_LABEL_EVENT,
+  TASK_DOCUMENTATION_EVENT,
   getContextPadEntriesType,
   ContextPadEntriesType
 } from './types'
@@ -38,7 +38,7 @@ class CustomContextPad {
     }
 
     const taskLabel = (): void => {
-      const customEvent = new CustomEvent(TASK_LABEL_EVENT, {
+      const customEvent = new CustomEvent(TASK_DOCUMENTATION_EVENT, {
         detail: {
           id: element.businessObject.id,
           $type: element.businessObject.$type,
@@ -61,10 +61,10 @@ class CustomContextPad {
           click: taskSettings
         }
       },
-      'task-label': {
+      'task-documentation': {
         group: 'edit',
-        className: 'bpmn-icon-custom-task-label',
-        title: this.translate('Task label'),
+        className: 'bpmn-icon-custom-task-documentation',
+        title: this.translate('Task documentation'),
         action: {
           click: taskLabel
         }

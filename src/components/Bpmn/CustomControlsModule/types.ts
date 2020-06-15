@@ -1,5 +1,5 @@
 export const TASK_SETTINGS_EVENT = 'TASK_SETTINGS_EVENT'
-export const TASK_LABEL_EVENT = 'TASK_LABEL_EVENT'
+export const TASK_DOCUMENTATION_EVENT = 'TASK_DOCUMENTATION_EVENT'
 
 export type ContextPadEntriesType = {
   businessObject: {
@@ -22,7 +22,7 @@ export type getContextPadEntriesType = {
       click: () => void
     }
   }
-  'task-label': {
+  'task-documentation': {
     group: string
     className: string
     title: string

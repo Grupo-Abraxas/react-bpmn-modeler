@@ -21,6 +21,6 @@ export type BpmnType = {
   padEntriesToRemove?: PadEntriesToRemoveType
   onElementChange?: (xml: string) => void
   onTaskTarget?: Function
-  onTaskLabelTarget?: Function
+  onTaskDocumentationTarget?: Function
   onError: (error: Error) => void
 }
