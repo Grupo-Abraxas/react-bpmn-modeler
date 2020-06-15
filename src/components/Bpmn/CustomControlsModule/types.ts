@@ -13,7 +13,6 @@ export type ContextPadEntriesType = {
 }
 
 export type getContextPadEntriesType = {
-  $inject: string[]
   'task-configuration': {
     group: string
     className: string
