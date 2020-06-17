@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState, useCallback, useEffect } from 'react'
 import Bpmn, { BpmnModelerType } from './components/Bpmn'
-import { PadEntriesToRemoveType } from './components/Bpmn/types'
+import { PadEntriesType } from './components/Bpmn/types'
 
 //load bpmnStringFile from anywere
 const getBpmnFile = (): string => `<?xml version="1.0" encoding="UTF-8"?>
@@ -53,84 +53,24 @@ export const elementClassesToRemove = [
 
 // Item classes to remove from the item lateral pad
 
-export const padEntriesToRemove: PadEntriesToRemoveType = {
-  StartEvent: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  IntermediateThrowEvent: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  IntermediateCatchEvent: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  EndEvent: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  CallActivity: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  SubProcess: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  Gateway: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  SequenceFlow: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  TextAnnotation: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  Participant: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  Lane: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  DataStoreReference: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  DataObjectReference: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  label: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  Association: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  Group: [
-    'bpmn-icon-custom-task-documentation',
-    'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-sequence-flow-connfiguration'
-  ],
-  Task: ['bpmn-icon-custom-sequence-flow-connfiguration']
+export const customPadEntries: PadEntriesType = {
+  StartEvent: [],
+  IntermediateThrowEvent: [],
+  IntermediateCatchEvent: [],
+  EndEvent: [],
+  CallActivity: [],
+  SubProcess: [],
+  Gateway: [],
+  SequenceFlow: ['bpmn-icon-custom-sequence-flow-configuration'],
+  TextAnnotation: [],
+  Participant: [],
+  Lane: [],
+  DataStoreReference: [],
+  DataObjectReference: [],
+  label: [],
+  Association: [],
+  Group: [],
+  Task: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings']
 }
 
 const App: FC = () => {
@@ -177,7 +117,7 @@ const App: FC = () => {
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
         elementClassesToRemove={elementClassesToRemove}
-        padEntriesToRemove={padEntriesToRemove}
+        customPadEntries={customPadEntries}
         onElementChange={(xml: string): void => alert(xml)}
         onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
         onTaskDocumentationTarget={onTaskDocumentationTarget}

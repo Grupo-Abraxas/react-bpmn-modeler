@@ -4,7 +4,8 @@ import CustomPalette from './CustomPalette'
 export {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
-  SEQUENCE_FLOW_CONFIGURATION_EVENT
+  SEQUENCE_FLOW_CONFIGURATION_EVENT,
+  customPadClassNames
 } from './types'
 
 export default {

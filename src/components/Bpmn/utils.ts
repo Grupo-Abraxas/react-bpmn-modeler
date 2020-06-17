@@ -1,4 +1,5 @@
-import { PadEntriesToRemoveType } from './types'
+import { PadEntriesType } from './types'
+import { customPadClassNames } from './CustomControlsModule'
 
 const getElements = (elementClasses: string[]): Element[] => {
   let elements: Element[] = []
@@ -13,12 +14,16 @@ const getElements = (elementClasses: string[]): Element[] => {
 
 export const findLateralPadEntries = (
   type: string,
-  entriesToRemove?: PadEntriesToRemoveType
+  customPadEntries?: PadEntriesType
 ): Element[] => {
-  if (entriesToRemove) {
-    for (const [key, lateralPadEntryClasses] of Object.entries(entriesToRemove)) {
-      if (type.includes(key) && lateralPadEntryClasses.length > 0) {
-        return getElements(lateralPadEntryClasses)
+  if (customPadEntries) {
+    for (const [key, lateralPadEntryClasses] of Object.entries(customPadEntries)) {
+      if (type.includes(key)) {
+        const hiddenPadEntries = customPadClassNames.filter(
+          customPadClass => !lateralPadEntryClasses.includes(customPadClass)
+        )
+
+        return getElements(hiddenPadEntries)
       }
     }
   }

@@ -7,7 +7,7 @@ export type BpmnModelerType = {
   saveXML: Function
 }
 
-export type PadEntriesToRemoveType = {
+export type PadEntriesType = {
   [key: string]: string[]
 }
 
@@ -18,7 +18,7 @@ export type BpmnType = {
   actionButtonClassName?: string
   zStep?: number
   elementClassesToRemove?: string[]
-  padEntriesToRemove?: PadEntriesToRemoveType
+  customPadEntries?: PadEntriesType
   onElementChange?: (xml: string) => void
   onTaskTarget?: Function
   onTaskDocumentationTarget?: Function

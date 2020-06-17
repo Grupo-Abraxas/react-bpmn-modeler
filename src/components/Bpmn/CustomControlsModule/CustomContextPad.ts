@@ -3,7 +3,8 @@ import {
   TASK_DOCUMENTATION_EVENT,
   SEQUENCE_FLOW_CONFIGURATION_EVENT,
   getContextPadEntriesType,
-  ContextPadEntriesType
+  ContextPadEntriesType,
+  customPadClassNames
 } from './types'
 
 class CustomContextPad {
@@ -69,7 +70,7 @@ class CustomContextPad {
     return {
       'task-configuration': {
         group: 'default',
-        className: 'bpmn-icon-custom-task-settings',
+        className: customPadClassNames[0],
         title: this.translate('Task settings'),
         action: {
           click: taskSettings
@@ -77,7 +78,7 @@ class CustomContextPad {
       },
       'task-documentation': {
         group: 'default',
-        className: 'bpmn-icon-custom-task-documentation',
+        className: customPadClassNames[1],
         title: this.translate('Task documentation'),
         action: {
           click: taskDocumentation
@@ -85,8 +86,8 @@ class CustomContextPad {
       },
       'sequence-flow-configuration': {
         group: 'default',
-        className: 'bpmn-icon-custom-sequence-flow-connfiguration',
-        title: this.translate('Task documentation'),
+        className: customPadClassNames[2],
+        title: this.translate('Sequence Flow configuration'),
         action: {
           click: sequenceFlowConnfiguration
         }

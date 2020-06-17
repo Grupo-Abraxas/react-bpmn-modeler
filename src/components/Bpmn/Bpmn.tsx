@@ -46,7 +46,7 @@ const Bpmn: FC<BpmnType> = ({
   actionButtonClassName = '',
   zStep = 0.4,
   elementClassesToRemove,
-  padEntriesToRemove,
+  customPadEntries,
   onElementChange,
   onTaskTarget,
   onTaskDocumentationTarget,
@@ -83,7 +83,7 @@ const Bpmn: FC<BpmnType> = ({
 
   const removeCustomTaskEntry = useCallback(
     (type: string) => {
-      const lateralPadEntries: Element[] = findLateralPadEntries(type, padEntriesToRemove)
+      const lateralPadEntries: Element[] = findLateralPadEntries(type, customPadEntries)
 
       if (lateralPadEntries.length > 0) {
         lateralPadEntries.forEach((element: Element) => {
@@ -91,7 +91,7 @@ const Bpmn: FC<BpmnType> = ({
         })
       }
     },
-    [padEntriesToRemove]
+    [customPadEntries]
   )
 
   const saveModel = useCallback((): void => {
