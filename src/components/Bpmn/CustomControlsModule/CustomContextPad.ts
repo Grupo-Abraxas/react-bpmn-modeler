@@ -1,6 +1,7 @@
 import {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
+  SEQUENCE_FLOW_CONFIGURATION_EVENT,
   getContextPadEntriesType,
   ContextPadEntriesType
 } from './types'
@@ -37,8 +38,22 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
-    const taskLabel = (): void => {
+    const taskDocumentation = (): void => {
       const customEvent = new CustomEvent(TASK_DOCUMENTATION_EVENT, {
+        detail: {
+          id: element.businessObject.id,
+          $type: element.businessObject.$type,
+          $parent: {
+            id: element.businessObject.$parent.id,
+            $type: element.businessObject.$parent.$type
+          }
+        }
+      })
+      document.dispatchEvent(customEvent)
+    }
+
+    const sequenceFlowConnfiguration = (): void => {
+      const customEvent = new CustomEvent(SEQUENCE_FLOW_CONFIGURATION_EVENT, {
         detail: {
           id: element.businessObject.id,
           $type: element.businessObject.$type,
@@ -65,7 +80,15 @@ class CustomContextPad {
         className: 'bpmn-icon-custom-task-documentation',
         title: this.translate('Task documentation'),
         action: {
-          click: taskLabel
+          click: taskDocumentation
+        }
+      },
+      'sequence-flow-configuration': {
+        group: 'default',
+        className: 'bpmn-icon-custom-sequence-flow-connfiguration',
+        title: this.translate('Task documentation'),
+        action: {
+          click: sequenceFlowConnfiguration
         }
       }
     }

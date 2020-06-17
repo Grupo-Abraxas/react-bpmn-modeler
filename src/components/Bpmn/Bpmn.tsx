@@ -9,7 +9,8 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import { i18nSpanish } from './translations'
 import CustomControlsModule, {
   TASK_SETTINGS_EVENT,
-  TASK_DOCUMENTATION_EVENT
+  TASK_DOCUMENTATION_EVENT,
+  SEQUENCE_FLOW_CONFIGURATION_EVENT
 } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
@@ -49,6 +50,7 @@ const Bpmn: FC<BpmnType> = ({
   onElementChange,
   onTaskTarget,
   onTaskDocumentationTarget,
+  onSequenceFlowConfigurationTarget,
   onError,
   children
 }) => {
@@ -112,22 +114,17 @@ const Bpmn: FC<BpmnType> = ({
   const handleEventBus = useCallback((): void => {
     type eventBusType = { current: { element: { type: string } } }
     const eventBus = modelerRef?.current?.get('eventBus')
-    eventBus.on('elements.changed', (): void => {
-      saveModel()
-    })
-    eventBus.on(
-      'contextPad.open',
-      ({
-        current: {
-          element: { type }
-        }
-      }: eventBusType): void => {
-        removeCustomTaskEntry(type)
-      }
+
+    eventBus.on('elements.changed', (): void => saveModel())
+
+    eventBus.on('contextPad.open', ({ current: { element: { type } } }: eventBusType): void =>
+      removeCustomTaskEntry(type)
     )
-    eventBus.on('popupMenu.open', () => {
-      setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
-    })
+
+    eventBus.on(
+      'popupMenu.open',
+      (): NodeJS.Timeout => setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
+    )
   }, [modelerRef, removeCustomTaskEntry, saveModel, elementClassesToRemove])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -170,6 +167,14 @@ const Bpmn: FC<BpmnType> = ({
       false
     )
   }, [onTaskDocumentationTarget])
+
+  useEffect((): void => {
+    document.addEventListener(
+      SEQUENCE_FLOW_CONFIGURATION_EVENT,
+      (event: Event): void => onSequenceFlowConfigurationTarget?.(event),
+      false
+    )
+  }, [onSequenceFlowConfigurationTarget])
 
   return (
     <Fullscreen

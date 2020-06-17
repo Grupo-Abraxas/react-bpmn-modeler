@@ -54,28 +54,122 @@ export const elementClassesToRemove = [
 // Item classes to remove from the item lateral pad
 
 export const padEntriesToRemove: PadEntriesToRemoveType = {
-  StartEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  IntermediateThrowEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  IntermediateCatchEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  EndEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  CallActivity: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  SubProcess: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Gateway: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
+  StartEvent: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  IntermediateThrowEvent: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  IntermediateCatchEvent: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  EndEvent: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  CallActivity: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  SubProcess: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  Gateway: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
   SequenceFlow: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  TextAnnotation: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Participant: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Lane: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  DataStoreReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  DataObjectReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  label: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Association: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Task: []
+  TextAnnotation: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  Participant: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  Lane: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  DataStoreReference: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  DataObjectReference: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  label: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  Association: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  Group: [
+    'bpmn-icon-custom-task-documentation',
+    'bpmn-icon-custom-task-settings',
+    'bpmn-icon-custom-sequence-flow-connfiguration'
+  ],
+  Task: ['bpmn-icon-custom-sequence-flow-connfiguration']
 }
 
 const App: FC = () => {
   const modelerRef = useRef<BpmnModelerType>()
   const [model, setModel] = useState<JSX.Element>()
   const [bpmnStringFile, setBpmnStringFile] = useState('')
+
+  const onTaskDocumentationTarget = (event: CustomEvent): void => {
+    const elementRegistry = modelerRef?.current?.get('elementRegistry')
+    const modeling = modelerRef?.current?.get('modeling')
+    const moddle = modelerRef?.current?.get('moddle')
+    const element = elementRegistry.get(event.detail.id)
+
+    const documentation = moddle.create('bpmn:Documentation', { text: 'Documenation text' })
+    modeling.updateProperties(element, { documentation: [documentation] })
+  }
+
+  const onSequenceFlowConfigurationTarget = (event: CustomEvent): void => {
+    const elementRegistry = modelerRef?.current?.get('elementRegistry')
+    const modeling = modelerRef?.current?.get('modeling')
+    const moddle = modelerRef?.current?.get('moddle')
+    const element = elementRegistry.get(event.detail.id)
+
+    if (element.businessObject.sourceRef.$type.includes('Gateway')) {
+      const sequenceFlowElement = elementRegistry.get(element.businessObject.id)
+      const sequenceFlow = sequenceFlowElement.businessObject
+      const newFormalCondition = 'true'
+      const newConditionName = 'Yes'
+      const newCondition = moddle.create('bpmn:FormalExpression', {
+        body: `$\{${newFormalCondition}}`
+      })
+      sequenceFlow.conditionExpression = newCondition
+      modeling.updateProperties(sequenceFlowElement, {
+        name: newConditionName,
+        conditionExpression: newCondition
+      })
+    }
+  }
+
   const setModeler = useCallback(
     (): JSX.Element => (
       <Bpmn
@@ -86,14 +180,8 @@ const App: FC = () => {
         padEntriesToRemove={padEntriesToRemove}
         onElementChange={(xml: string): void => alert(xml)}
         onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
-        onTaskDocumentationTarget={(event: CustomEvent): void => {
-          const elementRegistry = modelerRef?.current?.get('elementRegistry')
-          const modeling = modelerRef?.current?.get('modeling')
-          const moddle = modelerRef?.current?.get('moddle')
-          const element = elementRegistry.get(event.detail.id)
-          const documentation = moddle.create('bpmn:Documentation', { text: 'Documenation text' })
-          modeling.updateProperties(element, { documentation: [documentation] })
-        }}
+        onTaskDocumentationTarget={onTaskDocumentationTarget}
+        onSequenceFlowConfigurationTarget={onSequenceFlowConfigurationTarget}
         onError={(error: Error): void => alert(error)}
       />
     ),

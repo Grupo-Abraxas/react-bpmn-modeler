@@ -22,5 +22,6 @@ export type BpmnType = {
   onElementChange?: (xml: string) => void
   onTaskTarget?: Function
   onTaskDocumentationTarget?: Function
+  onSequenceFlowConfigurationTarget?: Function
   onError: (error: Error) => void
 }
