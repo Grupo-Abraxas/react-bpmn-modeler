@@ -48,9 +48,9 @@ const Bpmn: FC<BpmnType> = ({
   elementClassesToRemove,
   customPadEntries,
   onElementChange,
-  onTaskTarget,
-  onTaskDocumentationTarget,
-  onSequenceFlowConfigurationTarget,
+  onTaskConfigurationClick,
+  onTaskDocumentationClick,
+  onSequenceFlowConfigurationClick,
   onError,
   children
 }) => {
@@ -155,26 +155,26 @@ const Bpmn: FC<BpmnType> = ({
   useEffect((): void => {
     document.addEventListener(
       TASK_SETTINGS_EVENT,
-      (event: Event): void => onTaskTarget?.(event),
+      (event: Event): void => onTaskConfigurationClick?.(event),
       false
     )
-  }, [onTaskTarget])
+  }, [onTaskConfigurationClick])
 
   useEffect((): void => {
     document.addEventListener(
       TASK_DOCUMENTATION_EVENT,
-      (event: Event): void => onTaskDocumentationTarget?.(event),
+      (event: Event): void => onTaskDocumentationClick?.(event),
       false
     )
-  }, [onTaskDocumentationTarget])
+  }, [onTaskDocumentationClick])
 
   useEffect((): void => {
     document.addEventListener(
       SEQUENCE_FLOW_CONFIGURATION_EVENT,
-      (event: Event): void => onSequenceFlowConfigurationTarget?.(event),
+      (event: Event): void => onSequenceFlowConfigurationClick?.(event),
       false
     )
-  }, [onSequenceFlowConfigurationTarget])
+  }, [onSequenceFlowConfigurationClick])
 
   return (
     <Fullscreen
