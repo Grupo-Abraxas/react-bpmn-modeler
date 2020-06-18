@@ -20,8 +20,8 @@ export type BpmnType = {
   elementClassesToRemove?: string[]
   customPadEntries?: PadEntriesType
   onElementChange?: (xml: string) => void
-  onTaskTarget?: Function
-  onTaskDocumentationTarget?: Function
-  onSequenceFlowConfigurationTarget?: Function
+  onTaskConfigurationClick?: Function
+  onTaskDocumentationClick?: Function
+  onSequenceFlowConfigurationClick?: Function
   onError: (error: Error) => void
 }

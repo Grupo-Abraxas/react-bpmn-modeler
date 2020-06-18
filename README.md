@@ -100,7 +100,7 @@ const App: FC = () => {
   const [model, setModel] = useState<JSX.Element>()
   const [bpmnStringFile, setBpmnStringFile] = useState('')
 
-  const onTaskDocumentationTarget = (event: CustomEvent): void => {
+  const onTaskDocumentationClick = (event: CustomEvent): void => {
     const elementRegistry = modelerRef?.current?.get('elementRegistry')
     const modeling = modelerRef?.current?.get('modeling')
     const moddle = modelerRef?.current?.get('moddle')
@@ -110,7 +110,7 @@ const App: FC = () => {
     modeling.updateProperties(element, { documentation: [documentation] })
   }
 
-  const onSequenceFlowConfigurationTarget = (event: CustomEvent): void => {
+  const onSequenceFlowConfigurationClick = (event: CustomEvent): void => {
     const elementRegistry = modelerRef?.current?.get('elementRegistry')
     const modeling = modelerRef?.current?.get('modeling')
     const moddle = modelerRef?.current?.get('moddle')
@@ -141,9 +141,9 @@ const App: FC = () => {
         elementClassesToRemove={elementClassesToRemove}
         customPadEntries={customPadEntries}
         onElementChange={(xml: string): void => alert(xml)}
-        onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
-        onTaskDocumentationTarget={onTaskDocumentationTarget}
-        onSequenceFlowConfigurationTarget={onSequenceFlowConfigurationTarget}
+        onTaskConfigurationClick={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
+        onTaskDocumentationClick={onTaskDocumentationClick}
+        onSequenceFlowConfigurationClick={onSequenceFlowConfigurationClick}
         onError={(error: Error): void => alert(error)}
       />
     ),
@@ -249,7 +249,7 @@ const App = () => {
   const [model, setModel] = useState()
   const [bpmnStringFile, setBpmnStringFile] = useState('')
 
-  const onTaskDocumentationTarget = event => {
+  const onTaskDocumentationClick = event => {
     const elementRegistry = modelerRef.current.get('elementRegistry')
     const modeling = modelerRef.current.get('modeling')
     const moddle = modelerRef.current.get('moddle')
@@ -259,7 +259,7 @@ const App = () => {
     modeling.updateProperties(element, { documentation: [documentation] })
   }
 
-  const onSequenceFlowConfigurationTarget = event => {
+  const onSequenceFlowConfigurationClick = event => {
     const elementRegistry = modelerRef.current.get('elementRegistry')
     const modeling = modelerRef.current.get('modeling')
     const moddle = modelerRef.current.get('moddle')
@@ -290,9 +290,9 @@ const App = () => {
         elementClassesToRemove={elementClassesToRemove}
         customPadEntries={customPadEntries}
         onElementChange={xml => alert(xml)}
-        onTaskTarget={event => alert(JSON.stringify(event.detail))}
-        onTaskDocumentationTarget={onTaskDocumentationTarget}
-        onSequenceFlowConfigurationTarget={onSequenceFlowConfigurationTarget}
+        onTaskConfigurationClick={event => alert(JSON.stringify(event.detail))}
+        onTaskDocumentationClick={onTaskDocumentationClick}
+        onSequenceFlowConfigurationClick={onSequenceFlowConfigurationClick}
         onError={error => alert(error)}
       />
     ),
@@ -344,7 +344,7 @@ const customPadClassNames = [
 
 * **onElementChange:** A function that runs every time a bpmn modeler element changes, accepts as a parameter a variable that contains the exported file in a text string.
 
-* **onTaskTarget:** It is a function that is executed when you click on the gear icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element.
+* **onTaskConfigurationClick:** It is a function that is executed when you click on the gear icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element.
 
 *event.detail* returns
 
@@ -359,7 +359,7 @@ const customPadClassNames = [
   }
 ```
 
-* **onTaskDocumentationTarget:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
+* **onTaskDocumentationClick:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
 
 *event.detail* returns
 
