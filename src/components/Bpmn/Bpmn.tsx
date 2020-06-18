@@ -15,7 +15,7 @@ import CustomControlsModule, {
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType } from './types'
+import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
@@ -51,6 +51,7 @@ const Bpmn: FC<BpmnType> = ({
   onTaskConfigurationClick,
   onTaskDocumentationClick,
   onSequenceFlowConfigurationClick,
+  onShapeCreate,
   onError,
   children
 }) => {
@@ -110,22 +111,40 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
   }, [modelerRef, onElementChange, onError])
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
-    type eventBusType = { current: { element: { type: string } } }
     const eventBus = modelerRef?.current?.get('eventBus')
 
     eventBus.on('elements.changed', (): void => saveModel())
 
-    eventBus.on('contextPad.open', ({ current: { element: { type } } }: eventBusType): void =>
-      removeCustomTaskEntry(type)
+    eventBus.on(
+      'contextPad.open',
+      ({
+        current: {
+          element: { type }
+        }
+      }: RemoveCustomTaskEntryType): void => {
+        removeCustomTaskEntry(type)
+      }
+    )
+    eventBus.on(
+      'commandStack.shape.create.postExecuted',
+      ({
+        context: {
+          shape: { id }
+        }
+      }: OnShapeCreateType): void => {
+        if (onShapeCreate) {
+          onShapeCreate(id)
+        }
+      }
     )
 
-    eventBus.on(
-      'popupMenu.open',
-      (): NodeJS.Timeout => setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
-    )
-  }, [modelerRef, removeCustomTaskEntry, saveModel, elementClassesToRemove])
+    eventBus.on('popupMenu.open', () => {
+      setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
+    })
+  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
