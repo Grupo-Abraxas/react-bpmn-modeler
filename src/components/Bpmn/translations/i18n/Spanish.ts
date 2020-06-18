@@ -75,7 +75,7 @@ const i18nSpanish: Record<string, string> = {
   'Change type': 'Cambiar tipo',
   Remove: 'Eliminar',
   TextAnnotation: 'Anotación de texto',
-  'Task label': 'Etiqueta de tarea',
+  'Task documentation': 'Documentatión de tarea',
 
   // Errors
   'no parent for {element} in {parent}': 'Sin padre para {element} en {parent}',
