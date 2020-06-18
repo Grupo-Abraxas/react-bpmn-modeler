@@ -23,5 +23,14 @@ export type BpmnType = {
   onTaskConfigurationClick?: Function
   onTaskDocumentationClick?: Function
   onSequenceFlowConfigurationClick?: Function
+  onShapeCreate?: Function
   onError: (error: Error) => void
 }
+
+export type ElementCustomPadEntriesType = {
+  [key: string]: string[]
+}
+
+export type OnShapeCreateType = { context: { shape: { id: string } } }
+
+export type RemoveCustomTaskEntryType = { current: { element: { type: string } } }
