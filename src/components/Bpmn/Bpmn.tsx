@@ -7,12 +7,15 @@ import minimapModule from 'diagram-js-minimap'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
-import CustomControlsModule, { TASK_SETTINGS_EVENT, TASK_LABEL_EVENT } from './CustomControlsModule'
+import CustomControlsModule, {
+  TASK_SETTINGS_EVENT,
+  TASK_DOCUMENTATION_EVENT
+} from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
 import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
-import { findLateralPadEntries } from './utils'
+import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
@@ -41,9 +44,11 @@ const Bpmn: FC<BpmnType> = ({
   modelerInnerHeight,
   actionButtonClassName = '',
   zStep = 0.4,
+  elementClassesToRemove,
+  padEntriesToRemove,
   onElementChange,
   onTaskConfigurationClick,
-  onTaskLabelClick,
+  onTaskDocumentationClick,
   onShapeCreate,
   onError,
   children
@@ -75,15 +80,18 @@ const Bpmn: FC<BpmnType> = ({
     )
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
-  const removeCustomTaskEntry = useCallback((type: string) => {
-    const lateralPadEntries: Element[] = findLateralPadEntries(type)
+  const removeCustomTaskEntry = useCallback(
+    (type: string) => {
+      const lateralPadEntries: Element[] = findLateralPadEntries(type, padEntriesToRemove)
 
-    if (lateralPadEntries.length > 0) {
-      lateralPadEntries.forEach((element: Element) => {
-        element.parentNode?.removeChild(element)
-      })
-    }
-  }, [])
+      if (lateralPadEntries.length > 0) {
+        lateralPadEntries.forEach((element: Element) => {
+          element.parentNode?.removeChild(element)
+        })
+      }
+    },
+    [padEntriesToRemove]
+  )
 
   const saveModel = useCallback((): void => {
     modelerRef?.current?.saveXML(
@@ -120,7 +128,6 @@ const Bpmn: FC<BpmnType> = ({
         removeCustomTaskEntry(type)
       }
     )
-
     eventBus.on(
       'commandStack.shape.create.postExecuted',
       ({
@@ -133,7 +140,12 @@ const Bpmn: FC<BpmnType> = ({
         }
       }
     )
-  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate])
+
+    eventBus.on('popupMenu.open', () => {
+      setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
+    })
+  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({
@@ -152,7 +164,8 @@ const Bpmn: FC<BpmnType> = ({
     })
     memorizeImportXML()
     handleEventBus()
-  }, [memorizeImportXML, modelerInnerHeight, handleEventBus, modelerRef])
+    removeElementsByClass(elementClassesToRemove)
+  }, [memorizeImportXML, modelerInnerHeight, handleEventBus, modelerRef, elementClassesToRemove])
 
   useEffect((): void => {
     memorizeSetModeler()
@@ -168,11 +181,11 @@ const Bpmn: FC<BpmnType> = ({
 
   useEffect((): void => {
     document.addEventListener(
-      TASK_LABEL_EVENT,
-      (event: Event): void => onTaskLabelClick?.(event),
+      TASK_DOCUMENTATION_EVENT,
+      (event: Event): void => onTaskDocumentationClick?.(event),
       false
     )
-  }, [onTaskLabelClick])
+  }, [onTaskDocumentationClick])
 
   return (
     <Fullscreen

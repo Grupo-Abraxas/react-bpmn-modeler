@@ -1,28 +1,9 @@
-import { ElementCustomPadEntriesType } from './types'
-
-const entriesToRemove: ElementCustomPadEntriesType = {
-  StartEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  IntermediateThrowEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  IntermediateCatchEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  EndEvent: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  CallActivity: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  SubProcess: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Gateway: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  SequenceFlow: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  TextAnnotation: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Participant: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Lane: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  DataStoreReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  DataObjectReference: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  label: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Association: ['bpmn-icon-custom-task-label', 'bpmn-icon-custom-task-settings'],
-  Task: []
-}
+import { PadEntriesToRemoveType } from './types'
 
 const getElements = (elementClasses: string[]): Element[] => {
   let elements: Element[] = []
 
-  elementClasses.forEach((elementClass: string) => {
+  elementClasses.forEach(elementClass => {
     const element = document.getElementsByClassName(elementClass)
     elements = [...elements, ...element]
   })
@@ -30,12 +11,30 @@ const getElements = (elementClasses: string[]): Element[] => {
   return elements
 }
 
-export const findLateralPadEntries = (type: string): Element[] => {
-  for (const [key, lateralPadEntryClasses] of Object.entries(entriesToRemove)) {
-    if (type.includes(key) && lateralPadEntryClasses.length > 0) {
-      return getElements(lateralPadEntryClasses)
+export const findLateralPadEntries = (
+  type: string,
+  entriesToRemove?: PadEntriesToRemoveType
+): Element[] => {
+  if (entriesToRemove) {
+    for (const [key, lateralPadEntryClasses] of Object.entries(entriesToRemove)) {
+      if (type.includes(key) && lateralPadEntryClasses.length > 0) {
+        return getElements(lateralPadEntryClasses)
+      }
     }
   }
 
   return []
+}
+
+export const removeElementsByClass = (classToRemove?: string[]): void => {
+  let elements: Element[] = []
+  if (!classToRemove) {
+    return
+  }
+  elements = getElements(classToRemove)
+  if (elements.length > 0) {
+    elements.forEach((element: Element): void => {
+      element.remove()
+    })
+  }
 }
