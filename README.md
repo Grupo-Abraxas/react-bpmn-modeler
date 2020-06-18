@@ -32,8 +32,8 @@ const App: FC = () => {
       bpmnStringFile={''}
       modelerInnerHeight={window.innerHeight}
       onElementChange={(xml: string): void => alert(xml)}
-      onTaskTarget={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
-      onTaskLabelTarget={(event: CustomEvent): void => {
+      onTaskConfigurationClick={(event: CustomEvent): void => alert(JSON.stringify(event.detail))}
+      onTaskLabelClick={(event: CustomEvent): void => {
         // Set an element programmatically
         const modeling = modelerRef?.current?.get('modeling')
         const elementRegistry = modelerRef?.current?.get('elementRegistry')
@@ -68,8 +68,8 @@ const App: FC = () => {
       bpmnStringFile={''}
       modelerInnerHeight={window.innerHeight}
       onElementChange={xml => alert(xml)}
-      onTaskTarget={event => alert(JSON.stringify(event.detail))}
-      onTaskLabelTarget={event => {
+      onTaskConfigurationClick={event => alert(JSON.stringify(event.detail))}
+      onTaskLabelClick={event => {
         // Set an element programmatically
         const modeling = modelerRef.current.get('modeling')
         const elementRegistry = modelerRef.current.get('elementRegistry')
@@ -103,7 +103,7 @@ export default App
 
 * **onElementChange:** A function that runs every time a bpmn modeler element changes, accepts as a parameter a variable that contains the exported file in a text string.
 
-* **onTaskTarget:** It is a function that is executed when you click on the gear icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
+* **onTaskConfigurationClick:** It is a function that is executed when you click on the gear icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
 
 *event.detail* returns
 
@@ -118,7 +118,7 @@ export default App
 }
 ```
 
-* **onTaskLabelTarget:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
+* **onTaskLabelClick:** It is a function that is executed when you click on the document icon in the side pad of a task element, it accepts a function that receives as event parameter of the selected element. **\***
 
 *event.detail* returns
 

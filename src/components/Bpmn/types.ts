@@ -14,10 +14,9 @@ export type BpmnType = {
   actionButtonClassName?: string
   zStep?: number
   onElementChange?: (xml: string) => void
-  onTaskTarget?: Function
-  onTaskLabelTarget?: Function
+  onTaskConfigurationClick?: Function
+  onTaskLabelClick?: Function
   onShapeCreate?: Function
-  onRootShapeUpdate?: Function
   onError: (error: Error) => void
 }
 
@@ -28,5 +27,3 @@ export type ElementCustomPadEntriesType = {
 export type OnShapeCreateType = { context: { shape: { id: string } } }
 
 export type RemoveCustomTaskEntryType = { current: { element: { type: string } } }
-
-export type OnUpdateRootType = { context: { newRoot: { id: string; type: string } } }
