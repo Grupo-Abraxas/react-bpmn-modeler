@@ -24,6 +24,7 @@ export type BpmnType = {
   onTaskDocumentationClick?: Function
   onSequenceFlowConfigurationClick?: Function
   onShapeCreate?: Function
+  onRootShapeUpdate?: Function
   onError: (error: Error) => void
 }
 
