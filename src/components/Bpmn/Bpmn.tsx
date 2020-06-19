@@ -53,6 +53,7 @@ const Bpmn: FC<BpmnType> = ({
   onTaskDocumentationClick,
   onSequenceFlowConfigurationClick,
   onShapeCreate,
+  onRootShapeUpdate,
   onError,
   children
 }) => {
@@ -142,6 +143,21 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
 
+    eventBus.on(
+      'commandStack.canvas.updateRoot.postExecute',
+      ({
+        context: {
+          newRoot: { id, type }
+        }
+      }: {
+        context: { newRoot: { id: string; type: string } }
+      }): void => {
+        if (onRootShapeUpdate) {
+          onRootShapeUpdate(id, type)
+        }
+      }
+    )
+
     eventBus.on('popupMenu.open', () => {
       setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
     })
@@ -159,7 +175,8 @@ const Bpmn: FC<BpmnType> = ({
     saveModel,
     onShapeCreate,
     elementClassesToRemove,
-    defaultStrokeColor
+    defaultStrokeColor,
+    onRootShapeUpdate
   ])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -123,6 +123,9 @@ const App: FC = () => {
     modeling.updateProperties(element, { id: `${elementId}_customId` })
   }
 
+  const onRootShapeUpdate = (id: string, type: string): void =>
+    alert(`${id} ${type} root shape updated!`)
+
   const onError = (error: Error): void => alert(error)
 
   const setModeler = useCallback(
@@ -146,6 +149,9 @@ const App: FC = () => {
         // It is executed when listening to the event "commandStack.shape.create.postExecuted",
         // returns the Id of the created element
         onShapeCreate={updateCurrentShapeId}
+        // It is executed when listening to the event "commandStack.canvas.updateRoot.postExecute",
+        // returns the Id and type of the root shape
+        onRootShapeUpdate={onRootShapeUpdate}
         onError={onError}
       />
     ),
