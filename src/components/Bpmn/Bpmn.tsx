@@ -14,7 +14,7 @@ import CustomControlsModule, {
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType } from './types'
+import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
@@ -47,8 +47,9 @@ const Bpmn: FC<BpmnType> = ({
   elementClassesToRemove,
   padEntriesToRemove,
   onElementChange,
-  onTaskTarget,
-  onTaskDocumentationTarget,
+  onTaskConfigurationClick,
+  onTaskDocumentationClick,
+  onShapeCreate,
   onError,
   children
 }) => {
@@ -108,27 +109,42 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
   }, [modelerRef, onElementChange, onError])
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
-    type eventBusType = { current: { element: { type: string } } }
     const eventBus = modelerRef?.current?.get('eventBus')
+
     eventBus.on('elements.changed', (): void => {
       saveModel()
     })
+
     eventBus.on(
       'contextPad.open',
       ({
         current: {
           element: { type }
         }
-      }: eventBusType): void => {
+      }: RemoveCustomTaskEntryType): void => {
         removeCustomTaskEntry(type)
       }
     )
+    eventBus.on(
+      'commandStack.shape.create.postExecuted',
+      ({
+        context: {
+          shape: { id }
+        }
+      }: OnShapeCreateType): void => {
+        if (onShapeCreate) {
+          onShapeCreate(id)
+        }
+      }
+    )
+
     eventBus.on('popupMenu.open', () => {
       setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
     })
-  }, [modelerRef, removeCustomTaskEntry, saveModel, elementClassesToRemove])
+  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
@@ -158,18 +174,18 @@ const Bpmn: FC<BpmnType> = ({
   useEffect((): void => {
     document.addEventListener(
       TASK_SETTINGS_EVENT,
-      (event: Event): void => onTaskTarget?.(event),
+      (event: Event): void => onTaskConfigurationClick?.(event),
       false
     )
-  }, [onTaskTarget])
+  }, [onTaskConfigurationClick])
 
   useEffect((): void => {
     document.addEventListener(
       TASK_DOCUMENTATION_EVENT,
-      (event: Event): void => onTaskDocumentationTarget?.(event),
+      (event: Event): void => onTaskDocumentationClick?.(event),
       false
     )
-  }, [onTaskDocumentationTarget])
+  }, [onTaskDocumentationClick])
 
   return (
     <Fullscreen
