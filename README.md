@@ -154,6 +154,7 @@ const App: FC = () => {
         modelerRef={modelerRef}
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
+        defaultStrokeColor={'#5F84CF'}
         elementClassesToRemove={elementClassesToRemove}
         customPadEntries={customPadEntries}
         // It is executed by clicking the "Task configuration" button on the side pad of the Task element.
@@ -327,6 +328,7 @@ const App = () => {
         modelerRef={modelerRef}
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
+        defaultStrokeColor={'#5F84CF'}
         elementClassesToRemove={elementClassesToRemove}
         customPadEntries={customPadEntries}
         // It is executed by clicking the "Task configuration" button on the side pad of the Task element.
@@ -375,6 +377,8 @@ export default App
 * **actionButtonClassName:** React className of action button.
 
 * **zStep:** Number of zoom step of zoom in/out action button.
+
+* **defaultStrokeColor:** Default color of stroke shape elements, accepts definition of css colors in a text string.
 
 * **elementClassesToRemove:** Item classes to remove from the item popup panel.
 

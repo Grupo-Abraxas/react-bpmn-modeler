@@ -45,6 +45,7 @@ const Bpmn: FC<BpmnType> = ({
   modelerInnerHeight,
   actionButtonClassName = '',
   zStep = 0.4,
+  defaultStrokeColor = 'black',
   elementClassesToRemove,
   customPadEntries,
   onElementChange,
@@ -116,7 +117,6 @@ const Bpmn: FC<BpmnType> = ({
   const handleEventBus = useCallback((): void => {
     const eventBus = modelerRef.current?.get('eventBus')
     const modeling = modelerRef.current?.get('modeling')
-    const defaultStrokeColor = '#5f84ce'
 
     eventBus.on('elements.changed', (): void => saveModel())
 
@@ -153,7 +153,14 @@ const Bpmn: FC<BpmnType> = ({
         })
       }
     })
-  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
+  }, [
+    modelerRef,
+    removeCustomTaskEntry,
+    saveModel,
+    onShapeCreate,
+    elementClassesToRemove,
+    defaultStrokeColor
+  ])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
