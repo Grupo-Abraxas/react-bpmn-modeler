@@ -15,12 +15,7 @@ import CustomControlsModule, {
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import {
-  BpmnType,
-  OnShapeCreateType,
-  RemoveCustomTaskEntryType,
-  SelectionChangedType
-} from './types'
+import { BpmnType, RemoveCustomTaskEntryType } from './types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
@@ -121,9 +116,7 @@ const Bpmn: FC<BpmnType> = ({
   const handleEventBus = useCallback((): void => {
     const eventBus = modelerRef.current?.get('eventBus')
     const modeling = modelerRef.current?.get('modeling')
-    const selectedStrokeColor = '#2BC1BE'
     const defaultStrokeColor = '#5f84ce'
-    let isFirstElementTouched = false
 
     eventBus.on('elements.changed', (): void => saveModel())
 
@@ -139,13 +132,12 @@ const Bpmn: FC<BpmnType> = ({
     )
     eventBus.on(
       'commandStack.shape.create.postExecuted',
-      ({
-        context: {
-          shape: { id }
-        }
-      }: OnShapeCreateType): void => {
+      ({ context: { shape } }: { context: { shape: object } }): void => {
+        modeling.setColor(shape, {
+          stroke: defaultStrokeColor
+        })
         if (onShapeCreate) {
-          onShapeCreate(id)
+          onShapeCreate(Object(shape).id)
         }
       }
     )
@@ -159,31 +151,6 @@ const Bpmn: FC<BpmnType> = ({
         modeling.setColor(Object(event).element, {
           stroke: defaultStrokeColor
         })
-      }
-    })
-
-    eventBus.on('selection.changed', (event: SelectionChangedType): void => {
-      if (event.newSelection.length > 0) {
-        const newSelection = event.newSelection[0]
-        if (!Object(newSelection)?.type.toLowerCase().includes('flow')) {
-          modeling.setColor(newSelection, { stroke: selectedStrokeColor })
-        }
-      }
-      if (event.oldSelection.length > 0 && !isFirstElementTouched) {
-        const oldSelection = event.oldSelection[0]
-        if (!Object(oldSelection).type.toLowerCase().includes('flow')) {
-          setTimeout(() => modeling.setColor(oldSelection, { stroke: defaultStrokeColor }), 100)
-        }
-        isFirstElementTouched = true
-      }
-      if (
-        event.oldSelection.length > 0 &&
-        (event.newSelection.length > 0 || isFirstElementTouched)
-      ) {
-        const oldSelection = event.oldSelection[0]
-        if (!Object(oldSelection).type.toLowerCase().includes('flow')) {
-          setTimeout(() => modeling.setColor(oldSelection, { stroke: defaultStrokeColor }), 100)
-        }
       }
     })
   }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
