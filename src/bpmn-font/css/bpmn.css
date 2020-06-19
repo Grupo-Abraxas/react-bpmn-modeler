@@ -61,3 +61,109 @@
 }
 
 /* '' */
+/* Lateral pad */
+.bpmn-icon-trash:before {
+  font-family: 'Material Icons';
+  content: '\e872';
+}
+
+/* Task lateral pad */
+.bpmn-icon-task:before {
+  font-family: 'Material Icons';
+  content: '\e3bd';
+}
+
+.bpmn-icon-send:before {
+  font-family: 'Material Icons';
+  content: '\e163';
+}
+
+.bpmn-icon-receive:before {
+  font-family: 'Material Icons';
+  content: '\e156';
+}
+
+.bpmn-icon-user:before {
+  font-family: 'Material Icons';
+  content: '\e7fd';
+}
+
+.bpmn-icon-manual:before {
+  font-family: 'Material Icons';
+  content: '\e925';
+}
+
+.bpmn-icon-script:before {
+  font-family: 'Material Icons';
+  content: '\e86f';
+}
+
+.bpmn-icon-call-activity:before {
+  font-family: 'Material Icons';
+  content: '\e3c3';
+}
+
+.bpmn-icon-sequential-mi-marker:before {
+  font-family: 'Material Icons';
+  content: '\e5d2';
+}
+
+.bpmn-icon-parallel-mi-marker:before {
+  font-family: 'Material Icons';
+  content: '\e5d2';
+  transform: rotate(-90deg);
+}
+
+.bpmn-icon-loop-marker:before {
+  font-family: 'Material Icons';
+  content: '\e5d5';
+}
+
+/* Flow Lateral pad */
+.bpmn-icon-default-flow:before {
+  font-family: 'Material Icons';
+  content: '\e8e5';
+}
+
+/* Palette tool */
+.bpmn-icon-hand-tool:before {
+  font-family: 'Material Icons';
+  content: '\e925';
+}
+
+.bpmn-icon-lasso-tool:before {
+  font-family: 'Material Icons';
+  content: '\e162';
+}
+
+.bpmn-icon-connection-multi:before {
+  font-family: 'Material Icons';
+  content: '\e8d4';
+}
+
+.bpmn-icon-space-tool:before {
+  font-family: 'Material Icons';
+  content: '\e259';
+  transform: rotate(-90deg);
+}
+
+/* Start pad */
+.bpmn-icon-start-event-message:before {
+  font-family: 'Material Icons';
+  font-size: 10px !important;
+  content: '\e7f4';
+  border-radius: 14px;
+  border: solid #4c6aa7 1.6px;
+  padding: 3px;
+  margin-left: 4px;
+}
+
+.bpmn-icon-start-event-timer:before {
+  font-family: 'Material Icons';
+  font-size: 10px !important;
+  content: '\e425';
+  border-radius: 14px;
+  border: solid #4c6aa7 1.6px;
+  padding: 3px;
+  margin-left: 4px;
+}

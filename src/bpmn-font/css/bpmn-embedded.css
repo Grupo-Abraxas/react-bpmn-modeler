@@ -64,19 +64,9 @@
   content: '\e800';
 }
 
-/* '' */
-.bpmn-icon-trash:before {
-  content: '\e801';
-}
-
 /* '' */
 .bpmn-icon-conditional-flow:before {
   content: '\e802';
-}
-
-/* '' */
-.bpmn-icon-default-flow:before {
-  content: '\e803';
 }
 
 /* '' */
@@ -102,11 +92,6 @@
 /* '' */
 .bpmn-icon-start-event-non-interrupting-parallel-multiple:before {
   content: '\e808';
-}
-
-/* '' */
-.bpmn-icon-loop-marker:before {
-  content: '\e809';
 }
 
 /* '' */
@@ -224,11 +209,6 @@
   content: '\e820';
 }
 
-/* '' */
-.bpmn-icon-task:before {
-  content: '\e821';
-}
-
 /* '' */
 .bpmn-icon-end-event-error:before {
   content: '\e822';
@@ -262,26 +242,6 @@
 /* '' */
 .bpmn-icon-manual:before {
   content: '\e828';
-}
-
-/* '' */
-.bpmn-icon-receive:before {
-  content: '\e829';
-}
-
-/* '' */
-.bpmn-icon-call-activity:before {
-  content: '\e82a';
-}
-
-/* '' */
-.bpmn-icon-start-event-timer:before {
-  content: '\e82b';
-}
-
-/* '' */
-.bpmn-icon-start-event-message:before {
-  content: '\e82c';
 }
 
 /* '' */
@@ -374,19 +334,9 @@
   content: '\e83e';
 }
 
-/* '' */
-.bpmn-icon-script:before {
-  content: '\e83f';
-}
-
 /* '' */
 .bpmn-icon-manual-task:before {
   content: '\e840';
-}
-
-/* '' */
-.bpmn-icon-send:before {
-  content: '\e841';
 }
 
 /* '' */
@@ -397,11 +347,6 @@
 /* '' */
 .bpmn-icon-receive-task:before {
   content: '\e843';
-}
-
-/* '' */
-.bpmn-icon-user:before {
-  content: '\e844';
 }
 
 /* '' */
@@ -442,11 +387,6 @@
 /* '' */
 .bpmn-icon-script-task:before {
   content: '\e84c';
-}
-
-/* '' */
-.bpmn-icon-send-task:before {
-  content: '\e84d';
 }
 
 /* '' */
@@ -534,24 +474,9 @@
   content: '\e85e';
 }
 
-/* '' */
-.bpmn-icon-space-tool:before {
-  content: '\e85f';
-}
-
-/* '' */
-.bpmn-icon-connection-multi:before {
-  content: '\e860';
-}
-
 /* '' */
 .bpmn-icon-lane:before {
   content: '\e861';
-}
-
-/* '' */
-.bpmn-icon-lasso-tool:before {
-  content: '\e862';
 }
 
 /* '' */
@@ -580,11 +505,6 @@
 }
 
 /* '' */
-.bpmn-icon-hand-tool:before {
-  content: '\e868';
-}
-
-/* '' */
 .bpmn-icon-group:before {
   content: '\e869';
 }
