@@ -18,7 +18,7 @@ export const findLateralPadEntries = (
 ): Element[] => {
   if (customPadEntries) {
     for (const [key, lateralPadEntryClasses] of Object.entries(customPadEntries)) {
-      if (type.includes(key)) {
+      if (type.toLowerCase().includes(key.toLowerCase())) {
         const hiddenPadEntries = customPadClassNames.filter(
           customPadClass => !lateralPadEntryClasses.includes(customPadClass)
         )

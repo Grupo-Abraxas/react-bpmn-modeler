@@ -15,7 +15,12 @@ import CustomControlsModule, {
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
+import {
+  BpmnType,
+  OnShapeCreateType,
+  RemoveCustomTaskEntryType,
+  SelectionChangedType
+} from './types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
@@ -63,12 +68,12 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Button handlers
   const fitViewport = useCallback((): void => {
-    modelerRef?.current?.get('canvas').zoom('fit-viewport', true)
+    modelerRef.current?.get('canvas').zoom('fit-viewport', true)
     setZLevel(1)
   }, [modelerRef])
 
   const handleZoom = (zoomScale: number): void => {
-    modelerRef?.current?.get('canvas').zoom(zoomScale, 'auto')
+    modelerRef.current?.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -76,7 +81,7 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Custom pad entries
   const memorizeImportXML = useCallback((): void => {
-    modelerRef?.current?.importXML(
+    modelerRef.current?.importXML(
       bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
       (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
     )
@@ -96,7 +101,7 @@ const Bpmn: FC<BpmnType> = ({
   )
 
   const saveModel = useCallback((): void => {
-    modelerRef?.current?.saveXML(
+    modelerRef.current?.saveXML(
       {
         format: true
       },
@@ -114,7 +119,11 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
-    const eventBus = modelerRef?.current?.get('eventBus')
+    const eventBus = modelerRef.current?.get('eventBus')
+    const modeling = modelerRef.current?.get('modeling')
+    const selectedStrokeColor = '#2BC1BE'
+    const defaultStrokeColor = '#5f84ce'
+    let isFirstElementTouched = false
 
     eventBus.on('elements.changed', (): void => saveModel())
 
@@ -143,6 +152,39 @@ const Bpmn: FC<BpmnType> = ({
 
     eventBus.on('popupMenu.open', () => {
       setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
+    })
+
+    eventBus.on('bpmnElement.added', (event: object): void => {
+      if (!Object(event).element.type.toLowerCase().includes('flow')) {
+        modeling.setColor(Object(event).element, {
+          stroke: defaultStrokeColor
+        })
+      }
+    })
+
+    eventBus.on('selection.changed', (event: SelectionChangedType): void => {
+      if (event.newSelection.length > 0) {
+        const newSelection = event.newSelection[0]
+        if (!Object(newSelection)?.type.toLowerCase().includes('flow')) {
+          modeling.setColor(newSelection, { stroke: selectedStrokeColor })
+        }
+      }
+      if (event.oldSelection.length > 0 && !isFirstElementTouched) {
+        const oldSelection = event.oldSelection[0]
+        if (!Object(oldSelection).type.toLowerCase().includes('flow')) {
+          setTimeout(() => modeling.setColor(oldSelection, { stroke: defaultStrokeColor }), 100)
+        }
+        isFirstElementTouched = true
+      }
+      if (
+        event.oldSelection.length > 0 &&
+        (event.newSelection.length > 0 || isFirstElementTouched)
+      ) {
+        const oldSelection = event.oldSelection[0]
+        if (!Object(oldSelection).type.toLowerCase().includes('flow')) {
+          setTimeout(() => modeling.setColor(oldSelection, { stroke: defaultStrokeColor }), 100)
+        }
+      }
     })
   }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

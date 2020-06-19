@@ -34,3 +34,5 @@ export type ElementCustomPadEntriesType = {
 export type OnShapeCreateType = { context: { shape: { id: string } } }
 
 export type RemoveCustomTaskEntryType = { current: { element: { type: string } } }
+
+export type SelectionChangedType = { newSelection: object[]; oldSelection: object[] }
