@@ -32,6 +32,16 @@ export type ElementCustomPadEntriesType = {
   [key: string]: string[]
 }
 
-export type OnShapeCreateType = { context: { shape: { id: string } } }
+export type OnShapeCreateType = {
+  context: {
+    shape: {
+      id: string
+    }
+  }
+}
 
-export type RemoveCustomTaskEntryType = { current: { element: { type: string } } }
+export type RemoveCustomTaskEntryType = {
+  current: {
+    element: object
+  }
+}

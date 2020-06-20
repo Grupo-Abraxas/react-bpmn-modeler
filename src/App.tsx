@@ -82,9 +82,9 @@ const App: FC = () => {
 
   const onTaskDocumentationClick = (event: CustomEvent): void => {
     // Example of editing properties of an element
-    const elementRegistry = modelerRef?.current?.get('elementRegistry')
-    const modeling = modelerRef?.current?.get('modeling')
-    const moddle = modelerRef?.current?.get('moddle')
+    const elementRegistry = modelerRef.current?.get('elementRegistry')
+    const modeling = modelerRef.current?.get('modeling')
+    const moddle = modelerRef.current?.get('moddle')
     const element = elementRegistry.get(event.detail.id)
     const newText = 'Documentation text'
     const documentation = moddle.create('bpmn:Documentation', { text: newText })
@@ -95,9 +95,9 @@ const App: FC = () => {
 
   const onSequenceFlowConfigurationClick = (event: CustomEvent): void => {
     // Example of creating conditionExpression of a gateway element
-    const elementRegistry = modelerRef?.current?.get('elementRegistry')
-    const modeling = modelerRef?.current?.get('modeling')
-    const moddle = modelerRef?.current?.get('moddle')
+    const elementRegistry = modelerRef.current?.get('elementRegistry')
+    const modeling = modelerRef.current?.get('modeling')
+    const moddle = modelerRef.current?.get('moddle')
     const element = elementRegistry.get(event.detail.id)
 
     if (element.businessObject.sourceRef.$type.includes('Gateway')) {

@@ -64,12 +64,12 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Button handlers
   const fitViewport = useCallback((): void => {
-    modelerRef?.current?.get('canvas').zoom('fit-viewport', true)
+    modelerRef.current?.get('canvas').zoom('fit-viewport', true)
     setZLevel(1)
   }, [modelerRef])
 
   const handleZoom = (zoomScale: number): void => {
-    modelerRef?.current?.get('canvas').zoom(zoomScale, 'auto')
+    modelerRef.current?.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,15 +77,23 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Custom pad entries
   const memorizeImportXML = useCallback((): void => {
-    modelerRef?.current?.importXML(
+    modelerRef.current?.importXML(
       bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
       (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
     )
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
   const removeCustomTaskEntry = useCallback(
-    (type: string) => {
-      const lateralPadEntries: Element[] = findLateralPadEntries(type, customPadEntries)
+    (type: string, sourceRefType?: string) => {
+      const classesToAvoid = []
+      if (!sourceRefType?.toLowerCase().includes('gateway')) {
+        classesToAvoid.push('bpmn-icon-custom-sequence-flow-configuration')
+      }
+      const lateralPadEntries: Element[] = findLateralPadEntries(
+        type,
+        customPadEntries,
+        classesToAvoid
+      )
 
       if (lateralPadEntries.length > 0) {
         lateralPadEntries.forEach((element: Element) => {
@@ -97,7 +105,7 @@ const Bpmn: FC<BpmnType> = ({
   )
 
   const saveModel = useCallback((): void => {
-    modelerRef?.current?.saveXML(
+    modelerRef.current?.saveXML(
       {
         format: true
       },
@@ -115,20 +123,14 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
-    const eventBus = modelerRef?.current?.get('eventBus')
+    const eventBus = modelerRef.current?.get('eventBus')
 
     eventBus.on('elements.changed', (): void => saveModel())
 
-    eventBus.on(
-      'contextPad.open',
-      ({
-        current: {
-          element: { type }
-        }
-      }: RemoveCustomTaskEntryType): void => {
-        removeCustomTaskEntry(type)
-      }
-    )
+    eventBus.on('contextPad.open', ({ current: { element } }: RemoveCustomTaskEntryType): void => {
+      const sourceRefType = Object(element).businessObject.sourceRef?.$type
+      removeCustomTaskEntry(Object(element).type, sourceRefType)
+    })
     eventBus.on(
       'commandStack.shape.create.postExecuted',
       ({
