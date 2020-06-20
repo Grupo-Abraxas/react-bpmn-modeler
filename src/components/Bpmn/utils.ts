@@ -14,14 +14,16 @@ const getElements = (elementClasses: string[]): Element[] => {
 
 export const findLateralPadEntries = (
   type: string,
-  customPadEntries?: PadEntriesType
+  customPadEntries?: PadEntriesType,
+  classesToAvoid?: string[]
 ): Element[] => {
   if (customPadEntries) {
     for (const [key, lateralPadEntryClasses] of Object.entries(customPadEntries)) {
       if (type.toLowerCase().includes(key.toLowerCase())) {
-        const hiddenPadEntries = customPadClassNames.filter(
+        let hiddenPadEntries = customPadClassNames.filter(
           customPadClass => !lateralPadEntryClasses.includes(customPadClass)
         )
+        hiddenPadEntries = [...hiddenPadEntries, ...classesToAvoid]
 
         return getElements(hiddenPadEntries)
       }
