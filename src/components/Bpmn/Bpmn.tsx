@@ -85,8 +85,16 @@ const Bpmn: FC<BpmnType> = ({
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
   const removeCustomTaskEntry = useCallback(
-    (type: string) => {
-      const lateralPadEntries: Element[] = findLateralPadEntries(type, customPadEntries)
+    (type: string, sourceRefType?: string) => {
+      const classesToAvoid = []
+      if (!sourceRefType?.toLowerCase().includes('gateway')) {
+        classesToAvoid.push('bpmn-icon-custom-sequence-flow-configuration')
+      }
+      const lateralPadEntries: Element[] = findLateralPadEntries(
+        type,
+        customPadEntries,
+        classesToAvoid
+      )
 
       if (lateralPadEntries.length > 0) {
         lateralPadEntries.forEach((element: Element) => {
@@ -121,16 +129,10 @@ const Bpmn: FC<BpmnType> = ({
 
     eventBus.on('elements.changed', (): void => saveModel())
 
-    eventBus.on(
-      'contextPad.open',
-      ({
-        current: {
-          element: { type }
-        }
-      }: RemoveCustomTaskEntryType): void => {
-        removeCustomTaskEntry(type)
-      }
-    )
+    eventBus.on('contextPad.open', ({ current: { element } }: RemoveCustomTaskEntryType): void => {
+      const sourceRefType = Object(element).businessObject.sourceRef?.$type
+      removeCustomTaskEntry(Object(element).type, sourceRefType)
+    })
     eventBus.on(
       'commandStack.shape.create.postExecuted',
       ({ context: { shape } }: { context: { shape: object } }): void => {
