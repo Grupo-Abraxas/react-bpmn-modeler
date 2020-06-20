@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -50,17 +49,14 @@
   content: '\e8b8';
 }
 
-/* '' */
 .bpmn-icon-custom-task-documentation:before {
   content: '\e873';
 }
 
-/* '' */
 .bpmn-icon-custom-sequence-flow-configuration:before {
   content: '\e8b8';
 }
 
-/* '' */
 /* Lateral pad */
 .bpmn-icon-trash:before {
   font-family: 'Material Icons';
@@ -71,36 +67,6 @@
 .bpmn-icon-task:before {
   font-family: 'Material Icons';
   content: '\e3bd';
-}
-
-.bpmn-icon-send:before {
-  font-family: 'Material Icons';
-  content: '\e163';
-}
-
-.bpmn-icon-receive:before {
-  font-family: 'Material Icons';
-  content: '\e156';
-}
-
-.bpmn-icon-user:before {
-  font-family: 'Material Icons';
-  content: '\e7fd';
-}
-
-.bpmn-icon-manual:before {
-  font-family: 'Material Icons';
-  content: '\e925';
-}
-
-.bpmn-icon-script:before {
-  font-family: 'Material Icons';
-  content: '\e86f';
-}
-
-.bpmn-icon-call-activity:before {
-  font-family: 'Material Icons';
-  content: '\e3c3';
 }
 
 .bpmn-icon-sequential-mi-marker:before {
@@ -145,25 +111,4 @@
   font-family: 'Material Icons';
   content: '\e259';
   transform: rotate(-90deg);
-}
-
-/* Start pad */
-.bpmn-icon-start-event-message:before {
-  font-family: 'Material Icons';
-  font-size: 10px !important;
-  content: '\e7f4';
-  border-radius: 14px;
-  border: solid #4c6aa7 1.6px;
-  padding: 3px;
-  margin-left: 4px;
-}
-
-.bpmn-icon-start-event-timer:before {
-  font-family: 'Material Icons';
-  font-size: 10px !important;
-  content: '\e425';
-  border-radius: 14px;
-  border: solid #4c6aa7 1.6px;
-  padding: 3px;
-  margin-left: 4px;
 }
