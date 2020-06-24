@@ -7,7 +7,7 @@ export type BpmnModelerType = {
   saveXML: Function
 }
 
-export type PadEntriesToRemoveType = {
+export type PadEntriesType = {
   [key: string]: string[]
 }
 
@@ -18,11 +18,13 @@ export type BpmnType = {
   actionButtonClassName?: string
   zStep?: number
   elementClassesToRemove?: string[]
-  padEntriesToRemove?: PadEntriesToRemoveType
+  customPadEntries?: PadEntriesType
   onElementChange?: (xml: string) => void
   onTaskConfigurationClick?: Function
   onTaskDocumentationClick?: Function
+  onSequenceFlowConfigurationClick?: Function
   onShapeCreate?: Function
+  onRootShapeUpdate?: Function
   onError: (error: Error) => void
 }
 
@@ -30,6 +32,16 @@ export type ElementCustomPadEntriesType = {
   [key: string]: string[]
 }
 
-export type OnShapeCreateType = { context: { shape: { id: string } } }
+export type OnShapeCreateType = {
+  context: {
+    shape: {
+      id: string
+    }
+  }
+}
 
-export type RemoveCustomTaskEntryType = { current: { element: { type: string } } }
+export type RemoveCustomTaskEntryType = {
+  current: {
+    element: object
+  }
+}

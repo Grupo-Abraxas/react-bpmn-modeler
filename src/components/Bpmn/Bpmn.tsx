@@ -9,7 +9,8 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import { i18nSpanish } from './translations'
 import CustomControlsModule, {
   TASK_SETTINGS_EVENT,
-  TASK_DOCUMENTATION_EVENT
+  TASK_DOCUMENTATION_EVENT,
+  SEQUENCE_FLOW_CONFIGURATION_EVENT
 } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
@@ -45,11 +46,13 @@ const Bpmn: FC<BpmnType> = ({
   actionButtonClassName = '',
   zStep = 0.4,
   elementClassesToRemove,
-  padEntriesToRemove,
+  customPadEntries,
   onElementChange,
   onTaskConfigurationClick,
   onTaskDocumentationClick,
+  onSequenceFlowConfigurationClick,
   onShapeCreate,
+  onRootShapeUpdate,
   onError,
   children
 }) => {
@@ -61,12 +64,12 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Button handlers
   const fitViewport = useCallback((): void => {
-    modelerRef?.current?.get('canvas').zoom('fit-viewport', true)
+    modelerRef.current?.get('canvas').zoom('fit-viewport', true)
     setZLevel(1)
   }, [modelerRef])
 
   const handleZoom = (zoomScale: number): void => {
-    modelerRef?.current?.get('canvas').zoom(zoomScale, 'auto')
+    modelerRef.current?.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,15 +77,23 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Custom pad entries
   const memorizeImportXML = useCallback((): void => {
-    modelerRef?.current?.importXML(
+    modelerRef.current?.importXML(
       bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
       (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
     )
   }, [onError, bpmnStringFile, modelerRef, fitViewport])
 
   const removeCustomTaskEntry = useCallback(
-    (type: string) => {
-      const lateralPadEntries: Element[] = findLateralPadEntries(type, padEntriesToRemove)
+    (type: string, sourceRefType?: string) => {
+      const classesToAvoid = []
+      if (!sourceRefType?.toLowerCase().includes('gateway')) {
+        classesToAvoid.push('bpmn-icon-custom-sequence-flow-configuration')
+      }
+      const lateralPadEntries: Element[] = findLateralPadEntries(
+        type,
+        customPadEntries,
+        classesToAvoid
+      )
 
       if (lateralPadEntries.length > 0) {
         lateralPadEntries.forEach((element: Element) => {
@@ -90,11 +101,11 @@ const Bpmn: FC<BpmnType> = ({
         })
       }
     },
-    [padEntriesToRemove]
+    [customPadEntries]
   )
 
   const saveModel = useCallback((): void => {
-    modelerRef?.current?.saveXML(
+    modelerRef.current?.saveXML(
       {
         format: true
       },
@@ -112,22 +123,14 @@ const Bpmn: FC<BpmnType> = ({
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
-    const eventBus = modelerRef?.current?.get('eventBus')
+    const eventBus = modelerRef.current?.get('eventBus')
 
-    eventBus.on('elements.changed', (): void => {
-      saveModel()
+    eventBus.on('elements.changed', (): void => saveModel())
+
+    eventBus.on('contextPad.open', ({ current: { element } }: RemoveCustomTaskEntryType): void => {
+      const sourceRefType = Object(element).businessObject.sourceRef?.$type
+      removeCustomTaskEntry(Object(element).type, sourceRefType)
     })
-
-    eventBus.on(
-      'contextPad.open',
-      ({
-        current: {
-          element: { type }
-        }
-      }: RemoveCustomTaskEntryType): void => {
-        removeCustomTaskEntry(type)
-      }
-    )
     eventBus.on(
       'commandStack.shape.create.postExecuted',
       ({
@@ -141,10 +144,32 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
 
+    eventBus.on(
+      'commandStack.canvas.updateRoot.postExecute',
+      ({
+        context: {
+          newRoot: { id, type }
+        }
+      }: {
+        context: { newRoot: { id: string; type: string } }
+      }): void => {
+        if (onRootShapeUpdate) {
+          onRootShapeUpdate(id, type)
+        }
+      }
+    )
+
     eventBus.on('popupMenu.open', () => {
       setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
     })
-  }, [modelerRef, removeCustomTaskEntry, saveModel, onShapeCreate, elementClassesToRemove])
+  }, [
+    modelerRef,
+    removeCustomTaskEntry,
+    saveModel,
+    onShapeCreate,
+    elementClassesToRemove,
+    onRootShapeUpdate
+  ])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
@@ -186,6 +211,14 @@ const Bpmn: FC<BpmnType> = ({
       false
     )
   }, [onTaskDocumentationClick])
+
+  useEffect((): void => {
+    document.addEventListener(
+      SEQUENCE_FLOW_CONFIGURATION_EVENT,
+      (event: Event): void => onSequenceFlowConfigurationClick?.(event),
+      false
+    )
+  }, [onSequenceFlowConfigurationClick])
 
   return (
     <Fullscreen

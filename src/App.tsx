@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState, useCallback, useEffect } from 'react'
 import Bpmn, { BpmnModelerType } from './components/Bpmn'
-import { PadEntriesToRemoveType } from './components/Bpmn/types'
+import { PadEntriesType } from './components/Bpmn/types'
 
 //load bpmnStringFile from anywere
 const getBpmnFile = (): string => `<?xml version="1.0" encoding="UTF-8"?>
@@ -53,23 +53,24 @@ export const elementClassesToRemove = [
 
 // Item classes to remove from the item lateral pad
 
-export const padEntriesToRemove: PadEntriesToRemoveType = {
-  StartEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  IntermediateThrowEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  IntermediateCatchEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  EndEvent: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  CallActivity: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  SubProcess: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Gateway: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  SequenceFlow: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  TextAnnotation: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Participant: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Lane: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  DataStoreReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  DataObjectReference: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  label: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Association: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings'],
-  Task: []
+export const customPadEntries: PadEntriesType = {
+  StartEvent: [],
+  IntermediateThrowEvent: [],
+  IntermediateCatchEvent: [],
+  EndEvent: [],
+  CallActivity: [],
+  SubProcess: [],
+  Gateway: [],
+  SequenceFlow: ['bpmn-icon-custom-sequence-flow-configuration'],
+  TextAnnotation: [],
+  Participant: [],
+  Lane: [],
+  DataStoreReference: [],
+  DataObjectReference: [],
+  label: [],
+  Association: [],
+  Group: [],
+  Task: ['bpmn-icon-custom-task-documentation', 'bpmn-icon-custom-task-settings']
 }
 
 const App: FC = () => {
@@ -80,16 +81,40 @@ const App: FC = () => {
   const onTaskConfigurationClick = (event: CustomEvent): void => alert(JSON.stringify(event.detail))
 
   const onTaskDocumentationClick = (event: CustomEvent): void => {
-    // Example of editing an element
-    const elementRegistry = modelerRef?.current?.get('elementRegistry')
-    const modeling = modelerRef?.current?.get('modeling')
-    const moddle = modelerRef?.current?.get('moddle')
+    // Example of editing properties of an element
+    const elementRegistry = modelerRef.current?.get('elementRegistry')
+    const modeling = modelerRef.current?.get('modeling')
+    const moddle = modelerRef.current?.get('moddle')
     const element = elementRegistry.get(event.detail.id)
-    const documentation = moddle.create('bpmn:Documentation', { text: 'Documenation text' })
+    const newText = 'Documentation text'
+    const documentation = moddle.create('bpmn:Documentation', { text: newText })
     modeling.updateProperties(element, { documentation: [documentation] })
   }
 
   const onElementChange = (xml: string): void => alert(xml)
+
+  const onSequenceFlowConfigurationClick = (event: CustomEvent): void => {
+    // Example of creating conditionExpression of a gateway element
+    const elementRegistry = modelerRef.current?.get('elementRegistry')
+    const modeling = modelerRef.current?.get('modeling')
+    const moddle = modelerRef.current?.get('moddle')
+    const element = elementRegistry.get(event.detail.id)
+
+    if (element.businessObject.sourceRef.$type.includes('Gateway')) {
+      const sequenceFlowElement = elementRegistry.get(element.businessObject.id)
+      const sequenceFlow = sequenceFlowElement.businessObject
+      const newFormalCondition = `$\{true}`
+      const newConditionName = 'Yes'
+      const newCondition = moddle.create('bpmn:FormalExpression', {
+        body: newFormalCondition
+      })
+      sequenceFlow.conditionExpression = newCondition
+      modeling.updateProperties(sequenceFlowElement, {
+        name: newConditionName,
+        conditionExpression: newCondition
+      })
+    }
+  }
 
   const updateCurrentShapeId = (elementId: string): void => {
     // Example of changing the Id of an element and its references.
@@ -98,6 +123,9 @@ const App: FC = () => {
     const element = elementRegistry.get(elementId)
     modeling.updateProperties(element, { id: `${elementId}_customId` })
   }
+
+  const onRootShapeUpdate = (id: string, type: string): void =>
+    alert(`${id} ${type} root shape updated!`)
 
   const onError = (error: Error): void => alert(error)
 
@@ -108,17 +136,22 @@ const App: FC = () => {
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
         elementClassesToRemove={elementClassesToRemove}
-        padEntriesToRemove={padEntriesToRemove}
+        customPadEntries={customPadEntries}
         // It is executed by clicking the "Task configuration" button on the side pad of the Task element.
         onTaskConfigurationClick={onTaskConfigurationClick}
         // It is executed by clicking the "Task documentation" button on the side pad of the Task element.
         onTaskDocumentationClick={onTaskDocumentationClick}
+        // It is executed by clicking the "Sequence Flow configuration" button on the side pad of the Task element.
+        onSequenceFlowConfigurationClick={onSequenceFlowConfigurationClick}
         // It is executed when listening to the event "elements.changed",
         // it returns the xml file generated by the bpmn modeler after a change of any element of the diagram.
         onElementChange={onElementChange}
         // It is executed when listening to the event "commandStack.shape.create.postExecuted",
         // returns the Id of the created element
         onShapeCreate={updateCurrentShapeId}
+        // It is executed when listening to the event "commandStack.canvas.updateRoot.postExecute",
+        // returns the Id and type of the root shape
+        onRootShapeUpdate={onRootShapeUpdate}
         onError={onError}
       />
     ),
