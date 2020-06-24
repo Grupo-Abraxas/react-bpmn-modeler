@@ -2,10 +2,11 @@ import {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
   SEQUENCE_FLOW_CONFIGURATION_EVENT,
+  CUSTOM_REMOVE_ELEMENT_EVENT,
   getContextPadEntriesType,
   ContextPadEntriesType,
   customPadClassNames
-} from './types'
+} from './CustomContextPad.types'
 
 class CustomContextPad {
   public autoPlace: object | undefined
@@ -67,6 +68,16 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
+    const customRemoveElement = (): void => {
+      const customEvent = new CustomEvent(CUSTOM_REMOVE_ELEMENT_EVENT, {
+        detail: {
+          id: element.businessObject.id,
+          $type: element.businessObject.$type
+        }
+      })
+      document.dispatchEvent(customEvent)
+    }
+
     return {
       'task-configuration': {
         group: 'default',
@@ -90,6 +101,14 @@ class CustomContextPad {
         title: this.translate('Sequence Flow configuration'),
         action: {
           click: sequenceFlowConnfiguration
+        }
+      },
+      'remove-element': {
+        group: 'edit',
+        className: customPadClassNames[3],
+        title: this.translate('Remove'),
+        action: {
+          click: customRemoveElement
         }
       }
     }
