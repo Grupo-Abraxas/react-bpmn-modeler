@@ -50,9 +50,14 @@
   content: '\e8b8';
 }
 
-/* '' */
+/* '' */
 .bpmn-icon-custom-task-documentation:before {
   content: '\e873';
 }
 
-/* '' */
+/* '' */
+.bpmn-icon-custom-sequence-flow-configuration:before {
+  content: '\e8b8';
+}
+
+/* '' */

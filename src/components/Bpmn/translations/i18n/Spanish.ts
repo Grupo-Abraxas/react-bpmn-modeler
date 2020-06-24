@@ -76,6 +76,7 @@ const i18nSpanish: Record<string, string> = {
   Remove: 'Eliminar',
   TextAnnotation: 'Anotación de texto',
   'Task documentation': 'Documentatión de tarea',
+  'Sequence Flow configuration': 'Configuración de flujo de secuencia',
 
   // Errors
   'no parent for {element} in {parent}': 'Sin padre para {element} en {parent}',
