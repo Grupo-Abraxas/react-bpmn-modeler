@@ -1,10 +1,8 @@
 import React, { useRef, useEffect, FC, useCallback, useState } from 'react'
 import Fullscreen from 'react-full-screen'
 
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
-import BpmnModeler from 'bpmn-js/lib/Modeler'
 import minimapModule from 'diagram-js-minimap'
-import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 
 import { i18nSpanish } from './translations'
 import CustomControlsModule, {
@@ -42,6 +40,8 @@ const customTranslateModule = {
 
 const Bpmn: FC<BpmnType> = ({
   modelerRef,
+  bpmnJsModeler,
+  moddleExtensions,
   bpmnStringFile,
   modelerInnerHeight,
   actionButtonClassName = '',
@@ -178,7 +178,7 @@ const Bpmn: FC<BpmnType> = ({
   ])
 
   const memorizeSetModeler = useCallback((): void => {
-    modelerRef.current = new BpmnModeler({
+    modelerRef.current = new bpmnJsModeler({
       container: canvas.current,
       keyboard: { bindTo: document },
       additionalModules: [
@@ -187,20 +187,20 @@ const Bpmn: FC<BpmnType> = ({
         customTranslateModule,
         CustomControlsModule
       ],
-      moddleExtensions: {
-        camunda: camundaModdleDescriptor
-      },
+      moddleExtensions,
       height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
     memorizeImportXMLCustomPadEntry()
     handleEventBus()
     removeElementsByClass(elementClassesToRemove)
   }, [
+    bpmnJsModeler,
     memorizeImportXMLCustomPadEntry,
     modelerInnerHeight,
     handleEventBus,
     modelerRef,
-    elementClassesToRemove
+    elementClassesToRemove,
+    moddleExtensions
   ])
 
   useEffect((): void => {

@@ -1,4 +1,8 @@
 import React, { FC, useRef, useState, useCallback, useEffect } from 'react'
+
+import BpmnModeler from 'bpmn-js/lib/Modeler'
+import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
+
 import Bpmn, { BpmnModelerType } from './components/Bpmn'
 import { PadEntriesType } from './components/Bpmn/Bpmn.types'
 
@@ -146,6 +150,10 @@ const App: FC = () => {
     (): JSX.Element => (
       <Bpmn
         modelerRef={modelerRef}
+        bpmnJsModeler={BpmnModeler}
+        moddleExtensions={{
+          camunda: camundaModdleDescriptor
+        }}
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
         defaultStrokeColor={'#5F84CF'}
