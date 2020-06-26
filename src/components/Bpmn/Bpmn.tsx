@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, FC, useCallback, useState } from 'react'
 import Fullscreen from 'react-full-screen'
 
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
 import minimapModule from 'diagram-js-minimap'
+import propertiesPanelModule from 'bpmn-js-properties-panel'
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
@@ -182,13 +183,17 @@ const Bpmn: FC<BpmnType> = ({
       container: canvas.current,
       keyboard: { bindTo: document },
       additionalModules: [
-        propertiesProviderModule,
         minimapModule,
+        propertiesPanelModule,
+        propertiesProviderModule,
         customTranslateModule,
         CustomControlsModule
       ],
       moddleExtensions: {
         camunda: camundaModdleDescriptor
+      },
+      propertiesPanel: {
+        parent: '#panel-properties'
       },
       height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
@@ -245,6 +250,7 @@ const Bpmn: FC<BpmnType> = ({
       onChange={(isFull: boolean): void => setIsFullScreen(isFull)}
     >
       <div className="content" id="js-drop-zone">
+        <div id="panel-properties" />
         <div className="canvas" ref={canvas} />
         <ActionButton
           actionButtonId="action-button-fit"
