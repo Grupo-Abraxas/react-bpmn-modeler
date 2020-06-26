@@ -18,9 +18,9 @@ export type BpmnType = {
   actionButtonClassName?: string
   zStep?: number
   defaultStrokeColor?: string
+  showPropertiesPanel?: boolean
   elementClassesToRemove?: string[]
   customPadEntries?: PadEntriesType
-  showPropertiesPanel?: boolean
   onElementChange?: (xml: string) => void
   onTaskConfigurationClick?: Function
   onTaskDocumentationClick?: Function

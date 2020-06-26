@@ -231,6 +231,8 @@ export default App
 
 * **defaultStrokeColor:** Default color of stroke shape elements, accepts definition of css colors in a text string.
 
+* **showPropertiesPanel:** If the value is *true* the icon is shown to open the properties panel, otherwise the button and the panel will not be visible.
+
 * **elementClassesToRemove:** Item classes to remove from the item popup panel.
 
 exist

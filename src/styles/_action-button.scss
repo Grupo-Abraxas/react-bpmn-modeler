@@ -32,7 +32,7 @@
   background-color: $blue-backgroundColorActive;
 }
 
-$button-position: 'panel' '\e429'224px, 'fit' '\e1b4'170px, 'zoom-in' '\e145'116px,
+$button-position: 'panel' '\e051'224px, 'fit' '\e1b4'170px, 'zoom-in' '\e145'116px,
   'zoom-out' '\e15b'74px, 'full-screen' '\e5d0'20px, 'full-screen-exit' '\e5d1'20px;
 
 @each $name, $glyph, $position in $button-position {
