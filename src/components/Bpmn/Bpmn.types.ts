@@ -20,6 +20,7 @@ export type BpmnType = {
   defaultStrokeColor?: string
   elementClassesToRemove?: string[]
   customPadEntries?: PadEntriesType
+  showPropertiesPanel?: boolean
   onElementChange?: (xml: string) => void
   onTaskConfigurationClick?: Function
   onTaskDocumentationClick?: Function

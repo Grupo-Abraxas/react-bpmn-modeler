@@ -815,6 +815,38 @@ svg.new-parent {
   color: #4c6aa7;
 }
 
+.action-button-panel {
+  position: absolute;
+  bottom: 224px;
+  right: 20px;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  line-height: 38px;
+  text-align: center;
+  color: #4c6aa7;
+  background-color: #e3ebf9;
+  border: solid 2px #c3d4f4;
+  border-radius: 2px;
+  z-index: 1;
+  transition: 200ms;
+  cursor: pointer;
+}
+
+.action-button-panel:before {
+  font-family: 'Material Icons';
+  font-size: 25px;
+  content: '';
+}
+
+.action-button-panel:hover {
+  background-color: #caddff;
+}
+
+.action-button-panel:active {
+  background-color: #acc1e7;
+}
+
 .action-button-fit {
   position: absolute;
   bottom: 170px;

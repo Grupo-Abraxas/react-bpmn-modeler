@@ -50,6 +50,7 @@ const Bpmn: FC<BpmnType> = ({
   defaultStrokeColor = 'black',
   elementClassesToRemove,
   customPadEntries,
+  showPropertiesPanel = false,
   onElementChange,
   onTaskConfigurationClick,
   onTaskDocumentationClick,
@@ -62,6 +63,7 @@ const Bpmn: FC<BpmnType> = ({
 }) => {
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const [openPropertiesPanel, setOpenPropertiesPanel] = useState(false)
 
   const canvas = useRef<HTMLDivElement>(null)
 
@@ -249,37 +251,51 @@ const Bpmn: FC<BpmnType> = ({
       enabled={isFullScreen}
       onChange={(isFull: boolean): void => setIsFullScreen(isFull)}
     >
-      <div className="content" id="js-drop-zone">
-        <div id="panel-properties" />
-        <div className="canvas" ref={canvas} />
-        <ActionButton
-          actionButtonId="action-button-fit"
-          actionButtonClass={`action-button-fit ${actionButtonClassName}`}
-          onClick={fitViewportButtonHandler}
-        />
-        <ActionButton
-          actionButtonId="action-button-zoom-in"
-          actionButtonClass={`action-button-zoom-in ${actionButtonClassName}`}
-          onClick={(): void => handleZoomButtonHandler(Math.min(zLevel + zStep, 7))}
-        />
-        <ActionButton
-          actionButtonId="action-button-zoom-out"
-          actionButtonClass={`action-button-zoom-out ${actionButtonClassName}`}
-          onClick={(): void => handleZoomButtonHandler(Math.max(zLevel - zStep, zStep))}
-        />
-        {isFullScreen ? (
+      <div
+        className="content"
+        style={openPropertiesPanel ? { display: 'flex' } : {}}
+        id="js-drop-zone"
+      >
+        <div className="canvas" ref={canvas}>
+          {showPropertiesPanel ? (
+            <ActionButton
+              actionButtonId="action-button-panel"
+              actionButtonClass={`action-button-panel ${actionButtonClassName}`}
+              onClick={(): void => setOpenPropertiesPanel(!openPropertiesPanel)}
+            />
+          ) : (
+            ''
+          )}
           <ActionButton
-            actionButtonId="action-button-full-screen-exit"
-            actionButtonClass={`action-button-full-screen-exit ${actionButtonClassName}`}
-            onClick={(): void => setIsFullScreen(false)}
+            actionButtonId="action-button-fit"
+            actionButtonClass={`action-button-fit ${actionButtonClassName}`}
+            onClick={fitViewportButtonHandler}
           />
-        ) : (
           <ActionButton
-            actionButtonId="action-button-full-screen"
-            actionButtonClass={`action-button-full-screen ${actionButtonClassName}`}
-            onClick={(): void => setIsFullScreen(true)}
+            actionButtonId="action-button-zoom-in"
+            actionButtonClass={`action-button-zoom-in ${actionButtonClassName}`}
+            onClick={(): void => handleZoomButtonHandler(Math.min(zLevel + zStep, 7))}
           />
-        )}
+          <ActionButton
+            actionButtonId="action-button-zoom-out"
+            actionButtonClass={`action-button-zoom-out ${actionButtonClassName}`}
+            onClick={(): void => handleZoomButtonHandler(Math.max(zLevel - zStep, zStep))}
+          />
+          {isFullScreen ? (
+            <ActionButton
+              actionButtonId="action-button-full-screen-exit"
+              actionButtonClass={`action-button-full-screen-exit ${actionButtonClassName}`}
+              onClick={(): void => setIsFullScreen(false)}
+            />
+          ) : (
+            <ActionButton
+              actionButtonId="action-button-full-screen"
+              actionButtonClass={`action-button-full-screen ${actionButtonClassName}`}
+              onClick={(): void => setIsFullScreen(true)}
+            />
+          )}
+        </div>
+        <div id="panel-properties" hidden={!openPropertiesPanel} />
         {children}
       </div>
     </Fullscreen>
