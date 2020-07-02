@@ -1,2 +1,2 @@
 export { default } from './Bpmn'
-export type { BpmnModelerType } from './types'
+export type { BpmnModelerType } from './Bpmn.types'
