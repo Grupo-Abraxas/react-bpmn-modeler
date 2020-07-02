@@ -17,6 +17,7 @@ export type BpmnType = {
   modelerInnerHeight?: number
   actionButtonClassName?: string
   zStep?: number
+  defaultStrokeColor?: string
   elementClassesToRemove?: string[]
   customPadEntries?: PadEntriesType
   onElementChange?: (xml: string) => void

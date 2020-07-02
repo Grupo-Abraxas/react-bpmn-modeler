@@ -1,4 +1,3 @@
-@charset "UTF-8";
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -50,14 +49,66 @@
   content: '\e8b8';
 }
 
-/* '' */
 .bpmn-icon-custom-task-documentation:before {
   content: '\e873';
 }
 
-/* '' */
 .bpmn-icon-custom-sequence-flow-configuration:before {
   content: '\e8b8';
 }
 
-/* '' */
+/* Lateral pad */
+.bpmn-icon-trash:before {
+  font-family: 'Material Icons';
+  content: '\e872';
+}
+
+/* Task lateral pad */
+.bpmn-icon-task:before {
+  font-family: 'Material Icons';
+  content: '\e3bd';
+}
+
+.bpmn-icon-sequential-mi-marker:before {
+  font-family: 'Material Icons';
+  content: '\e5d2';
+}
+
+.bpmn-icon-parallel-mi-marker:before {
+  font-family: 'Material Icons';
+  content: '\e5d2';
+  transform: rotate(-90deg);
+}
+
+.bpmn-icon-loop-marker:before {
+  font-family: 'Material Icons';
+  content: '\e5d5';
+}
+
+/* Flow Lateral pad */
+.bpmn-icon-default-flow:before {
+  font-family: 'Material Icons';
+  content: '\e8e5';
+}
+
+/* Palette tool */
+.bpmn-icon-hand-tool:before {
+  font-family: 'Material Icons';
+  content: '\e925';
+}
+
+.bpmn-icon-lasso-tool:before {
+  font-family: 'Material Icons';
+  content: '\e162';
+}
+
+.bpmn-icon-connection-multi:before {
+  font-family: 'Material Icons';
+  content: '\e8d4';
+}
+
+.bpmn-icon-space-tool:before {
+  font-family: 'Material Icons';
+  content: '\e259';
+  transform: rotate(-90deg);
+}

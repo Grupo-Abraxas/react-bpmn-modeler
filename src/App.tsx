@@ -52,7 +52,6 @@ export const elementClassesToRemove = [
 ]
 
 // Item classes to remove from the item lateral pad
-
 export const customPadEntries: PadEntriesType = {
   StartEvent: [],
   IntermediateThrowEvent: [],
@@ -100,7 +99,7 @@ const App: FC = () => {
     const moddle = modelerRef.current?.get('moddle')
     const element = elementRegistry.get(event.detail.id)
 
-    if (element.businessObject.sourceRef.$type.includes('Gateway')) {
+    if (element.businessObject.sourceRef.$type.toLowerCase().includes('gateway')) {
       const sequenceFlowElement = elementRegistry.get(element.businessObject.id)
       const sequenceFlow = sequenceFlowElement.businessObject
       const newFormalCondition = `$\{true}`
@@ -135,6 +134,7 @@ const App: FC = () => {
         modelerRef={modelerRef}
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
+        defaultStrokeColor={'#5F84CF'}
         elementClassesToRemove={elementClassesToRemove}
         customPadEntries={customPadEntries}
         // It is executed by clicking the "Task configuration" button on the side pad of the Task element.
