@@ -15,7 +15,7 @@ import CustomControlsModule, {
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType, OnShapeCreateType, RemoveCustomTaskEntryType } from './types'
+import { BpmnType, RemoveCustomTaskEntryType } from './types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
@@ -45,6 +45,7 @@ const Bpmn: FC<BpmnType> = ({
   modelerInnerHeight,
   actionButtonClassName = '',
   zStep = 0.4,
+  defaultStrokeColor = 'black',
   elementClassesToRemove,
   customPadEntries,
   onElementChange,
@@ -124,6 +125,7 @@ const Bpmn: FC<BpmnType> = ({
 
   const handleEventBus = useCallback((): void => {
     const eventBus = modelerRef.current?.get('eventBus')
+    const modeling = modelerRef.current?.get('modeling')
 
     eventBus.on('elements.changed', (): void => saveModel())
 
@@ -133,13 +135,12 @@ const Bpmn: FC<BpmnType> = ({
     })
     eventBus.on(
       'commandStack.shape.create.postExecuted',
-      ({
-        context: {
-          shape: { id }
-        }
-      }: OnShapeCreateType): void => {
+      ({ context: { shape } }: { context: { shape: object } }): void => {
+        modeling.setColor(shape, {
+          stroke: defaultStrokeColor
+        })
         if (onShapeCreate) {
-          onShapeCreate(id)
+          onShapeCreate(Object(shape).id)
         }
       }
     )
@@ -162,12 +163,21 @@ const Bpmn: FC<BpmnType> = ({
     eventBus.on('popupMenu.open', () => {
       setTimeout(() => removeElementsByClass(elementClassesToRemove), 1)
     })
+
+    eventBus.on('bpmnElement.added', (event: object): void => {
+      if (!Object(event).element.type.toLowerCase().includes('flow')) {
+        modeling.setColor(Object(event).element, {
+          stroke: defaultStrokeColor
+        })
+      }
+    })
   }, [
     modelerRef,
     removeCustomTaskEntry,
     saveModel,
     onShapeCreate,
     elementClassesToRemove,
+    defaultStrokeColor,
     onRootShapeUpdate
   ])
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
