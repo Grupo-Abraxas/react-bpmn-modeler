@@ -75,7 +75,7 @@ const i18nSpanish: Record<string, string> = {
   'Change type': 'Cambiar tipo',
   Remove: 'Eliminar',
   TextAnnotation: 'Anotación de texto',
-  'Task documentation': 'Documentatión de tarea',
+  'Task documentation': 'Documentación de tarea',
   'Sequence Flow configuration': 'Configuración de flujo de secuencia',
 
   // Errors

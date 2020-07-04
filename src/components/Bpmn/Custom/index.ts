@@ -1,5 +1,6 @@
 import CustomContextPad from './CustomContextPad'
 import CustomPalette from './CustomPalette'
+import CustomRenderer from './CustomRenderer'
 
 export {
   TASK_SETTINGS_EVENT,
@@ -10,7 +11,8 @@ export {
 } from './CustomContextPad.types'
 
 export default {
-  __init__: ['customContextPad', 'customPalette'],
+  __init__: ['customContextPad', 'customPalette', 'customRenderer'],
   customContextPad: ['type', CustomContextPad],
-  customPalette: ['type', CustomPalette]
+  customPalette: ['type', CustomPalette],
+  customRenderer: ['type', CustomRenderer]
 }

@@ -8,7 +8,9 @@ export const customPadClassNames = [
   'bpmn-icon-custom-task-documentation',
   'bpmn-icon-custom-sequence-flow-configuration',
   'bpmn-icon-custom-remove',
-  'bpmn-icon-trash'
+  'bpmn-icon-trash',
+  'bpmn-icon-script-task-validation',
+  'bpmn-icon-user-task-validation'
 ]
 
 export type ContextPadEntriesType = {
@@ -55,4 +57,34 @@ export type getContextPadEntriesType = {
       click: () => void
     }
   }
+  'append.script-validation-task': {
+    group: string
+    className: string
+    title: string
+    action: {
+      click: (event: MouseEvent, element: object) => void
+      dragstart: (event: MouseEvent) => void
+    }
+  }
+  'append.user-validation-task': {
+    group: string
+    className: string
+    title: string
+    action: {
+      click: (event: MouseEvent, element: object) => void
+      dragstart: (event: MouseEvent) => void
+    }
+  }
 }
+
+type AppendServiceTaskReturnType = (event: MouseEvent, taskElement: object) => void
+export type AppendServiceTaskType = (
+  taskLabelText: string,
+  taskType: 'bpmn:ScriptTask' | 'bpmn:UserTask'
+) => AppendServiceTaskReturnType
+
+type AppendServiceTaskStartReturnType = (event: MouseEvent) => void
+export type AppendServiceTaskStartType = (
+  taskLabelText: string,
+  taskType: 'bpmn:ScriptTask' | 'bpmn:UserTask'
+) => AppendServiceTaskStartReturnType

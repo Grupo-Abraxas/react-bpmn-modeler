@@ -2,7 +2,9 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format("woff2"); }
+  src: url(https://fonts.gstatic.com/s/materialicons/v48/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2)
+    format('woff2');
+}
 
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
 /* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
@@ -40,62 +42,87 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* Uncomment for 3D effect */
-  text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.562); }
+  text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.562);
+}
 
 .bpmn-icon-custom-remove:before {
-  content: '\e872'; }
+  content: '\e872';
+}
 
 .bpmn-icon-custom-task-settings:before {
-  content: '\e8b8'; }
+  content: '\e8b8';
+}
 
 .bpmn-icon-custom-task-documentation:before {
-  content: '\e873'; }
+  content: '\e873';
+}
 
 .bpmn-icon-custom-sequence-flow-configuration:before {
-  content: '\e8b8'; }
+  content: '\e8b8';
+}
 
 /* Lateral pad */
 .bpmn-icon-trash:before {
   font-family: 'Material Icons';
-  content: '\e872'; }
+  content: '\e872';
+}
 
 /* Task lateral pad */
 .bpmn-icon-task:before {
   font-family: 'Material Icons';
-  content: '\e3bd'; }
+  content: '\e3bd';
+}
+
+.bpmn-icon-script-task-validation:before {
+  font-family: 'Material Icons';
+  content: '\e3bd';
+}
+
+.bpmn-icon-user-task-validation:before {
+  font-family: 'Material Icons';
+  content: '\e3bd';
+}
 
 .bpmn-icon-sequential-mi-marker:before {
   font-family: 'Material Icons';
-  content: '\e5d2'; }
+  content: '\e5d2';
+}
 
 .bpmn-icon-parallel-mi-marker:before {
   font-family: 'Material Icons';
   content: '\e5d2';
-  transform: rotate(-90deg); }
+  transform: rotate(-90deg);
+}
 
 .bpmn-icon-loop-marker:before {
   font-family: 'Material Icons';
-  content: '\e5d5'; }
+  content: '\e5d5';
+}
 
 /* Flow Lateral pad */
 .bpmn-icon-default-flow:before {
   font-family: 'Material Icons';
-  content: '\e8e5'; }
+  content: '\e8e5';
+}
 
 /* Palette tool */
 .bpmn-icon-hand-tool:before {
   font-family: 'Material Icons';
-  content: '\e925'; }
+  content: '\e925';
+}
 
 .bpmn-icon-lasso-tool:before {
   font-family: 'Material Icons';
-  content: '\e162'; }
+  content: '\e162';
+}
 
 .bpmn-icon-connection-multi:before {
   font-family: 'Material Icons';
-  content: '\e8d4'; }
+  content: '\e8d4';
+}
 
 .bpmn-icon-space-tool:before {
   font-family: 'Material Icons';
   content: '\e259';
-  transform: rotate(-90deg); }
+  transform: rotate(-90deg);
+}

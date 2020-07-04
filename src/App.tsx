@@ -53,27 +53,34 @@ export const elementClassesToRemove = [
 
 // Item classes to remove from the item lateral pad
 export const customPadEntries: PadEntriesType = {
-  StartEvent: ['bpmn-icon-custom-remove'],
-  IntermediateThrowEvent: ['bpmn-icon-custom-remove'],
-  IntermediateCatchEvent: ['bpmn-icon-custom-remove'],
-  EndEvent: ['bpmn-icon-custom-remove'],
-  CallActivity: ['bpmn-icon-custom-remove'],
-  SubProcess: ['bpmn-icon-custom-remove'],
-  Gateway: ['bpmn-icon-custom-remove'],
-  SequenceFlow: ['bpmn-icon-custom-sequence-flow-configuration', 'bpmn-icon-custom-remove'],
-  TextAnnotation: ['bpmn-icon-custom-remove'],
-  Participant: ['bpmn-icon-custom-remove'],
-  Lane: ['bpmn-icon-custom-remove'],
-  DataStoreReference: ['bpmn-icon-custom-remove'],
-  DataObjectReference: ['bpmn-icon-custom-remove'],
+  Association: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  CallActivity: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  DataObjectReference: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  DataStoreReference: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  EndEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  Gateway: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  Group: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  StartEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  IntermediateCatchEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  IntermediateThrowEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   label: ['bpmn-icon-custom-remove'],
-  Association: ['bpmn-icon-custom-remove'],
-  Group: ['bpmn-icon-custom-remove'],
+  Lane: ['bpmn-icon-custom-remove'],
+  Participant: ['bpmn-icon-custom-remove'],
+  Process: ['bpmn-icon-custom-remove'],
+  SequenceFlow: [
+    'bpmn-icon-custom-sequence-flow-configuration',
+    'bpmn-icon-custom-remove',
+    'bpmn-icon-script-task-validation'
+  ],
+  SubProcess: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   Task: [
     'bpmn-icon-custom-task-documentation',
     'bpmn-icon-custom-task-settings',
-    'bpmn-icon-custom-remove'
-  ]
+    'bpmn-icon-custom-remove',
+    'bpmn-icon-script-task-validation',
+    'bpmn-icon-user-task-validation'
+  ],
+  TextAnnotation: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation']
 }
 
 const App: FC = () => {

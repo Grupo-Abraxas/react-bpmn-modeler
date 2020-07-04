@@ -13,12 +13,13 @@ import CustomControlsModule, {
   TASK_DOCUMENTATION_EVENT,
   SEQUENCE_FLOW_CONFIGURATION_EVENT,
   CUSTOM_REMOVE_ELEMENT_EVENT
-} from './CustomControlsModule'
+} from './Custom'
 import { newBpmnDiagram } from './default-bpmn-layout'
-import ActionButton from './ActionButton'
+import ActionButton from './components/ActionButton'
 
 import { BpmnType, RemoveCustomTaskEntryType } from './Bpmn.types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
+import arkonExtension from './resources/arkon.json'
 
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
@@ -192,7 +193,8 @@ const Bpmn: FC<BpmnType> = ({
         CustomControlsModule
       ],
       moddleExtensions: {
-        camunda: camundaModdleDescriptor
+        camunda: camundaModdleDescriptor,
+        arkon: arkonExtension
       },
       propertiesPanel: {
         parent: '#panel-properties'

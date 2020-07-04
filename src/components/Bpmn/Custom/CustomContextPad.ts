@@ -5,27 +5,44 @@ import {
   CUSTOM_REMOVE_ELEMENT_EVENT,
   getContextPadEntriesType,
   ContextPadEntriesType,
-  customPadClassNames
+  customPadClassNames,
+  AppendServiceTaskType,
+  AppendServiceTaskStartType
 } from './CustomContextPad.types'
 
+const SCRIPT_VALIDATION_TASK_TEXT = 'VALIDACIÓN SISTEMA'
+const USER_VALIDATION_TASK_TEXT = 'VALIDACIÓN USUARIO'
+
 class CustomContextPad {
+  public static $inject: string[]
   public autoPlace: object | undefined
   private translate: Function
+  private create: { start: Function }
+  private bpmnFactory: { create: Function }
+  private elementFactory: { createShape: Function }
 
   public constructor(
+    bpmnFactory: { create: Function },
     config: { autoPlace: boolean },
     contextPad: { registerProvider: Function },
+    create: { start: Function },
+    elementFactory: { createShape: Function },
     injector: { get: Function },
     translate: Function
   ) {
     this.translate = translate
-    if (config.autoPlace) {
+    this.create = create
+    this.bpmnFactory = bpmnFactory
+    this.elementFactory = elementFactory
+    if (!config.autoPlace) {
       this.autoPlace = injector.get('autoPlace', false)
     }
     contextPad.registerProvider(this)
   }
 
   public getContextPadEntries = (element: ContextPadEntriesType): getContextPadEntriesType => {
+    const { autoPlace, bpmnFactory, create, elementFactory } = this
+
     const taskSettings = (): void => {
       const customEvent = new CustomEvent(TASK_SETTINGS_EVENT, {
         detail: {
@@ -78,6 +95,41 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
+    const appendServiceTaskStart: AppendServiceTaskStartType = (taskLabelText, taskType) => (
+      event: MouseEvent
+    ): void => {
+      const businessObject = bpmnFactory.create()
+
+      businessObject.validation = taskLabelText
+
+      const shape = elementFactory.createShape({
+        type: taskType,
+        businessObject: businessObject
+      })
+
+      create.start(event, shape, element)
+    }
+
+    const appendServiceTask: AppendServiceTaskType = (taskLabelText, taskType) => (
+      event: MouseEvent,
+      taskElement: object
+    ): void => {
+      if (autoPlace && event) {
+        const businessObject = bpmnFactory.create(taskType)
+
+        businessObject.validation = taskLabelText
+
+        const shape = elementFactory.createShape({
+          type: taskType,
+          businessObject: businessObject
+        })
+
+        Object(autoPlace).append(taskElement, shape)
+      } else {
+        appendServiceTaskStart(SCRIPT_VALIDATION_TASK_TEXT, taskType)
+      }
+    }
+
     return {
       'task-configuration': {
         group: 'default',
@@ -110,9 +162,37 @@ class CustomContextPad {
         action: {
           click: customRemoveElement
         }
+      },
+      'append.script-validation-task': {
+        group: 'model',
+        className: `${customPadClassNames[5]} script-task-validation-label`,
+        title: this.translate('Append Validation Task'),
+        action: {
+          click: appendServiceTask(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask'),
+          dragstart: appendServiceTaskStart(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask')
+        }
+      },
+      'append.user-validation-task': {
+        group: 'model',
+        className: `${customPadClassNames[6]} user-task-validation-label`,
+        title: this.translate('Append Validation Task'),
+        action: {
+          click: appendServiceTask(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask'),
+          dragstart: appendServiceTaskStart(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask')
+        }
       }
     }
   }
 }
+
+CustomContextPad.$inject = [
+  'bpmnFactory',
+  'config',
+  'contextPad',
+  'create',
+  'elementFactory',
+  'injector',
+  'translate'
+]
 
 export default CustomContextPad
