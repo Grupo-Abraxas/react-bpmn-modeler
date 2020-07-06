@@ -22,6 +22,10 @@ With React Typescript
 
 ```tsx
 import React, { FC, useRef, useState, useCallback, useEffect } from 'react'
+
+import BpmnModeler from 'bpmn-js/lib/Modeler'
+import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
+
 import { Bpmn } from '@arkondata/react-bpmn-modeler/lib/components'
 import { BpmnModelerType, PadEntriesType } from '@arkondata/react-bpmn-modeler/lib/components/types'
 
@@ -71,7 +75,7 @@ export const elementClassesToRemove = [
   'bpmn-icon-start-event-condition',
   'bpmn-icon-start-event-signal',
   'bpmn-icon-data-object',
-  'bpmn-icon-data-store',
+  'bpmn-icon-data-store'
 ]
 
 // Item classes to remove from the item lateral pad
@@ -83,10 +87,7 @@ export const customPadEntries: PadEntriesType = {
   CallActivity: ['bpmn-icon-custom-remove'],
   SubProcess: ['bpmn-icon-custom-remove'],
   Gateway: ['bpmn-icon-custom-remove'],
-  SequenceFlow: [
-    'bpmn-icon-custom-sequence-flow-configuration',
-    'bpmn-icon-custom-remove'
-  ],
+  SequenceFlow: ['bpmn-icon-custom-sequence-flow-configuration', 'bpmn-icon-custom-remove'],
   TextAnnotation: ['bpmn-icon-custom-remove'],
   Participant: ['bpmn-icon-custom-remove'],
   Lane: ['bpmn-icon-custom-remove'],
@@ -99,7 +100,7 @@ export const customPadEntries: PadEntriesType = {
     'bpmn-icon-custom-task-documentation',
     'bpmn-icon-custom-task-settings',
     'bpmn-icon-custom-remove'
-  ],
+  ]
 }
 
 const App: FC = () => {
@@ -172,6 +173,10 @@ const App: FC = () => {
     (): JSX.Element => (
       <Bpmn
         modelerRef={modelerRef}
+        bpmnJsModeler={BpmnModeler}
+        moddleExtensions={{
+          camunda: camundaModdleDescriptor
+        }}
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
         defaultStrokeColor={'#5F84CF'}
@@ -223,6 +228,10 @@ export default App
 
 * **bpmnStringFile:** A .bpmn file in text string, if not provided an empty .bpmn file will be generated. **\***
 
+* **bpmnJsModeler:** Module ```BpmnModeler``` is imported globally from ```'bpmn-js/lib/Modeler'```.
+
+* **moddleExtensions:** Any Module of bpmn-moddle is imported globally like ```'camunda-bpmn-moddle/resources/camunda'```.
+
 * **modelerInnerHeight:** Window height setting, if not provided, takes the size of the current window by default.
 
 * **actionButtonClassName:** React className of action button.
@@ -230,6 +239,8 @@ export default App
 * **zStep:** Number of zoom step of zoom in/out action button.
 
 * **defaultStrokeColor:** Default color of stroke shape elements, accepts definition of css colors in a text string.
+
+* **showPropertiesPanel:** If the value is *true* the icon is shown to open the properties panel, otherwise the button and the panel will not be visible.
 
 * **elementClassesToRemove:** Item classes to remove from the item popup panel.
 
