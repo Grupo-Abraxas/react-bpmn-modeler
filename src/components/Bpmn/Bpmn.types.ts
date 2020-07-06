@@ -1,3 +1,5 @@
+import BpmnModeler from 'bpmn-js/lib/Modeler'
+
 import { MutableRefObject } from 'react'
 
 export type BpmnModelerType = {
@@ -11,8 +13,27 @@ export type PadEntriesType = {
   [key: string]: string[]
 }
 
+type BpmnModeler = {
+  container: HTMLDivElement | null
+  keyboard: { bindTo: Document }
+  additionalModules: object[]
+  moddleExtensions: object
+  height: number
+  propertiesPanel: {
+    parent: string
+  }
+}
+type BpmnModelerReturn = {
+  on: Function
+  get: Function
+  importXML: Function
+  saveXML: Function
+}
+
 export type BpmnType = {
   modelerRef: MutableRefObject<BpmnModelerType | undefined>
+  bpmnJsModeler: new (props: BpmnModeler) => BpmnModelerReturn
+  moddleExtensions?: object
   bpmnStringFile: string | ArrayBuffer | false | null | undefined
   modelerInnerHeight?: number
   actionButtonClassName?: string

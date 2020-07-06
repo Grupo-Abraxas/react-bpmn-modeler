@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, FC, useCallback, useState } from 'react'
 import Fullscreen from 'react-full-screen'
 
-import BpmnModeler from 'bpmn-js/lib/Modeler'
 import minimapModule from 'diagram-js-minimap'
 import propertiesPanelModule from 'bpmn-js-properties-panel'
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
@@ -44,6 +43,8 @@ const customTranslateModule = {
 
 const Bpmn: FC<BpmnType> = ({
   modelerRef,
+  bpmnJsModeler,
+  moddleExtensions = {},
   bpmnStringFile,
   modelerInnerHeight,
   actionButtonClassName = '',
@@ -182,7 +183,7 @@ const Bpmn: FC<BpmnType> = ({
   ])
 
   const memorizeSetModeler = useCallback((): void => {
-    modelerRef.current = new BpmnModeler({
+    modelerRef.current = new bpmnJsModeler({
       container: canvas.current,
       keyboard: { bindTo: document },
       additionalModules: [
@@ -193,6 +194,7 @@ const Bpmn: FC<BpmnType> = ({
         CustomControlsModule
       ],
       moddleExtensions: {
+        ...moddleExtensions,
         camunda: camundaModdleDescriptor,
         arkon: arkonExtension
       },
@@ -205,11 +207,13 @@ const Bpmn: FC<BpmnType> = ({
     handleEventBus()
     removeElementsByClass(elementClassesToRemove)
   }, [
+    bpmnJsModeler,
     memorizeImportXMLCustomPadEntry,
     modelerInnerHeight,
     handleEventBus,
     modelerRef,
-    elementClassesToRemove
+    elementClassesToRemove,
+    moddleExtensions
   ])
 
   useEffect((): void => {
