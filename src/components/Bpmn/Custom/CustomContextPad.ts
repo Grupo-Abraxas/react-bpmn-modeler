@@ -189,7 +189,7 @@ class CustomContextPad {
       'append.script-validation-task': {
         group: 'model',
         className: `${customPadClassNames[5]} script-task-validation-label`,
-        title: this.translate('Append Validation Task'),
+        title: this.translate('Append Script Validation Task'),
         action: {
           click: appendServiceTask(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask'),
           dragstart: appendServiceTaskStart(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask')
@@ -198,7 +198,7 @@ class CustomContextPad {
       'append.user-validation-task': {
         group: 'model',
         className: `${customPadClassNames[6]} user-task-validation-label`,
-        title: this.translate('Append Validation Task'),
+        title: this.translate('Append User Validation Task'),
         action: {
           click: appendServiceTask(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask'),
           dragstart: appendServiceTaskStart(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask')

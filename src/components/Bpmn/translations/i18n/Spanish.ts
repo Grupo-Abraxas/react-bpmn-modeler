@@ -72,10 +72,13 @@ const i18nSpanish: Record<string, string> = {
   'Append Task': 'Añadir tarea',
   'Append Intermediate/Boundary Event': 'Añadir evento Intermedio/Límite',
   'Append {type}': 'Agregar {type}',
+  'Append Script Validation Task': 'Añadir script de validación',
+  'Append User Validation Task': 'Añadir validación de tarea de usuario',
   'Change type': 'Cambiar tipo',
   Remove: 'Eliminar',
   TextAnnotation: 'Anotación de texto',
   'Task documentation': 'Documentación de tarea',
+  'Task settings': 'Configuración de tarea',
   'Sequence Flow configuration': 'Configuración de flujo de secuencia',
 
   // Errors
