@@ -163,7 +163,7 @@ const App: FC = () => {
         bpmnStringFile={bpmnStringFile}
         modelerInnerHeight={window.innerHeight}
         defaultStrokeColor={'#5F84CF'}
-        showPropertiesPanel={true}
+        showPropertiesPanel={false}
         elementClassesToRemove={elementClassesToRemove}
         customPadEntries={customPadEntries}
         // It is executed by clicking the "Task configuration" button on the side pad of the Task element.

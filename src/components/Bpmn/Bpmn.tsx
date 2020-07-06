@@ -191,22 +191,25 @@ const Bpmn: FC<BpmnType> = ({
   ])
 
   const memorizeSetModeler = useCallback((): void => {
+    const additionalModules = [
+      minimapModule,
+      propertiesProviderModule,
+      customTranslateModule,
+      CustomControlsModule
+    ]
+    if (showPropertiesPanel) {
+      additionalModules.push(propertiesPanelModule)
+    }
     modelerRef.current = new BpmnModeler({
       container: canvas.current,
       keyboard: { bindTo: document },
-      additionalModules: [
-        minimapModule,
-        propertiesPanelModule,
-        propertiesProviderModule,
-        customTranslateModule,
-        CustomControlsModule
-      ],
+      additionalModules: additionalModules,
       moddleExtensions: {
         camunda: camundaModdleDescriptor,
         arkon: arkonExtension
       },
       propertiesPanel: {
-        parent: '#panel-properties'
+        parent: '#properties-panel'
       },
       height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
@@ -218,7 +221,8 @@ const Bpmn: FC<BpmnType> = ({
     modelerInnerHeight,
     handleEventBus,
     modelerRef,
-    elementClassesToRemove
+    elementClassesToRemove,
+    showPropertiesPanel
   ])
 
   useEffect((): void => {
@@ -314,7 +318,7 @@ const Bpmn: FC<BpmnType> = ({
             />
           )}
         </div>
-        <div id="panel-properties" hidden={!openPropertiesPanel} />
+        <div id="properties-panel" hidden={!openPropertiesPanel} />
         {children}
       </div>
     </Fullscreen>
