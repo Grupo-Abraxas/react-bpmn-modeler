@@ -2,6 +2,7 @@ import {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
   SEQUENCE_FLOW_CONFIGURATION_EVENT,
+  MESSAGE_CONFIGURATION_EVENT,
   CUSTOM_REMOVE_ELEMENT_EVENT,
   getContextPadEntriesType,
   ContextPadEntriesType,
@@ -71,8 +72,22 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
-    const sequenceFlowConnfiguration = (): void => {
+    const sequenceFlowConfiguration = (): void => {
       const customEvent = new CustomEvent(SEQUENCE_FLOW_CONFIGURATION_EVENT, {
+        detail: {
+          id: element.businessObject.id,
+          $type: element.businessObject.$type,
+          $parent: {
+            id: element.businessObject.$parent.id,
+            $type: element.businessObject.$parent.$type
+          }
+        }
+      })
+      document.dispatchEvent(customEvent)
+    }
+
+    const messageEventConfiguration = (): void => {
+      const customEvent = new CustomEvent(MESSAGE_CONFIGURATION_EVENT, {
         detail: {
           id: element.businessObject.id,
           $type: element.businessObject.$type,
@@ -152,7 +167,15 @@ class CustomContextPad {
         className: customPadClassNames[2],
         title: this.translate('Sequence Flow configuration'),
         action: {
-          click: sequenceFlowConnfiguration
+          click: sequenceFlowConfiguration
+        }
+      },
+      'message-outgoing-configuration': {
+        group: 'default',
+        className: customPadClassNames[7],
+        title: this.translate('Sequence Flow configuration'),
+        action: {
+          click: messageEventConfiguration
         }
       },
       'remove-element': {

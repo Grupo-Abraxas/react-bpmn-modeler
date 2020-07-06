@@ -12,9 +12,10 @@ import CustomControlsModule, {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
   SEQUENCE_FLOW_CONFIGURATION_EVENT,
+  MESSAGE_CONFIGURATION_EVENT,
   CUSTOM_REMOVE_ELEMENT_EVENT
 } from './Custom'
-import { newBpmnDiagram } from './default-bpmn-layout'
+import { newBpmnDiagram } from './resources/default-bpmn-layout'
 import ActionButton from './components/ActionButton'
 
 import { BpmnType, RemoveCustomTaskEntryType } from './Bpmn.types'
@@ -56,6 +57,7 @@ const Bpmn: FC<BpmnType> = ({
   onTaskConfigurationClick,
   onTaskDocumentationClick,
   onSequenceFlowConfigurationClick,
+  outgoingMessageConfigurationClick,
   onRemoveClick,
   onShapeCreate,
   onRootShapeUpdate,
@@ -86,10 +88,13 @@ const Bpmn: FC<BpmnType> = ({
   }, [onError, bpmnStringFile, modelerRef, fitViewportButtonHandler])
 
   const removeCustomPadTaskEntry = useCallback(
-    (type: string, sourceRefType?: string) => {
+    (type: string, sourceRefType?: string, eventDefinitions?: object[]) => {
       const classesToAvoid = []
       if (!sourceRefType?.toLowerCase().includes('gateway')) {
         classesToAvoid.push('bpmn-icon-custom-sequence-flow-configuration')
+      }
+      if (!eventDefinitions) {
+        classesToAvoid.push('bpmn-icon-custom-message-outgoing-configuration')
       }
       const lateralPadEntries: Element[] = findLateralPadEntries(
         type,
@@ -131,7 +136,11 @@ const Bpmn: FC<BpmnType> = ({
 
     eventBus.on('contextPad.open', ({ current: { element } }: RemoveCustomTaskEntryType): void => {
       const sourceRefType = Object(element).businessObject.sourceRef?.$type
-      removeCustomPadTaskEntry(Object(element).type, sourceRefType)
+      removeCustomPadTaskEntry(
+        Object(element).type,
+        sourceRefType,
+        Object(element).businessObject.eventDefinitions
+      )
     })
     eventBus.on(
       'commandStack.shape.create.postExecuted',
@@ -239,6 +248,14 @@ const Bpmn: FC<BpmnType> = ({
       false
     )
   }, [onSequenceFlowConfigurationClick])
+
+  useEffect((): void => {
+    document.addEventListener(
+      MESSAGE_CONFIGURATION_EVENT,
+      (event: Event): void => outgoingMessageConfigurationClick?.(event),
+      false
+    )
+  }, [outgoingMessageConfigurationClick])
 
   useEffect((): void => {
     document.addEventListener(

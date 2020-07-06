@@ -60,7 +60,11 @@ export const customPadEntries: PadEntriesType = {
   EndEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   Gateway: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   Group: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
-  StartEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  StartEvent: [
+    'bpmn-icon-custom-remove',
+    'bpmn-icon-script-task-validation',
+    'bpmn-icon-custom-message-outgoing-configuration'
+  ],
   IntermediateCatchEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   IntermediateThrowEvent: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   label: ['bpmn-icon-custom-remove'],
@@ -136,6 +140,9 @@ const App: FC = () => {
     }
   }
 
+  const outgoingMessageConfigurationClick = (event: CustomEvent): void =>
+    alert(JSON.stringify(event.detail))
+
   const updateCurrentShapeId = (elementId: string): void => {
     // Example of changing the Id of an element and its references.
     const elementRegistry = modelerRef.current?.get('elementRegistry')
@@ -165,6 +172,8 @@ const App: FC = () => {
         onTaskDocumentationClick={onTaskDocumentationClick}
         // It is executed by clicking the "Sequence Flow configuration" button on the side pad of the Task element.
         onSequenceFlowConfigurationClick={onSequenceFlowConfigurationClick}
+        // It is executed by clicking the "StartEvent configuration" button on the side pad of the Task element.
+        outgoingMessageConfigurationClick={outgoingMessageConfigurationClick}
         // It is executed by clicking the "Remove" button on the side pad of the Task element.
         onRemoveClick={onRemoveClick}
         // It is executed when listening to the event "elements.changed",

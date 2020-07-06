@@ -61,6 +61,10 @@
   content: '\e8b8';
 }
 
+.bpmn-icon-custom-message-outgoing-configuration:before {
+  content: '\e8b8';
+}
+
 /* Lateral pad */
 .bpmn-icon-trash:before {
   font-family: 'Material Icons';
@@ -75,7 +79,7 @@
 
 .bpmn-icon-script-task-validation:before {
   font-family: 'Material Icons';
-  content: '\e3bd';
+  content: '\e86f';
 }
 
 .bpmn-icon-user-task-validation:before {
