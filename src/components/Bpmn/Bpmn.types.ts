@@ -19,6 +19,9 @@ type BpmnModeler = {
   additionalModules: object[]
   moddleExtensions: object
   height: number
+  propertiesPanel: {
+    parent: string
+  }
 }
 type BpmnModelerReturn = {
   on: Function
@@ -36,6 +39,7 @@ export type BpmnType = {
   actionButtonClassName?: string
   zStep?: number
   defaultStrokeColor?: string
+  showPropertiesPanel?: boolean
   elementClassesToRemove?: string[]
   customPadEntries?: PadEntriesType
   onElementChange?: (xml: string) => void
