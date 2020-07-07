@@ -208,7 +208,7 @@ const Bpmn: FC<BpmnType> = ({
       moddleExtensions: {
         ...moddleExtensions,
         camunda: camundaModdleDescriptor,
-        arkon: arkonExtension
+        arkonElements: arkonExtension
       },
       propertiesPanel: {
         parent: '#properties-panel'

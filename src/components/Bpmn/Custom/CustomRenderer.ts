@@ -104,9 +104,9 @@ export default class CustomRenderer extends BaseRenderer {
 
   public getValidationText = (element: object): string => {
     const businessObject = getBusinessObject(element)
-    const { validation } = businessObject
+    const { validationType } = businessObject
 
-    return validation ? validation : ''
+    return validationType ? validationType : ''
   }
 }
 
