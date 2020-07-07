@@ -132,7 +132,7 @@ class CustomContextPad {
       if (autoPlace && event) {
         const businessObject = bpmnFactory.create(taskType)
 
-        businessObject.validation = taskLabelText
+        businessObject.validationType = taskLabelText
 
         const shape = elementFactory.createShape({
           type: taskType,

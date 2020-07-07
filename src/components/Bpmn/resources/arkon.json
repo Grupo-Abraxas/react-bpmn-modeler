@@ -1,7 +1,7 @@
 {
   "name": "Arkon",
   "uri": "https://www.arkondata.com",
-  "prefix": "arkon",
+  "prefix": "arkonElements",
   "xml": {
     "tagAlias": "lowerCase"
   },
@@ -11,49 +11,11 @@
       "extends": ["bpmn:FlowNode"],
       "properties": [
         {
-          "name": "validation",
+          "name": "validationType",
           "isAttr": true,
-          "type": "String"
-        }
-      ]
-    },
-    {
-      "name": "AnalysisDetails",
-      "superClass": ["Element"],
-      "properties": [
-        {
-          "name": "lastChecked",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "nextCheck",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "comments",
-          "isMany": true,
-          "type": "Comment"
-        }
-      ]
-    },
-    {
-      "name": "Comment",
-      "properties": [
-        {
-          "name": "author",
-          "isAttr": true,
-          "type": "String"
-        },
-        {
-          "name": "text",
-          "isBody": true,
           "type": "String"
         }
       ]
     }
-  ],
-  "emumerations": [],
-  "associations": []
+  ]
 }
