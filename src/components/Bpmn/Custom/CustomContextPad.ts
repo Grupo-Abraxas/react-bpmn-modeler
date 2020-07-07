@@ -7,12 +7,11 @@ import {
   getContextPadEntriesType,
   ContextPadEntriesType,
   customPadClassNames,
-  AppendServiceTaskType,
-  AppendServiceTaskStartType
+  AppendCustomTaskType,
+  AppendCustomTaskStartType,
+  SCRIPT_VALIDATION_TASK_TEXT,
+  USER_VALIDATION_TASK_TEXT
 } from './CustomContextPad.types'
-
-const SCRIPT_VALIDATION_TASK_TEXT = 'VALIDACIÓN SISTEMA'
-const USER_VALIDATION_TASK_TEXT = 'VALIDACIÓN USUARIO'
 
 class CustomContextPad {
   public static $inject: string[]
@@ -110,12 +109,12 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
-    const appendServiceTaskStart: AppendServiceTaskStartType = (taskLabelText, taskType) => (
+    const appendCustomTaskStart: AppendCustomTaskStartType = (taskLabelText, taskType) => (
       event: MouseEvent
     ): void => {
       const businessObject = bpmnFactory.create()
 
-      businessObject.validation = taskLabelText
+      businessObject.validationType = taskLabelText
 
       const shape = elementFactory.createShape({
         type: taskType,
@@ -125,7 +124,7 @@ class CustomContextPad {
       create.start(event, shape, element)
     }
 
-    const appendServiceTask: AppendServiceTaskType = (taskLabelText, taskType) => (
+    const appendCustomTask: AppendCustomTaskType = (taskLabelText, taskType) => (
       event: MouseEvent,
       taskElement: object
     ): void => {
@@ -141,7 +140,7 @@ class CustomContextPad {
 
         Object(autoPlace).append(taskElement, shape)
       } else {
-        appendServiceTaskStart(SCRIPT_VALIDATION_TASK_TEXT, taskType)
+        appendCustomTaskStart(SCRIPT_VALIDATION_TASK_TEXT, taskType)
       }
     }
 
@@ -191,8 +190,8 @@ class CustomContextPad {
         className: `${customPadClassNames[5]} script-task-validation-label`,
         title: this.translate('Append Script Validation Task'),
         action: {
-          click: appendServiceTask(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask'),
-          dragstart: appendServiceTaskStart(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask')
+          click: appendCustomTask(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask'),
+          dragstart: appendCustomTaskStart(SCRIPT_VALIDATION_TASK_TEXT, 'bpmn:ScriptTask')
         }
       },
       'append.user-validation-task': {
@@ -200,8 +199,8 @@ class CustomContextPad {
         className: `${customPadClassNames[6]} user-task-validation-label`,
         title: this.translate('Append User Validation Task'),
         action: {
-          click: appendServiceTask(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask'),
-          dragstart: appendServiceTaskStart(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask')
+          click: appendCustomTask(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask'),
+          dragstart: appendCustomTaskStart(USER_VALIDATION_TASK_TEXT, 'bpmn:UserTask')
         }
       }
     }
