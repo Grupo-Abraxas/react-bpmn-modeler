@@ -54,7 +54,7 @@ const i18nSpanish: Record<string, string> = {
   'Manual Task': 'Tarea manual',
   'Business Rule Task': 'Tarea de reglas de negocios',
   'Service Task': 'Tarea de servicio',
-  'Script Task': 'Tarea de guión',
+  'Script Task': 'Tarea de script',
   'Call Activity': 'Actividad de llamada',
   'Sub Process (collapsed)': 'Subproceso (colapsado)',
   'Sub Process (expanded)': 'Subproceso (expandido)',
