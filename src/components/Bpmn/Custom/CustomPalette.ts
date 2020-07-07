@@ -43,7 +43,7 @@ export default class CustomPalette {
 
     return {
       'append.script-validation-task': {
-        group: 'model',
+        group: 'activity',
         className: `${customPadClassNames[5]} script-task-validation-label`,
         title: translate('Append Script Validation Task'),
         action: {
