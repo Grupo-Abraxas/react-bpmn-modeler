@@ -1,6 +1,6 @@
 {
   "name": "@arkondata/react-bpmn-modeler",
-  "version": "0.1.22",
+  "version": "0.1.23-beta.0",
   "private": false,
   "author": "JavierMolina",
   "license": "MIT",
@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.0",
-    "@testing-library/react": "^9.3.2",
+    "@testing-library/react": "^10.4.4",
     "@testing-library/user-event": "^7.1.2",
     "bpmn-js": "^6.4.2",
     "bpmn-js-properties-panel": "^0.33.2",
@@ -57,7 +57,7 @@
     "yarn-run-all": "^3.1.1"
   },
   "devDependencies": {
-    "@testing-library/react": "^9.3.2",
+    "@testing-library/react": "^10.4.4",
     "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^25.2.2",
     "@types/node": "^14.0.1",
