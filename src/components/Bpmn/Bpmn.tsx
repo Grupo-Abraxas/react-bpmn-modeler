@@ -89,7 +89,7 @@ const Bpmn: FC<BpmnType> = ({
   }, [onError, bpmnStringFile, modelerRef, fitViewportButtonHandler])
 
   const removeCustomPadTaskEntry = useCallback(
-    (type: string, sourceRefType?: string, eventDefinitions?: object[]) => {
+    (elementType: string, sourceRefType?: string, eventDefinitions?: object[]) => {
       const classesToAvoid = []
       if (!sourceRefType?.toLowerCase().includes('gateway')) {
         classesToAvoid.push('bpmn-icon-custom-sequence-flow-configuration')
@@ -97,8 +97,11 @@ const Bpmn: FC<BpmnType> = ({
       if (!eventDefinitions) {
         classesToAvoid.push('bpmn-icon-custom-message-outgoing-configuration')
       }
+      if (!elementType.toLowerCase().includes('usertask')) {
+        classesToAvoid.push('bpmn-icon-user-task-validation')
+      }
       const lateralPadEntries: Element[] = findLateralPadEntries(
-        type,
+        elementType,
         customPadEntries,
         classesToAvoid
       )

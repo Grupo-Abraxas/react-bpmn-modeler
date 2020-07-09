@@ -56,7 +56,7 @@ export const elementClassesToRemove = [
 
 // Item classes to remove from the item lateral pad
 export const customPadEntries: PadEntriesType = {
-  Association: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
+  Association: ['bpmn-icon-custom-remove'],
   CallActivity: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   DataObjectReference: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   DataStoreReference: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
@@ -74,11 +74,7 @@ export const customPadEntries: PadEntriesType = {
   Lane: ['bpmn-icon-custom-remove'],
   Participant: ['bpmn-icon-custom-remove'],
   Process: ['bpmn-icon-custom-remove'],
-  SequenceFlow: [
-    'bpmn-icon-custom-sequence-flow-configuration',
-    'bpmn-icon-custom-remove',
-    'bpmn-icon-script-task-validation'
-  ],
+  SequenceFlow: ['bpmn-icon-custom-sequence-flow-configuration', 'bpmn-icon-custom-remove'],
   SubProcess: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation'],
   Task: [
     'bpmn-icon-custom-task-documentation',
@@ -87,7 +83,7 @@ export const customPadEntries: PadEntriesType = {
     'bpmn-icon-script-task-validation',
     'bpmn-icon-user-task-validation'
   ],
-  TextAnnotation: ['bpmn-icon-custom-remove', 'bpmn-icon-script-task-validation']
+  TextAnnotation: ['bpmn-icon-custom-remove']
 }
 
 const App: FC = () => {

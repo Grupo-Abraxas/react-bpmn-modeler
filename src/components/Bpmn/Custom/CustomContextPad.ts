@@ -113,8 +113,10 @@ class CustomContextPad {
       event: MouseEvent
     ): void => {
       const businessObject = bpmnFactory.create()
+      const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
 
-      businessObject.validationType = taskLabelText
+      extensionElements.validationType = taskLabelText
+      businessObject.extensionElements = extensionElements
 
       const shape = elementFactory.createShape({
         type: taskType,
@@ -130,8 +132,10 @@ class CustomContextPad {
     ): void => {
       if (autoPlace && event) {
         const businessObject = bpmnFactory.create(taskType)
+        const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
 
-        businessObject.validationType = taskLabelText
+        extensionElements.validationType = taskLabelText
+        businessObject.extensionElements = extensionElements
 
         const shape = elementFactory.createShape({
           type: taskType,
