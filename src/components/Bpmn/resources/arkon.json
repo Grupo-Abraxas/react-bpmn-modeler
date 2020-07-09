@@ -7,7 +7,7 @@
   },
   "types": [
     {
-      "name": "AnalyzedNode",
+      "name": "Validation",
       "extends": ["bpmn:ExtensionElements"],
       "properties": [
         {
