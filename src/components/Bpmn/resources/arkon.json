@@ -1,18 +1,18 @@
 {
-  "name": "ArkonElements",
-  "uri": "https://www.arkondata.com",
-  "prefix": "arkonElements",
+  "name": "Arkon",
+  "uri": "https://arkondata.com",
+  "prefix": "arkon",
   "xml": {
     "tagAlias": "lowerCase"
   },
   "types": [
     {
-      "name": "AnalyzedNode",
-      "extends": ["bpmn:FlowNode"],
+      "name": "Validation",
+      "extends": ["bpmn:ExtensionElements"],
       "properties": [
         {
           "name": "validationType",
-          "isAttr": true,
+          "isAttr": false,
           "type": "String"
         }
       ]

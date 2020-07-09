@@ -19,7 +19,7 @@ import ActionButton from './components/ActionButton'
 
 import { BpmnType, RemoveCustomTaskEntryType } from './Bpmn.types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
-import arkonElements from './resources/arkonElements.json'
+import arkon from './resources/arkon.json'
 
 import '../../styles/index.css'
 import '../../bpmn-font/css/bpmn-embedded.css'
@@ -211,7 +211,7 @@ const Bpmn: FC<BpmnType> = ({
       moddleExtensions: {
         ...moddleExtensions,
         camunda: camundaModdleDescriptor,
-        arkonElements
+        arkon
       },
       propertiesPanel: {
         parent: '#properties-panel'
