@@ -1,6 +1,6 @@
 {
   "name": "Arkon",
-  "uri": "https://www.arkondata.com",
+  "uri": "https://arkondata.com",
   "prefix": "arkon",
   "xml": {
     "tagAlias": "lowerCase"
