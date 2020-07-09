@@ -87,14 +87,17 @@ export type getContextPadEntriesType = {
   }
 }
 
-type AppendServiceTaskReturnType = (event: MouseEvent, taskElement: object) => void
-export type AppendServiceTaskType = (
+type AppendCustomTaskReturnType = (event: MouseEvent, taskElement: object) => void
+export type AppendCustomTaskType = (
   taskLabelText: string,
   taskType: 'bpmn:ScriptTask' | 'bpmn:UserTask'
-) => AppendServiceTaskReturnType
+) => AppendCustomTaskReturnType
 
-type AppendServiceTaskStartReturnType = (event: MouseEvent) => void
-export type AppendServiceTaskStartType = (
+type AppendCustomTaskStartReturnType = (event: MouseEvent) => void
+export type AppendCustomTaskStartType = (
   taskLabelText: string,
   taskType: 'bpmn:ScriptTask' | 'bpmn:UserTask'
-) => AppendServiceTaskStartReturnType
+) => AppendCustomTaskStartReturnType
+
+export const SCRIPT_VALIDATION_TASK_TEXT = 'VALIDACIÓN SISTEMA'
+export const USER_VALIDATION_TASK_TEXT = 'VALIDACIÓN USUARIO'
