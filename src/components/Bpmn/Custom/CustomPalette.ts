@@ -30,8 +30,10 @@ export default class CustomPalette {
       event: MouseEvent
     ): void => {
       const businessObject = bpmnFactory.create('bpmn:Task')
+      const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
 
-      businessObject.validationType = taskLabelText
+      extensionElements.validationType = taskLabelText
+      businessObject.extensionElements = extensionElements
 
       const shape = elementFactory.createShape({
         type: 'bpmn:ScriptTask',
