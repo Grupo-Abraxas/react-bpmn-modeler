@@ -1,21 +1,23 @@
 import React, { useRef, useEffect, FC, useCallback, useState } from 'react'
 import Fullscreen from 'react-full-screen'
 
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import BpmnModeler from 'bpmn-js/lib/Modeler'
 import minimapModule from 'diagram-js-minimap'
+import propertiesPanelModule from 'bpmn-js-properties-panel'
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda'
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 
 import { i18nSpanish } from './translations'
 import CustomControlsModule, {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
-  SEQUENCE_FLOW_CONFIGURATION_EVENT
+  SEQUENCE_FLOW_CONFIGURATION_EVENT,
+  CUSTOM_REMOVE_ELEMENT_EVENT
 } from './CustomControlsModule'
 import { newBpmnDiagram } from './default-bpmn-layout'
 import ActionButton from './ActionButton'
 
-import { BpmnType, RemoveCustomTaskEntryType } from './types'
+import { BpmnType, RemoveCustomTaskEntryType } from './Bpmn.types'
 import { findLateralPadEntries, removeElementsByClass } from './utils'
 
 import '../../styles/index.css'
@@ -46,12 +48,14 @@ const Bpmn: FC<BpmnType> = ({
   actionButtonClassName = '',
   zStep = 0.4,
   defaultStrokeColor = 'black',
+  showPropertiesPanel = false,
   elementClassesToRemove,
   customPadEntries,
   onElementChange,
   onTaskConfigurationClick,
   onTaskDocumentationClick,
   onSequenceFlowConfigurationClick,
+  onRemoveClick,
   onShapeCreate,
   onRootShapeUpdate,
   onError,
@@ -59,32 +63,28 @@ const Bpmn: FC<BpmnType> = ({
 }) => {
   const [zLevel, setZLevel] = useState(1)
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const [openPropertiesPanel, setOpenPropertiesPanel] = useState(false)
 
   const canvas = useRef<HTMLDivElement>(null)
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Button handlers
-  const fitViewport = useCallback((): void => {
+  const fitViewportButtonHandler = useCallback((): void => {
     modelerRef.current?.get('canvas').zoom('fit-viewport', true)
     setZLevel(1)
   }, [modelerRef])
 
-  const handleZoom = (zoomScale: number): void => {
+  const handleZoomButtonHandler = (zoomScale: number): void => {
     modelerRef.current?.get('canvas').zoom(zoomScale, 'auto')
     setZLevel(zoomScale)
   }
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Custom pad entries
-  const memorizeImportXML = useCallback((): void => {
+  const memorizeImportXMLCustomPadEntry = useCallback((): void => {
     modelerRef.current?.importXML(
       bpmnStringFile ? bpmnStringFile : newBpmnDiagram,
-      (error: Error): void => (error instanceof Error ? onError(error) : fitViewport())
+      (error: Error): void => (error instanceof Error ? onError(error) : fitViewportButtonHandler())
     )
-  }, [onError, bpmnStringFile, modelerRef, fitViewport])
+  }, [onError, bpmnStringFile, modelerRef, fitViewportButtonHandler])
 
-  const removeCustomTaskEntry = useCallback(
+  const removeCustomPadTaskEntry = useCallback(
     (type: string, sourceRefType?: string) => {
       const classesToAvoid = []
       if (!sourceRefType?.toLowerCase().includes('gateway')) {
@@ -121,7 +121,6 @@ const Bpmn: FC<BpmnType> = ({
       }
     )
   }, [modelerRef, onElementChange, onError])
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const handleEventBus = useCallback((): void => {
     const eventBus = modelerRef.current?.get('eventBus')
@@ -131,7 +130,7 @@ const Bpmn: FC<BpmnType> = ({
 
     eventBus.on('contextPad.open', ({ current: { element } }: RemoveCustomTaskEntryType): void => {
       const sourceRefType = Object(element).businessObject.sourceRef?.$type
-      removeCustomTaskEntry(Object(element).type, sourceRefType)
+      removeCustomPadTaskEntry(Object(element).type, sourceRefType)
     })
     eventBus.on(
       'commandStack.shape.create.postExecuted',
@@ -173,34 +172,43 @@ const Bpmn: FC<BpmnType> = ({
     })
   }, [
     modelerRef,
-    removeCustomTaskEntry,
+    removeCustomPadTaskEntry,
     saveModel,
     onShapeCreate,
     elementClassesToRemove,
     defaultStrokeColor,
     onRootShapeUpdate
   ])
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   const memorizeSetModeler = useCallback((): void => {
     modelerRef.current = new BpmnModeler({
       container: canvas.current,
       keyboard: { bindTo: document },
       additionalModules: [
-        propertiesProviderModule,
         minimapModule,
+        propertiesPanelModule,
+        propertiesProviderModule,
         customTranslateModule,
         CustomControlsModule
       ],
       moddleExtensions: {
         camunda: camundaModdleDescriptor
       },
+      propertiesPanel: {
+        parent: '#panel-properties'
+      },
       height: modelerInnerHeight ? modelerInnerHeight : window.innerHeight
     })
-    memorizeImportXML()
+    memorizeImportXMLCustomPadEntry()
     handleEventBus()
     removeElementsByClass(elementClassesToRemove)
-  }, [memorizeImportXML, modelerInnerHeight, handleEventBus, modelerRef, elementClassesToRemove])
+  }, [
+    memorizeImportXMLCustomPadEntry,
+    modelerInnerHeight,
+    handleEventBus,
+    modelerRef,
+    elementClassesToRemove
+  ])
 
   useEffect((): void => {
     memorizeSetModeler()
@@ -230,41 +238,64 @@ const Bpmn: FC<BpmnType> = ({
     )
   }, [onSequenceFlowConfigurationClick])
 
+  useEffect((): void => {
+    document.addEventListener(
+      CUSTOM_REMOVE_ELEMENT_EVENT,
+      (event: Event): void => onRemoveClick?.(event),
+      false
+    )
+  }, [onRemoveClick])
+
   return (
     <Fullscreen
       enabled={isFullScreen}
       onChange={(isFull: boolean): void => setIsFullScreen(isFull)}
     >
-      <div className="content" id="js-drop-zone">
-        <div className="canvas" ref={canvas} />
-        <ActionButton
-          actionButtonId="action-button-fit"
-          actionButtonClass={`action-button-fit ${actionButtonClassName}`}
-          onClick={fitViewport}
-        />
-        <ActionButton
-          actionButtonId="action-button-zoom-in"
-          actionButtonClass={`action-button-zoom-in ${actionButtonClassName}`}
-          onClick={(): void => handleZoom(Math.min(zLevel + zStep, 7))}
-        />
-        <ActionButton
-          actionButtonId="action-button-zoom-out"
-          actionButtonClass={`action-button-zoom-out ${actionButtonClassName}`}
-          onClick={(): void => handleZoom(Math.max(zLevel - zStep, zStep))}
-        />
-        {isFullScreen ? (
+      <div
+        className="content"
+        style={openPropertiesPanel ? { display: 'flex' } : {}}
+        id="js-drop-zone"
+      >
+        <div className="canvas" ref={canvas}>
+          {showPropertiesPanel ? (
+            <ActionButton
+              actionButtonId="action-button-panel"
+              actionButtonClass={`action-button-panel ${actionButtonClassName}`}
+              onClick={(): void => setOpenPropertiesPanel(!openPropertiesPanel)}
+            />
+          ) : (
+            ''
+          )}
           <ActionButton
-            actionButtonId="action-button-full-screen-exit"
-            actionButtonClass={`action-button-full-screen-exit ${actionButtonClassName}`}
-            onClick={(): void => setIsFullScreen(false)}
+            actionButtonId="action-button-fit"
+            actionButtonClass={`action-button-fit ${actionButtonClassName}`}
+            onClick={fitViewportButtonHandler}
           />
-        ) : (
           <ActionButton
-            actionButtonId="action-button-full-screen"
-            actionButtonClass={`action-button-full-screen ${actionButtonClassName}`}
-            onClick={(): void => setIsFullScreen(true)}
+            actionButtonId="action-button-zoom-in"
+            actionButtonClass={`action-button-zoom-in ${actionButtonClassName}`}
+            onClick={(): void => handleZoomButtonHandler(Math.min(zLevel + zStep, 7))}
           />
-        )}
+          <ActionButton
+            actionButtonId="action-button-zoom-out"
+            actionButtonClass={`action-button-zoom-out ${actionButtonClassName}`}
+            onClick={(): void => handleZoomButtonHandler(Math.max(zLevel - zStep, zStep))}
+          />
+          {isFullScreen ? (
+            <ActionButton
+              actionButtonId="action-button-full-screen-exit"
+              actionButtonClass={`action-button-full-screen-exit ${actionButtonClassName}`}
+              onClick={(): void => setIsFullScreen(false)}
+            />
+          ) : (
+            <ActionButton
+              actionButtonId="action-button-full-screen"
+              actionButtonClass={`action-button-full-screen ${actionButtonClassName}`}
+              onClick={(): void => setIsFullScreen(true)}
+            />
+          )}
+        </div>
+        <div id="panel-properties" hidden={!openPropertiesPanel} />
         {children}
       </div>
     </Fullscreen>

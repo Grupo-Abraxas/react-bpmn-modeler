@@ -1,4 +1,4 @@
-import { PadEntriesType } from './types'
+import { PadEntriesType } from './Bpmn.types'
 import { customPadClassNames } from './CustomControlsModule'
 
 const getElements = (elementClasses: string[]): Element[] => {

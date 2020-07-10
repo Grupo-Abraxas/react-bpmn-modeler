@@ -1,11 +1,14 @@
 export const TASK_SETTINGS_EVENT = 'TASK_SETTINGS_EVENT'
 export const TASK_DOCUMENTATION_EVENT = 'TASK_DOCUMENTATION_EVENT'
 export const SEQUENCE_FLOW_CONFIGURATION_EVENT = 'SEQUENCE_FLOW_CONFIGURATION_EVENT'
+export const CUSTOM_REMOVE_ELEMENT_EVENT = 'CUSTOM_REMOVE_ELEMENT_EVENT'
 
 export const customPadClassNames = [
   'bpmn-icon-custom-task-settings',
   'bpmn-icon-custom-task-documentation',
-  'bpmn-icon-custom-sequence-flow-configuration'
+  'bpmn-icon-custom-sequence-flow-configuration',
+  'bpmn-icon-custom-remove',
+  'bpmn-icon-trash'
 ]
 
 export type ContextPadEntriesType = {
@@ -37,6 +40,14 @@ export type getContextPadEntriesType = {
     }
   }
   'sequence-flow-configuration': {
+    group: string
+    className: string
+    title: string
+    action: {
+      click: () => void
+    }
+  }
+  'remove-element': {
     group: string
     className: string
     title: string
