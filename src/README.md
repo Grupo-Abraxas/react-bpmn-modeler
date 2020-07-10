@@ -73,3 +73,9 @@ Publish
 ```bash
 npm publish --access public
 ```
+
+Publish beta version
+
+```bash
+yarn publish --access public --tag beta
+```

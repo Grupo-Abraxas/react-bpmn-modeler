@@ -5,8 +5,9 @@ export {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
   SEQUENCE_FLOW_CONFIGURATION_EVENT,
+  CUSTOM_REMOVE_ELEMENT_EVENT,
   customPadClassNames
-} from './types'
+} from './CustomContextPad.types'
 
 export default {
   __init__: ['customContextPad', 'customPalette'],
