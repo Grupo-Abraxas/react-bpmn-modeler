@@ -46,7 +46,7 @@ export default class CustomPalette {
     return {
       'append.script-validation-task': {
         group: 'activity',
-        className: `${customPadClassNames[5]} script-task-validation-label`,
+        className: `${customPadClassNames[5]}-palette script-task-validation-label`,
         title: translate('Append Script Validation Task'),
         action: {
           click: appendServiceTask(SCRIPT_VALIDATION_TASK_TEXT),
