@@ -2429,7 +2429,7 @@ boolbase@^1.0.0, boolbase@~1.0.0:
 
 bpmn-js-properties-panel@^0.33.2:
   version "0.33.2"
-  resolved "https://registry.npmjs.org/bpmn-js-properties-panel/-/bpmn-js-properties-panel-0.33.2.tgz#b96f6b9bf95c54089000fe2aad02ced96e08f91f"
+  resolved "https://registry.yarnpkg.com/bpmn-js-properties-panel/-/bpmn-js-properties-panel-0.33.2.tgz#b96f6b9bf95c54089000fe2aad02ced96e08f91f"
   integrity sha512-+13NONRG1sJgcNgsN5ZWYbyAA1LYO1eOvTRx62IfjieMzDhDLRCmP4YLkPIWG4NhKdAIRfUf9/JxI1uwZd5rhQ==
   dependencies:
     ids "^1.0.0"

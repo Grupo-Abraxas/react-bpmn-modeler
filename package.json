@@ -1,6 +1,6 @@
 {
   "name": "@arkondata/react-bpmn-modeler",
-  "version": "0.1.23-beta.0",
+  "version": "0.1.24-beta.13",
   "private": false,
   "author": "JavierMolina",
   "license": "MIT",
@@ -48,6 +48,7 @@
     "camunda-bpmn-moddle": "^4.4.0",
     "css-loader": "^3.5.2",
     "diagram-js-minimap": "^2.0.3",
+    "min-dash": "^3.5.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

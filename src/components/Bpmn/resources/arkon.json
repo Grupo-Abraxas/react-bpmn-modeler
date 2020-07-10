@@ -1,0 +1,21 @@
+{
+  "name": "Arkon",
+  "uri": "https://arkondata.com",
+  "prefix": "arkon",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "types": [
+    {
+      "name": "Validation",
+      "extends": ["bpmn:ExtensionElements"],
+      "properties": [
+        {
+          "name": "validationType",
+          "isAttr": false,
+          "type": "String"
+        }
+      ]
+    }
+  ]
+}

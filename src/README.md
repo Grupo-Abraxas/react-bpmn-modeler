@@ -36,16 +36,6 @@ yarn start
 
 ## Publish package on npm
 
-Change package version in **package.json**, replace **"x.x.x"** for current number of version.
-
-```json
-{
-  ...
-  "version": "x.x.x",
-  ...
-}
-```
-
 Change **"noEmit"** to **false** in **tsconfig.json**
 
 ```json
@@ -71,5 +61,11 @@ npm login
 Publish
 
 ```bash
-npm publish --access public
+npm publish --access public -tag beta
+```
+
+Publish beta version
+
+```bash
+yarn publish --access public --tag beta
 ```
