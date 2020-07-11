@@ -82,6 +82,11 @@
   content: '\e86f';
 }
 
+.bpmn-icon-script-task-validation-palette:before {
+  font-family: 'Material Icons';
+  content: '\e86f';
+}
+
 .bpmn-icon-user-task-validation:before {
   font-family: 'Material Icons';
   content: '\e3bd';
