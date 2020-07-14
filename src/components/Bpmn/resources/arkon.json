@@ -7,7 +7,209 @@
   },
   "types": [
     {
-      "name": "Validation",
+      "name": "Groups",
+      "superClass": ["Element"],
+      "meta": {
+        "allowedIn": ["bpmn:ExtensionElements"]
+      },
+      "properties": [
+        {
+          "name": "group",
+          "type": "Group",
+          "isMany": true
+        }
+      ]
+    },
+    {
+      "name": "Group",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "id",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
+      "name": "Fields",
+      "superClass": ["Element"],
+      "meta": {
+        "allowedIn": ["bpmn:ExtensionElements"]
+      },
+      "properties": [
+        {
+          "name": "field",
+          "type": "Field",
+          "isMany": true
+        }
+      ]
+    },
+    {
+      "name": "Field",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "id",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "datasetId",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "fieldType",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
+      "name": "Task",
+      "superClass": ["Element"],
+      "meta": {
+        "allowedIn": ["bpmn:UserTask", "bpmn:ScriptTask", "bpmn:ExtensionElements"]
+      },
+      "properties": [
+        {
+          "name": "views",
+          "type": "Views"
+        }
+      ]
+    },
+    {
+      "name": "Views",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "view",
+          "type": "View",
+          "isMany": true
+        }
+      ]
+    },
+    {
+      "name": "View",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "id",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "order",
+          "type": "Integer",
+          "isAttr": true
+        },
+        {
+          "name": "input",
+          "type": "Input",
+          "isMany": true
+        }
+      ]
+    },
+    {
+      "name": "Input",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "id",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "order",
+          "type": "Integer",
+          "isAttr": true
+        },
+        {
+          "name": "width",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "arkonFieldRef",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "label",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "inputType",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "defaultValue",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "placeholder",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "isRequired",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "isEnabled",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "helperText",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "script",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "dataSource",
+          "type": "DataSource",
+          "isMany": false
+        }
+      ]
+    },
+    {
+      "name": "DataSource",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "datasetId",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "valueField",
+          "type": "String",
+          "isAttr": true
+        },
+        {
+          "name": "displayField",
+          "type": "String",
+          "isAttr": true
+        }
+      ]
+    },
+    {
+      "name": "ValidationType",
       "extends": ["bpmn:ExtensionElements"],
       "properties": [
         {
@@ -17,5 +219,7 @@
         }
       ]
     }
-  ]
+  ],
+  "emumerations": [],
+  "associations": []
 }
