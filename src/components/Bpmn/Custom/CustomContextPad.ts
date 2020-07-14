@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import {
   TASK_SETTINGS_EVENT,
   TASK_DOCUMENTATION_EVENT,
@@ -109,14 +110,20 @@ class CustomContextPad {
       document.dispatchEvent(customEvent)
     }
 
-    const appendCustomTaskStart: AppendCustomTaskStartType = (taskLabelText, taskType) => (
-      event: MouseEvent
-    ): void => {
+    const appendCustomTaskStart: AppendCustomTaskStartType = (
+      taskLabelText,
+      taskType,
+      selectedExtensionElements
+    ) => (event: MouseEvent): void => {
       const businessObject = bpmnFactory.create()
-      const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
 
-      extensionElements.validationType = taskLabelText
-      businessObject.extensionElements = extensionElements
+      if (selectedExtensionElements) {
+        businessObject.extensionElements = selectedExtensionElements
+      } else {
+        const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
+        businessObject.extensionElements = extensionElements
+      }
+      businessObject.extensionElements.validationType = taskLabelText
 
       const shape = elementFactory.createShape({
         type: taskType,
@@ -126,16 +133,67 @@ class CustomContextPad {
       create.start(event, shape, element)
     }
 
+    const copyBpmnObject = (BpmnElementvalue: object): object => {
+      const oldBpmnObjectDefinition = { ...BpmnElementvalue }
+      let $type = ''
+      if (oldBpmnObjectDefinition.hasOwnProperty('$type')) {
+        $type = Object(oldBpmnObjectDefinition).$type
+        delete Object(oldBpmnObjectDefinition).$type
+      }
+      const bpmnElementProto: { [key: string]: string | object[] | object } = {}
+      for (const [key, value] of Object.entries(oldBpmnObjectDefinition)) {
+        if (typeof value === 'string') {
+          if (key === 'id' && $type.toLocaleLowerCase().includes('arkon:input')) {
+            const newId = `Id_${uuidv4()}`
+            bpmnElementProto[key] = newId
+          } else {
+            bpmnElementProto[key] = value
+          }
+        } else if (typeof value === 'object' && Array.isArray(value)) {
+          bpmnElementProto[key] = value.map((bpmnElement: object) => {
+            return copyBpmnObject(bpmnElement)
+          })
+        } else if (typeof value === 'object') {
+          bpmnElementProto[key] = copyBpmnObject(Object(value))
+        }
+      }
+
+      return bpmnFactory.create($type, bpmnElementProto)
+    }
+
+    const getExtensionElements = (values: object[]): object => {
+      const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
+      if (values && values.length > 0) {
+        extensionElements.values = []
+        const newValues = values.map((value: object) => {
+          return copyBpmnObject(value)
+        })
+        extensionElements.values = [...newValues]
+      }
+
+      return extensionElements
+    }
+
     const appendCustomTask: AppendCustomTaskType = (taskLabelText, taskType) => (
       event: MouseEvent,
       taskElement: object
     ): void => {
+      const selectedBusinessObject = Object(taskElement).businessObject
+      let selectedExtensionElements = undefined
+      let values = undefined
+
+      if (selectedBusinessObject?.extensionElements) {
+        values = selectedBusinessObject.extensionElements.get('values')
+        selectedExtensionElements = JSON.parse(
+          JSON.stringify(selectedBusinessObject.extensionElements)
+        )
+      }
+
       if (autoPlace && event) {
         const businessObject = bpmnFactory.create(taskType)
-        const extensionElements = bpmnFactory.create('bpmn:ExtensionElements')
-
-        extensionElements.validationType = taskLabelText
+        const extensionElements = getExtensionElements(values)
         businessObject.extensionElements = extensionElements
+        businessObject.extensionElements.validationType = taskLabelText
 
         const shape = elementFactory.createShape({
           type: taskType,
@@ -144,7 +202,7 @@ class CustomContextPad {
 
         Object(autoPlace).append(taskElement, shape)
       } else {
-        appendCustomTaskStart(SCRIPT_VALIDATION_TASK_TEXT, taskType)
+        appendCustomTaskStart(SCRIPT_VALIDATION_TASK_TEXT, taskType, selectedExtensionElements)
       }
     }
 

@@ -96,7 +96,8 @@ export type AppendCustomTaskType = (
 type AppendCustomTaskStartReturnType = (event: MouseEvent) => void
 export type AppendCustomTaskStartType = (
   taskLabelText: string,
-  taskType: 'bpmn:ScriptTask' | 'bpmn:UserTask'
+  taskType: 'bpmn:ScriptTask' | 'bpmn:UserTask',
+  extensionElements?: object | undefined
 ) => AppendCustomTaskStartReturnType
 
 export const SCRIPT_VALIDATION_TASK_TEXT = 'VALIDACIÓN SISTEMA'
