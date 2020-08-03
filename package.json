@@ -46,7 +46,7 @@
     "bpmn-js": "^6.4.2",
     "bpmn-js-properties-panel": "^0.33.2",
     "camunda-bpmn-moddle": "^4.4.0",
-    "css-loader": "^3.5.2",
+    "css-loader": "^4.2.0",
     "diagram-js-minimap": "^2.0.3",
     "min-dash": "^3.5.2",
     "node-sass": "^4.14.1",
