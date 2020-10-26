@@ -945,6 +945,13 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@bpmn-io/extract-process-variables@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@bpmn-io/extract-process-variables/-/extract-process-variables-0.3.0.tgz#175f81114b44092cefa6e15b45427f22f865031f"
+  integrity sha512-cZMPBvVUXBn7++ZaOVQQGvhrMnFVcOP218yfYBKUv0EMYjo775ust/ZmfIgWd8llT4myXA6dPz12wcYXUBR1Bg==
+  dependencies:
+    min-dash "^3.5.2"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -2427,11 +2434,12 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bpmn-js-properties-panel@^0.33.2:
-  version "0.33.2"
-  resolved "https://registry.yarnpkg.com/bpmn-js-properties-panel/-/bpmn-js-properties-panel-0.33.2.tgz#b96f6b9bf95c54089000fe2aad02ced96e08f91f"
-  integrity sha512-+13NONRG1sJgcNgsN5ZWYbyAA1LYO1eOvTRx62IfjieMzDhDLRCmP4YLkPIWG4NhKdAIRfUf9/JxI1uwZd5rhQ==
+bpmn-js-properties-panel@^0.37.3:
+  version "0.37.3"
+  resolved "https://registry.yarnpkg.com/bpmn-js-properties-panel/-/bpmn-js-properties-panel-0.37.3.tgz#0f8f4f254eb3f989a9c9596d7befd3dc1f66a9ea"
+  integrity sha512-Os2CeyILwXsSC0hzMocAYIGfpaSKKJPjAhSolcAogoqwsPDDQ6kkZLBBkHTTx7QwMHXSl2Xtd3scm0ynbWf85A==
   dependencies:
+    "@bpmn-io/extract-process-variables" "^0.3.0"
     ids "^1.0.0"
     inherits "^2.0.1"
     lodash "^4.17.15"
